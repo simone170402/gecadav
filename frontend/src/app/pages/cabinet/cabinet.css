@@ -1,0 +1,32 @@
+.our-firm-section {
+  background-color: #fff;
+  overflow: hidden;
+  position: relative;
+}
+
+.our-firm-section h2 {
+  color: #bfa14a;
+  font-weight: 600;
+  letter-spacing: 3px;
+  line-height: 1.3;
+}
+
+.our-firm-section h3 {
+  color: #bfa14a;
+  font-weight: 600;
+}
+
+.our-firm-section p {
+  color: #444;
+  line-height: 1.8;
+  font-size: 0.95rem;
+}
+
+.our-firm-section img {
+  border-radius: 8px;
+  transition: transform 0.5s ease;
+}
+
+.our-firm-section img:hover {
+  transform: scale(1.05);
+}

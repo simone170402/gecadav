@@ -1,0 +1,73 @@
+/* --------------------------- */
+/* ⚖️ SECTION HERO UNIQUEMENT */
+/* --------------------------- */
+.hero-container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  overflow: hidden;
+}
+
+/* ✅ Texte */
+.hero-container h1 {
+  font-weight: 800;
+  letter-spacing: -2px;
+  text-transform: uppercase;
+}
+
+.hero-container h4 {
+  color: #bfa14a;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+.hero-container p {
+  color: #444;
+  line-height: 1.7;
+  font-size: 0.95rem;
+  max-width: 90%;
+}
+
+/* ✅ Boutons */
+.hero-container .btn-left,
+.hero-container .btn-right {
+  transition: all 0.3s ease;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.hero-container .btn-left {
+  background: linear-gradient(to right, #d1d1d1, #bfa14a);
+  color: #000;
+}
+
+.hero-container .btn-right {
+  background: linear-gradient(to right, #bfa14a, #2a2a2a);
+  color: #fff;
+}
+
+.hero-container .btn-left:hover,
+.hero-container .btn-right:hover {
+  transform: scale(1.05);
+}
+
+/* --------------------------- */
+/* 🌟 STYLES GÉNÉRAUX */
+/* --------------------------- */
+section {
+  font-family: 'Poppins', sans-serif;
+}
+
+h1, h2, h3 {
+  letter-spacing: 1px;
+}
+
+img {
+  transition: transform 0.4s ease;
+}
+
+img:hover {
+  transform: scale(1.02);
+}

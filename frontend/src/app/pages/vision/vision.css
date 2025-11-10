@@ -1,0 +1,40 @@
+.vision-section {
+  background-color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+.vision-section h2 {
+  color: #bfa14a;
+  font-weight: 600;
+  text-align: right;
+  line-height: 1.4;
+  letter-spacing: 3px;
+}
+
+
+.vision-section img {
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  transition: transform 0.4s ease;
+}
+
+.vision-section img:hover {
+  transform: scale(1.03);
+}
+
+.vision-section button {
+  transition: transform 0.3s ease;
+}
+
+.vision-section button:hover {
+  transform: scale(1.1);
+}
+
+.vision-section h3 {
+  font-weight: 600;
+}
+
+.vision-section .bg-gradient-to-r {
+  background: linear-gradient(90deg, #bfa14a, #2a2a2a);
+}
