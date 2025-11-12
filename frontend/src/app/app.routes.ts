@@ -26,7 +26,7 @@ export const routes: Routes = [
   { path: 'contact', component: Contact },
   { path: 'vision', component: Vision },
 
-  // 🔒 Partie admin
+  //  Partie admin
   {
     path: 'admin',
     component: Layout, //  Layout avec la sidebar
