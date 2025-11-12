@@ -3,8 +3,6 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "build:css": "npx @tailwindcss/cli -i ./src/styles.css -o ./src/tailwind-output.css --minify",
-    "prebuild": "npm run build:css",
     "build": "npm run prebuild && ng build --configuration production",
     "start": "ng serve",
     "watch": "ng build --watch --configuration development",
@@ -31,7 +29,6 @@
     "@angular/forms": "^20.3.0",
     "@angular/platform-browser": "^20.3.0",
     "@angular/router": "^20.3.0",
-    "@tailwindcss/cli": "^4.1.17",
     "postcss": "^8.5.6",
     "rxjs": "~7.8.0",
     "tailwindcss": "^4.1.17",
