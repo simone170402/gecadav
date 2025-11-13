@@ -1,37 +1,46 @@
-/* ===========================================
-   ⚜️ HERO SECTION — Design original corrigé
-=========================================== */
+/* ==============================
+   HERO CONTAINER GLOBAL
+=============================== */
 
-/* Empêcher les débordements */
-html, body {
-  margin: 0 !important;
-  padding: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  overflow-x: hidden !important;
-}
-
-/* SECTION HERO */
 .hero-container {
   position: relative;
-  width: 100% !important;         /* ✔️ Fix du bug de 100vw */
-  max-width: 100% !important;
-  min-height: 100vh !important;   /* ✔️ hauteur parfaite sans débordement */
-  overflow: hidden !important;
+  width: 100%;
+  max-width: 100%;
+  min-height: 100vh;        /* Toujours la hauteur écran */
+  overflow: hidden;
   font-family: 'Poppins', sans-serif;
-  padding-top: 130px;             /* ✔️ laisse la place au header */
+  padding-top: 120px;       /* Place pour le header */
 }
 
-/* Padding adaptatif selon l'écran */
+/* Responsive spacing du hero */
 @media (max-width: 1024px) {
-  .hero-container { padding-top: 110px; }
+  .hero-container {
+    padding-top: 110px;
+  }
 }
 
 @media (max-width: 768px) {
-  .hero-container { padding-top: 90px; }
+  .hero-container {
+    padding-top: 95px;
+  }
 }
 
-/* Texte */
+/* ==============================
+   CLIP-PATHS EXACTES
+=============================== */
+
+.hero-left-clip {
+  clip-path: polygon(0 0, 0 100%, 100% 100%, 78% 0);
+}
+
+.hero-right-clip {
+  clip-path: polygon(0 0, 20% 100%, 100% 100%, 100% 0);
+}
+
+/* ==============================
+   TEXTE DU HERO
+=============================== */
+
 .hero-container h1 {
   font-weight: 800;
   letter-spacing: -2px;
@@ -40,7 +49,6 @@ html, body {
 
 .hero-container h4 {
   color: #bfa14a;
-  text-transform: uppercase;
   letter-spacing: 3px;
 }
 
@@ -48,52 +56,23 @@ html, body {
   color: #444;
   line-height: 1.7;
   font-size: 0.95rem;
-  max-width: 90%;
 }
 
-/* Boutons */
-.hero-container .btn-left,
-.hero-container .btn-right {
-  transition: all 0.3s ease;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  font-weight: 600;
+/* ==============================
+   BOUTONS
+=============================== */
+
+.hero-container button {
+  transition: 0.3s ease;
 }
 
-.hero-container .btn-left {
-  background: linear-gradient(to right, #d1d1d1, #bfa14a);
-  color: #000;
+.hero-container button:hover {
+  transform: scale(1.1);
 }
 
-.hero-container .btn-right {
-  background: linear-gradient(to right, #bfa14a, #2a2a2a);
-  color: #fff;
-}
-
-.hero-container .btn-left:hover,
-.hero-container .btn-right:hover {
-  transform: scale(1.05);
-}
-
-/* Clip-path EXACT comme ton design */
-@layer utilities {
-  .hero-left-clip {
-    clip-path: polygon(0 0, 0 100%, 100% 100%, 78% 0);
-  }
-
-  .hero-right-clip {
-    clip-path: polygon(0 0, 20% 100%, 100% 100%, 100% 0);
-  }
-}
-
-/* Global */
-section {
-  font-family: 'Poppins', sans-serif;
-}
-
-h1, h2, h3 {
-  letter-spacing: 1px;
-}
+/* ==============================
+   IMAGES
+=============================== */
 
 img {
   transition: transform 0.4s ease;
@@ -103,11 +82,14 @@ img:hover {
   transform: scale(1.02);
 }
 
-/* Empêche TOUS les enfants du hero de déborder */
+/* ==============================
+   AUCUN DÉBORDEMENT VISUEL
+=============================== */
+
 .hero-container > div {
-  overflow: hidden !important;
+  overflow: hidden;
 }
 
 * {
-  box-sizing: border-box !important;
+  box-sizing: border-box;
 }

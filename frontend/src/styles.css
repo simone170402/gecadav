@@ -1,29 +1,71 @@
 @import "tailwindcss";
-/* Empêche la mise à l’échelle involontaire du navigateur */
+
+/* ============================================
+   🌍 RESET GLOBAL (compatible Angular + Tailwind)
+   — Pas de margin/padding fantôme
+   — Pas d’overflow qui casse la mise en page
+============================================ */
+
 html, body {
-  width: 100% !important;
-  max-width: 100% !important;
-  overflow-x: hidden !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-/* Empêche l’effet “zoom” qui grossit tout */
-body {
-  transform-origin: top left;
-  transform: scale(1);
-}
-
-/* Conteneur global pour éviter les affichages trop larges */
-.page-container {
+  margin: 0;
+  padding: 0;
   width: 100%;
-  max-width: 1600px;      /* ⚡ ton design EXACT */
-  margin: 0 auto;         /* centré */
-  overflow: hidden;
+  max-width: 100%;
+  overflow-x: hidden !important;  /* Stopper l'espace blanc à droite */
+  font-family: 'Poppins', sans-serif;
+  scroll-behavior: smooth;
+  background-color: white;
 }
 
-/* Empêche les enfants d’éclater la mise en page */
+/* Empêcher Angular d’ajouter du padding fantôme */
+body {
+  padding-top: 0 !important;
+}
+
+/* S'assurer que toutes les sections prennent toute la largeur */
+section {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Sécurité : empêche tout débordement volontaire ou pas */
 * {
-  max-width: 100% !important;
-  box-sizing: border-box !important;
+  box-sizing: border-box;
+}
+
+/* ============================================
+   🌟 CLASSES UTILITAIRES PERSONNALISÉES
+   (non fournies par Tailwind)
+============================================ */
+
+/* Animation fade-in (utilisé dans mobile menu du header) */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* ===============================
+   CLIP-PATHS GÉOMÉTRIQUES PERSONNALISÉS
+   Utilisés dans ton HERO
+=============================== */
+
+.hero-left-clip {
+  clip-path: polygon(0 0, 0 100%, 100% 100%, 78% 0);
+}
+
+.hero-right-clip {
+  clip-path: polygon(0 0, 20% 100%, 100% 100%, 100% 0);
+}
+
+/* ===============================
+   TRANSITIONS GÉNÉRALES (HEADER)
+=============================== */
+
+header,
+header img {
+  transition: all 0.4s ease-in-out;
 }

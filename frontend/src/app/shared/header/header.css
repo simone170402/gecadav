@@ -1,0 +1,38 @@
+/* ===========================
+   HEADER — GLOBAL
+=========================== */
+
+/* Animation du menu mobile */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Transitions globales */
+header, header img {
+  transition: all 0.4s ease-in-out;
+}
+
+/* En-tête toujours fixé */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+}
+
+/* Petit ajustement mobile */
+@media (max-width: 768px) {
+  header img {
+    height: 2rem;
+  }
+
+  header span {
+    font-size: 1.1rem;
+  }
+}
