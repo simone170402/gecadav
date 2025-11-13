@@ -1,21 +1,6 @@
 /* Tailwind v4 */
 @import "tailwindcss";
 
-/* GLOBAL : applique VRAIMENT à toute l’app */
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  min-height: 100%;
-  overflow-x: hidden;        /* Anti espace blanc à droite */
-  box-sizing: border-box;
-}
-
-*, *::before, *::after {
-  box-sizing: inherit;
-}
-
-
 @media (min-width: 1600px) {
   html {
     zoom: 1; /* Retina, 4K */

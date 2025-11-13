@@ -1,28 +1,15 @@
 /* ===========================================
-   ⚜️ HERO SECTION — HOME
+   ⚜️ HERO SECTION — VERSION OFFICIELLE COMPLÈTE
+   Identique à TON DESIGN mais responsive
 =========================================== */
 
 .hero-container {
   position: relative;
-  width: 100%;
-  max-width: 100%;
-  min-height: 100vh;
-  overflow: hidden;
+  width: 100% !important;        /* PAS 100vw */
+  max-width: 100% !important;
+  min-height: calc(100vh + 1px); /* FIX ESPACE BAS */
+  overflow: hidden !important;   
   font-family: 'Poppins', sans-serif;
-  padding-top: 130px; /* espace sous le header */
-}
-
-/* Responsive padding top selon la taille d'écran */
-@media (max-width: 1024px) {
-  .hero-container {
-    padding-top: 110px;
-  }
-}
-
-@media (max-width: 768px) {
-  .hero-container {
-    padding-top: 90px;
-  }
 }
 
 /* TITRES */
@@ -45,6 +32,32 @@
   font-size: 0.95rem;
   max-width: 90%;
 }
+
+.hero-container {
+  padding-top: 130px;
+}
+
+.hero-container > div {
+  overflow: hidden !important;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+
+@media (max-width: 1024px) {
+  .hero-container {
+    padding-top: 110px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-container {
+    padding-top: 90px;
+  }
+}
+
 
 /* BOUTONS HERO */
 .hero-container .btn-left,
@@ -70,7 +83,9 @@
   transform: scale(1.05);
 }
 
-/* CLIP PATHS */
+/* =============================== */
+/*  CLIP-PATHS EXACTES BASE DESIGN */
+/* =============================== */
 @layer utilities {
   .hero-left-clip {
     clip-path: polygon(0 0, 0 100%, 100% 100%, 78% 0);
@@ -81,7 +96,9 @@
   }
 }
 
-/* STYLE GLOBAL DES SECTIONS / IMAGES DANS LA HOME */
+/* =============================== */
+/*   STYLE GLOBAL SECTION + IMAGES */
+/* =============================== */
 section {
   font-family: 'Poppins', sans-serif;
 }
