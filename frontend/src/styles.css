@@ -1,29 +1,22 @@
 /* Tailwind v4 */
 @import "tailwindcss";
 
-/* ---------------------------------------- */
-/* 🔥 Correction DPI : Rendu parfait à 115%  */
-/* ---------------------------------------- */
-
-
-/* Version PRO (activer si nécessaire)*/
 html {
-  zoom: calc(1.15 / var(--dpr)); 
+  zoom: 0.80; /* équivaut à contrer un DPI de 125%-150% */
 }
 
-
-/* ---------------------------------------- */
-/* 🔥 Utilities custom Tailwind */
-/* ---------------------------------------- */
-@layer utilities {
-
-  /* Clip-path gauche */
-  .hero-left-clip {
-    clip-path: polygon(0 0, 0 100%, 100% 100%, 75% 0);
+@media (min-width: 1600px) {
+  html {
+    zoom: 1; /* Retina, 4K */
   }
-
-  /* Clip-path droite */
-  .hero-right-clip {
-    clip-path: polygon(0 0, 20% 100%, 100% 100%, 100% 0);
+}
+@media (max-width: 1200px) {
+  html {
+    zoom: 0.75; /* petits écrans */
+  }
+}
+@media (max-width: 800px) {
+  html {
+    zoom: 0.60; /* très petits écrans */
   }
 }
