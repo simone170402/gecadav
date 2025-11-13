@@ -5,7 +5,19 @@
 html, body {
   margin: 0;
   padding: 0;
-  width: 100%;       /* ✔️ */
-  max-width: 100%;   /* ✔️ */
-  overflow-x: hidden;
+}
+
+html, body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.hero-container,
+.hero-container * {
+    max-width: 100% !important;
+}
+
+.hero-right-clip {
+    clip-path: polygon(5% 0, 15% 100%, 100% 100%, 100% 0) !important;
 }
