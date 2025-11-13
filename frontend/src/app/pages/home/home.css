@@ -1,15 +1,18 @@
-/* --------------------------- */
-/* ⚖️ SECTION HERO UNIQUEMENT */
-/* --------------------------- */
+/* ===========================================
+   ⚜️ HERO SECTION — VERSION OFFICIELLE COMPLÈTE
+   Identique à TON DESIGN mais responsive
+=========================================== */
+
 .hero-container {
   position: relative;
-  width: 100%;
-  min-height: 100vh;
-  font-family: 'Poppins', sans-serif;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  min-height: 100vh !important;
   overflow: hidden;
+  font-family: 'Poppins', sans-serif;
 }
 
-/* ✅ Texte */
+/* TITRES */
 .hero-container h1 {
   font-weight: 800;
   letter-spacing: -2px;
@@ -22,6 +25,7 @@
   letter-spacing: 3px;
 }
 
+/* PARAGRAPHES */
 .hero-container p {
   color: #444;
   line-height: 1.7;
@@ -29,7 +33,7 @@
   max-width: 90%;
 }
 
-/* ✅ Boutons */
+/* BOUTONS HERO */
 .hero-container .btn-left,
 .hero-container .btn-right {
   transition: all 0.3s ease;
@@ -53,9 +57,22 @@
   transform: scale(1.05);
 }
 
-/* --------------------------- */
-/* 🌟 STYLES GÉNÉRAUX */
-/* --------------------------- */
+/* =============================== */
+/*  CLIP-PATHS EXACTES BASE DESIGN */
+/* =============================== */
+@layer utilities {
+  .hero-left-clip {
+    clip-path: polygon(0 0, 0 100%, 100% 100%, 78% 0);
+  }
+
+  .hero-right-clip {
+    clip-path: polygon(0 0, 20% 100%, 100% 100%, 100% 0);
+  }
+}
+
+/* =============================== */
+/*   STYLE GLOBAL SECTION + IMAGES */
+/* =============================== */
 section {
   font-family: 'Poppins', sans-serif;
 }
@@ -70,14 +87,4 @@ img {
 
 img:hover {
   transform: scale(1.02);
-}
-
-@layer utilities {
-  .hero-left-clip {
-    clip-path: polygon(0 0, 0 100%, 100% 100%, 78% 0);
-  }
-
-  .hero-right-clip {
-    clip-path: polygon(0 0, 20% 100%, 100% 100%, 100% 0);
-  }
 }
