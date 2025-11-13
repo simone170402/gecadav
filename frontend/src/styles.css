@@ -1,9 +1,20 @@
 /* Tailwind v4 */
 @import "tailwindcss";
 
-html {
-  zoom: 0.80; /* équivaut à contrer un DPI de 125%-150% */
+/* GLOBAL : applique VRAIMENT à toute l’app */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;        /* Anti espace blanc à droite */
+  box-sizing: border-box;
 }
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
 
 @media (min-width: 1600px) {
   html {
