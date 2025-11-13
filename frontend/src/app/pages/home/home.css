@@ -2,14 +2,20 @@
    ⚜️ HERO SECTION — VERSION OFFICIELLE COMPLÈTE
    Identique à TON DESIGN mais responsive
 =========================================== */
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow-x: hidden !important; /* ANTI ESPACE DROITE */
+}
 
 .hero-container {
   position: relative;
-  width: 100% !important;     /* FIX */
-  max-width: 100% !important; /* FIX */
-  min-height: 100vh !important;
-  overflow: hidden;
-  overflow-x: hidden !important; /* FIX */
+  width: 100% !important;        /* PAS 100vw */
+  max-width: 100% !important;
+  min-height: calc(100vh + 1px); /* FIX ESPACE BAS */
+  overflow: hidden !important;   
   font-family: 'Poppins', sans-serif;
 }
 
@@ -37,6 +43,15 @@
 .hero-container {
   padding-top: 130px;
 }
+
+.hero-container > div {
+  overflow: hidden !important;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 
 @media (max-width: 1024px) {
   .hero-container {
