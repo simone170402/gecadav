@@ -23,3 +23,9 @@ html, body {
 * {
   box-sizing: border-box;
 }
+
+@media (min-resolution: 1.25dppx) {
+  body {
+    zoom: 0.85;   /* Ajuste 0.90 ou 0.80 selon ce qui est parfait */
+  }
+}
