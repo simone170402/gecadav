@@ -5,15 +5,12 @@
 /* 🔥 Correction DPI : Rendu parfait à 115%  */
 /* ---------------------------------------- */
 
-html {
-  zoom: 0.8; /* Affichage parfait partout */
-}
 
-/* Version PRO (activer si nécessaire)
+/* Version PRO (activer si nécessaire)*/
 html {
   zoom: calc(1.15 / var(--dpr)); 
 }
-*/
+
 
 /* ---------------------------------------- */
 /* 🔥 Utilities custom Tailwind */
@@ -29,42 +26,4 @@ html {
   .hero-right-clip {
     clip-path: polygon(0 0, 20% 100%, 100% 100%, 100% 0);
   }
-}
-
-/* ---------------------------------------- */
-/* 🔥 Animations */
-/* ---------------------------------------- */
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.animate-fadeIn {
-  animation: fadeIn 0.5s ease-out forwards;
-}
-
-/* ---------------------------------------- */
-/* 🔥 Bases globales */
-/* ---------------------------------------- */
-
-body {
-  background-color: #ffffff;
-  color: #2a2a2a;
-  margin: 0;
-  overflow-x: hidden;
-}
-
-/* Images */
-img {
-  object-fit: cover;
-  max-width: 100%;
-  height: auto;
-}
-
-/* Liens actifs Angular */
-.active-link {
-  color: #bfa14a !important;
-  font-weight: bold;
-  border-bottom: 2px solid #bfa14a;
 }
