@@ -1,50 +1,29 @@
-/* Tailwind v4 */
 @import "tailwindcss";
-
-/* ================================
-   ⚜️ HEADER GLOBAL (COMPLET)
-================================ */
-
-/* Animation du menu mobile */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-5px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.animate-fadeIn {
-  animation: fadeIn 0.3s ease-in-out;
-}
-
-/* Transition douce */
-header, header img {
-  transition: all 0.4s ease-in-out;
-}
-
-/* Header fixé et largeur réelle de l’écran */
-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw !important;
-  z-index: 999;
-}
-
-/* Ajustements mobile */
-@media (max-width: 768px) {
-  header img { height: 2.5rem; }
-  header span { font-size: 1rem; }
-}
-
-/* Correction structure Angular : éviter les marges parasites */
-html, body, app-root, main, router-outlet, app-home {
+/* Empêche la mise à l’échelle involontaire du navigateur */
+html, body {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
   margin: 0 !important;
   padding: 0 !important;
-  width: 100vw !important;
-  max-width: 100vw !important;
-  overflow-x: hidden !important;
 }
 
-/* Supprimer padding-top imposé par Angular */
+/* Empêche l’effet “zoom” qui grossit tout */
 body {
-  padding-top: 0 !important;
+  transform-origin: top left;
+  transform: scale(1);
+}
+
+/* Conteneur global pour éviter les affichages trop larges */
+.page-container {
+  width: 100%;
+  max-width: 1600px;      /* ⚡ ton design EXACT */
+  margin: 0 auto;         /* centré */
+  overflow: hidden;
+}
+
+/* Empêche les enfants d’éclater la mise en page */
+* {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
 }
