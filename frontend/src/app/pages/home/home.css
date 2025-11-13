@@ -33,6 +33,23 @@
   max-width: 90%;
 }
 
+.hero-container {
+  padding-top: 130px;
+}
+
+@media (max-width: 1024px) {
+  .hero-container {
+    padding-top: 110px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-container {
+    padding-top: 90px;
+  }
+}
+
+
 /* BOUTONS HERO */
 .hero-container .btn-left,
 .hero-container .btn-right {
