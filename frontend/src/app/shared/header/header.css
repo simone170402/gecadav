@@ -17,12 +17,12 @@ header, header img {
   transition: all 0.4s ease-in-out;
 }
 
-/* Header fixé et largeur réelle de l’écran */
+/* Header fixé */
 header {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw !important;
+  width: 100%;   /* ✔️ AU LIEU DE 100vw */
   z-index: 999;
 }
 
@@ -32,16 +32,15 @@ header {
   header span { font-size: 1rem; }
 }
 
-/* Correction structure Angular : éviter les marges parasites */
+/* Correction structure Angular */
 html, body, app-root, main, router-outlet, app-home {
   margin: 0 !important;
   padding: 0 !important;
-  width: 100vw !important;
-  max-width: 100vw !important;
+  width: 100%;       /* ✔️ */
+  max-width: 100%;   /* ✔️ */
   overflow-x: hidden !important;
 }
 
-/* Supprimer padding-top imposé par Angular */
 body {
   padding-top: 0 !important;
 }
