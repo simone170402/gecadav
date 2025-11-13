@@ -1,23 +1,25 @@
-/* Tailwind v4 */
+/* ============================
+   🔥 GLOBAL STYLE CLEAN
+   Pour Angular + Tailwind 4
+============================ */
+
+/* Import Tailwind CSS v4 */
 @import "tailwindcss";
 
-/* Fix overflow global */
+/* Reset safe */
 html, body {
   margin: 0;
   padding: 0;
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+  font-family: 'Poppins', sans-serif;
 }
 
-html, body {
-    overflow-x: hidden !important;
-    width: 100% !important;
-    max-width: 100% !important;
-}
+/* 👇 NE PAS AJOUTER max-width: 100% ici ! */
+/* 👇 NE PAS AJOUTER zoom: 0.8 ! */
 
-.hero-container,
-.hero-container * {
-    max-width: 100% !important;
-}
-
-.hero-right-clip {
-    clip-path: polygon(5% 0, 15% 100%, 100% 100%, 100% 0) !important;
+/* Empêche les scrollbars horizontales */
+* {
+  box-sizing: border-box;
 }
