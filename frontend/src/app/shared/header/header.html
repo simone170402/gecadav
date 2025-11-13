@@ -9,23 +9,17 @@
   <div class="flex justify-between items-center w-full px-4 sm:px-6 lg:px-10 py-2.5">
 
     <!-- LOGO + NOM -->
-    <div class="flex items-center space-x-3 transition-all duration-500">
-      <img
-        src="/images/Law_Logo.png"
-        alt="Logo"
-        class="object-contain transition-all duration-500"
-        [ngClass]="{
-      
-          'h-24 sm:h-32 md:h-36 lg:h-40': !isScrolled,
-  
-          'h-12 sm:h-16 md:h-20 lg:h-24': isScrolled,
-
-          'opacity-100 brightness-100': isHomePage(),
-          'brightness-100': !isHomePage()
-        }"
-      />
-
-
+    <img
+      src="/images/Law_Logo.png"
+      alt="Logo"
+      class="object-contain transition-all duration-500"
+      [ngClass]="{
+        'h-16 sm:h-20 md:h-24 lg:h-28': !isScrolled, 
+        'h-10 sm:h-12 md:h-14 lg:h-16': isScrolled,  
+        'opacity-100 brightness-100': isHomePage(),
+        'brightness-100': !isHomePage()
+      }"
+    />
       <span
         class="font-bold tracking-wide transition-all duration-500 text-lg sm:text-xl md:text-2xl lg:text-3xl"
         [ngClass]="{
