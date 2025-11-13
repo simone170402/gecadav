@@ -5,10 +5,11 @@
 
 .hero-container {
   position: relative;
-  width: 100vw !important;
-  max-width: 100vw !important;
+  width: 100% !important;     /* FIX */
+  max-width: 100% !important; /* FIX */
   min-height: 100vh !important;
   overflow: hidden;
+  overflow-x: hidden !important; /* FIX */
   font-family: 'Poppins', sans-serif;
 }
 
