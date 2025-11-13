@@ -1,46 +1,18 @@
-/* ==============================
-   HERO CONTAINER GLOBAL
-=============================== */
+/* ===========================================
+   ⚜️ HERO SECTION — VERSION OFFICIELLE COMPLÈTE
+   Identique à TON DESIGN mais responsive
+=========================================== */
 
 .hero-container {
   position: relative;
-  width: 100%;
-  max-width: 100%;
-  min-height: 100vh;        /* Toujours la hauteur écran */
+  width: 100vw !important;
+  max-width: 100vw !important;
+  min-height: 100vh !important;
   overflow: hidden;
   font-family: 'Poppins', sans-serif;
-  padding-top: 120px;       /* Place pour le header */
 }
 
-/* Responsive spacing du hero */
-@media (max-width: 1024px) {
-  .hero-container {
-    padding-top: 110px;
-  }
-}
-
-@media (max-width: 768px) {
-  .hero-container {
-    padding-top: 95px;
-  }
-}
-
-/* ==============================
-   CLIP-PATHS EXACTES
-=============================== */
-
-.hero-left-clip {
-  clip-path: polygon(0 0, 0 100%, 100% 100%, 78% 0);
-}
-
-.hero-right-clip {
-  clip-path: polygon(0 0, 20% 100%, 100% 100%, 100% 0);
-}
-
-/* ==============================
-   TEXTE DU HERO
-=============================== */
-
+/* TITRES */
 .hero-container h1 {
   font-weight: 800;
   letter-spacing: -2px;
@@ -49,30 +21,65 @@
 
 .hero-container h4 {
   color: #bfa14a;
+  text-transform: uppercase;
   letter-spacing: 3px;
 }
 
+/* PARAGRAPHES */
 .hero-container p {
   color: #444;
   line-height: 1.7;
   font-size: 0.95rem;
+  max-width: 90%;
 }
 
-/* ==============================
-   BOUTONS
-=============================== */
-
-.hero-container button {
-  transition: 0.3s ease;
+/* BOUTONS HERO */
+.hero-container .btn-left,
+.hero-container .btn-right {
+  transition: all 0.3s ease;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-weight: 600;
 }
 
-.hero-container button:hover {
-  transform: scale(1.1);
+.hero-container .btn-left {
+  background: linear-gradient(to right, #d1d1d1, #bfa14a);
+  color: #000;
 }
 
-/* ==============================
-   IMAGES
-=============================== */
+.hero-container .btn-right {
+  background: linear-gradient(to right, #bfa14a, #2a2a2a);
+  color: #fff;
+}
+
+.hero-container .btn-left:hover,
+.hero-container .btn-right:hover {
+  transform: scale(1.05);
+}
+
+/* =============================== */
+/*  CLIP-PATHS EXACTES BASE DESIGN */
+/* =============================== */
+@layer utilities {
+  .hero-left-clip {
+    clip-path: polygon(0 0, 0 100%, 100% 100%, 78% 0);
+  }
+
+  .hero-right-clip {
+    clip-path: polygon(0 0, 20% 100%, 100% 100%, 100% 0);
+  }
+}
+
+/* =============================== */
+/*   STYLE GLOBAL SECTION + IMAGES */
+/* =============================== */
+section {
+  font-family: 'Poppins', sans-serif;
+}
+
+h1, h2, h3 {
+  letter-spacing: 1px;
+}
 
 img {
   transition: transform 0.4s ease;
@@ -80,16 +87,4 @@ img {
 
 img:hover {
   transform: scale(1.02);
-}
-
-/* ==============================
-   AUCUN DÉBORDEMENT VISUEL
-=============================== */
-
-.hero-container > div {
-  overflow: hidden;
-}
-
-* {
-  box-sizing: border-box;
 }
