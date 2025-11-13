@@ -1,1 +1,24 @@
 @import "tailwindcss";
+
+@layer utilities {
+  .hero-left-clip {
+    clip-path: polygon(0 0, 0 100%, 100% 100%, 75% 0);
+  }
+  .hero-right-clip {
+    clip-path: polygon(0 0, 20% 100%, 100% 100%, 100% 0);
+  }
+}
+html {
+  zoom: 0.80; /* équivaut à contrer un DPI de 125%-150% */
+}
+
+@media (min-width: 1600px) {
+  html {
+    zoom: 1; /* Retina, 4K */
+  }
+}
+@media (max-width: 768px) {
+  html {
+    zoom: 1; /* Mobile */
+  }
+}
