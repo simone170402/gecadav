@@ -45,7 +45,7 @@ export class Header implements AfterViewInit {
   // 🔹 Applique l'effet de scroll sur le header (sans changer la hauteur du contenu)
   @HostListener('window:scroll', [])
   onScroll() {
-    this.isScrolled = window.scrollY > 10;
+    this.isScrolled = window.scrollY > 50;
     // 👉 on ne touche pas à la hauteur du body ici
   }
 
