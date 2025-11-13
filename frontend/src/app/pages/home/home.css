@@ -71,3 +71,13 @@ img {
 img:hover {
   transform: scale(1.02);
 }
+
+@layer utilities {
+  .hero-left-clip {
+    clip-path: polygon(0 0, 0 100%, 100% 100%, 78% 0);
+  }
+
+  .hero-right-clip {
+    clip-path: polygon(0 0, 20% 100%, 100% 100%, 100% 0);
+  }
+}
