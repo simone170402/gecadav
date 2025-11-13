@@ -1,5 +1,5 @@
 /* ================================
-   ⚜️ HEADER GLOBAL (COMPLET)
+   ⚜️ HEADER GLOBAL (CORRIGÉ)
 ================================ */
 
 /* Animation du menu mobile */
@@ -17,34 +17,31 @@ header, header img {
   transition: all 0.4s ease-in-out;
 }
 
-/* Header fixé et largeur réelle de l’écran */
+/* Header fixé */
 header {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw !important;
+  width: 100%; /* ✔ plus 100vw ! */
   z-index: 999;
 }
 
-/* Ajustements mobile */
+/* Mobile */
 @media (max-width: 768px) {
   header img { height: 2.5rem; }
   header span { font-size: 1rem; }
 }
 
-/* Correction structure Angular : éviter les marges parasites */
-html, body, app-root, main, router-outlet, app-home {
+/* -------------------------------
+   ⚠️ FIX overflow horizontal
+-------------------------------- */
+html, body {
   margin: 0 !important;
   padding: 0 !important;
-  width: 100vw !important;
-  max-width: 100vw !important;
   overflow-x: hidden !important;
 }
 
-/* Supprimer padding-top imposé par Angular */
+/* Désactive padding-top automatique */
 body {
   padding-top: 0 !important;
 }
-/* ================================
-   ⚜️ HEADER - MENU MOBILE
-================================ */ 
