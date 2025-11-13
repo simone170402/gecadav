@@ -32,16 +32,6 @@ header {
   header span { font-size: 1rem; }
 }
 
-/* -------------------------------
-   ⚠️ FIX overflow horizontal
--------------------------------- */
-html, body {
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow-x: hidden !important;
-}
 
-/* Désactive padding-top automatique */
-body {
-  padding-top: 0 !important;
-}
+
+
