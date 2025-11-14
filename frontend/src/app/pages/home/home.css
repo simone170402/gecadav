@@ -7,13 +7,14 @@
   position: relative;
   width: 100% !important;
   max-width: 100% !important;
-  height: 100svh !important;
-  max-height: 100svh !important;
+  height: 100vh !important;
+  max-height: 100vh !important;
   overflow: hidden;
   overflow-x: visible !important;
   font-family: 'Poppins', sans-serif;
   margin: 0;
   padding-top: 0 !important;
+  padding-bottom: 0 !important;
 }
 
 /* TITRES */
@@ -39,10 +40,6 @@
 
 .hero-container {
   padding-top: 130px;
-}
-
-.hero-container > * {
-  overflow: hidden;
 }
 
 
