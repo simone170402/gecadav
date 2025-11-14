@@ -1,5 +1,5 @@
 /* ================================
-   ⚜️ HEADER GLOBAL (COMPLET)
+   ⚜️ HEADER GLOBAL (CORRIGÉ)
 ================================ */
 
 /* Animation du menu mobile */
@@ -22,25 +22,26 @@ header {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;   /* ✔️ AU LIEU DE 100vw */
+  width: 100%; /* ✔ plus 100vw ! */
   z-index: 999;
 }
 
-/* Ajustements mobile */
+/* Mobile */
 @media (max-width: 768px) {
   header img { height: 2.5rem; }
   header span { font-size: 1rem; }
 }
 
-/* Correction structure Angular */
-html, body, app-root, main, router-outlet, app-home {
+/* -------------------------------
+   ⚠️ FIX overflow horizontal
+-------------------------------- */
+html, body {
   margin: 0 !important;
   padding: 0 !important;
-  width: 100%;       /* ✔️ */
-  max-width: 100%;   /* ✔️ */
   overflow-x: hidden !important;
 }
 
+/* Désactive padding-top automatique */
 body {
   padding-top: 0 !important;
 }
