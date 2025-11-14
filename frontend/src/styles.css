@@ -26,3 +26,26 @@ html, body {
     zoom: 0.80;  
   }
 }
+
+/* Scrollbar transparente + fine */
+::-webkit-scrollbar {
+  width: 6px;              /* Épaisseur */
+  background: transparent; /* Fond transparent */
+}
+
+/* Zone derrière la barre */
+::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+/* La barre elle-même (thumb) */
+::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.3);  /* Gris semi-transparent */
+  border-radius: 10px;
+}
+
+/* Au survol */
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,0,0,0.5);
+}
+
