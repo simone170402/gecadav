@@ -23,14 +23,26 @@ html, body {
 
 @media (min-resolution: 1.25dppx) {
   body {
+    zoom: 0.75;  
+  }
+}
+
+@media (min-resolution: 2dppx) {
+  body {
+    zoom: 0.65;  
+  }
+}
+
+@media (min-resolution: 1.5dppx) and (max-resolution: 1.99dppx) {
+  body {
     zoom: 0.80;  
   }
 }
 
 /* Scrollbar transparente + fine */
 ::-webkit-scrollbar {
-  width: 6px;              /* Épaisseur */
-  background: transparent; /* Fond transparent */
+  width: 3px;              /* Épaisseur */
+  background: transparent !important; /* Fond transparent */
 }
 
 /* Zone derrière la barre */
