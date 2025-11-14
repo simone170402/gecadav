@@ -7,12 +7,21 @@
   position: relative;
   width: 100% !important;
   max-width: 100% !important;
-  height: 100% !important;
+  height: 100vh !important;
   max-height: 100% !important;
   overflow: hidden;
   font-family: 'Poppins', sans-serif;
   margin: 0;
   padding: 0;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 4;
+  height: 100%;      /* prend toute la hauteur */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;   /* centrer verticalement */
 }
 
 /* TITRES */
