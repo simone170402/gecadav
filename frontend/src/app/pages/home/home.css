@@ -11,6 +11,10 @@
   font-family: 'Poppins', sans-serif;
 }
 
+.section-after-hero {
+  margin-top: 8rem; /* Ajuste à 7rem, 9rem selon ton header */
+}
+
 /* TITRES */
 .hero-container h1 {
   font-weight: 800;
