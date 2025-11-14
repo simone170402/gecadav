@@ -21,9 +21,8 @@ html, body {
   box-sizing: border-box;
 }
 
-/*@media (min-resolution: 1.25dppx) {
+@media (min-resolution: 1.25dppx) {
   body {
     zoom: 0.80;  
   }
 }
-*/
