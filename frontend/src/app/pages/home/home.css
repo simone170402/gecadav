@@ -53,20 +53,13 @@
   }
 }
 
-@media (min-width: 1400px) {
-  .hero-container {
-    min-height: 100vh;
-    height: auto;
-  }
-}
-
-
 /* ===========================================
    CLIP-PATH EXACT (TON DESIGN)
 =========================================== */
 
+
 .hero-left-clip {
-  clip-path: polygon(0 0, 0 100%, 100% 100%, 78% 0);
+  clip-path: polygon(0 0, 0 100%, 95% 100%, 70% 0);
 }
 
 .hero-right-clip {
