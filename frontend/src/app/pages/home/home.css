@@ -1,42 +1,38 @@
 /* ===========================================
-   ⚜️ HERO SECTION — VERSION OFFICIELLE COMPLÈTE
-   Identique à TON DESIGN mais responsive
+   HERO BASIC SETTINGS
 =========================================== */
 
 .hero-container {
   position: relative;
-  width: 100% !important;
-  max-width: 100% !important;
-  height: 100% !important;
+  width: 100%;
   font-family: 'Poppins', sans-serif;
 }
 
-/* TITRES */
+/* TITRE */
 .hero-container h1 {
   font-weight: 800;
   letter-spacing: -2px;
   text-transform: uppercase;
 }
 
+/* SOUS-TITRE */
 .hero-container h4 {
   color: #bfa14a;
   text-transform: uppercase;
   letter-spacing: 3px;
 }
 
-/* PARAGRAPHES */
+/* PARAGRAPHE */
 .hero-container p {
   color: #444;
   line-height: 1.7;
-  font-size: 0.95rem;
   max-width: 90%;
 }
 
-
+/* TOP SPACING */
 .hero-container {
   padding-top: 130px;
 }
-
 
 @media (max-width: 1024px) {
   .hero-container {
@@ -50,47 +46,67 @@
   }
 }
 
+/* ===========================================
+   CLIP-PATH EXACT (TON DESIGN)
+=========================================== */
 
-/* BOUTONS HERO */
-.hero-container .btn-left,
-.hero-container .btn-right {
-  transition: all 0.3s ease;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  font-weight: 600;
+.hero-left-clip {
+  clip-path: polygon(0 0, 0 100%, 100% 100%, 78% 0);
 }
 
-.hero-container .btn-left {
-  background: linear-gradient(to right, #d1d1d1, #bfa14a);
-  color: #000;
+.hero-right-clip {
+  clip-path: polygon(0 0, 20% 100%, 100% 100%, 100% 0);
 }
 
-.hero-container .btn-right {
-  background: linear-gradient(to right, #bfa14a, #2a2a2a);
-  color: #fff;
-}
+/* ===========================================
+   RESPONSIVE FIX (TAILLE EXACTE RESPECTÉE)
+=========================================== */
 
-.hero-container .btn-left:hover,
-.hero-container .btn-right:hover {
-  transform: scale(1.05);
-}
+@media (max-width: 1023px) {
 
-/* =============================== */
-/*  CLIP-PATHS EXACTES BASE DESIGN */
-/* =============================== */
-@layer utilities {
-  .hero-left-clip {
-    clip-path: polygon(0 0, 0 100%, 100% 100%, 78% 0);
-  }
-
+  /* Supprime les clips pour éviter les bugs */
+  .hero-left-clip,
   .hero-right-clip {
-    clip-path: polygon(0 0, 20% 100%, 100% 100%, 100% 0);
+    clip-path: none !important;
+    width: 100% !important;
+    left: 0 !important;
+  }
+
+  /* Cache la diagonale dorée qui se déforme */
+  .hero-container > div[style*="gradient"],
+  .hero-container > div[class*="skew"] {
+    display: none !important;
+  }
+
+  /* L’image devient un fond */
+  .hero-container > div[style*="background-image"] {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    opacity: 0.18 !important;
+    background-size: cover !important;
+  }
+
+  /* Le texte est recentré et lisible */
+  .hero-container > div.relative {
+    position: relative !important;
+    z-index: 10 !important;
+    width: 100% !important;
+    padding: 4rem 1.5rem !important;
+  }
+
+  /* Le titre devient responsive */
+  .hero-container h1 {
+    font-size: 16vw !important;
   }
 }
 
-/* =============================== */
-/*   STYLE GLOBAL SECTION + IMAGES */
-/* =============================== */
+
+/* ===========================================
+   GLOBAL STYLES
+=========================================== */
+
 section {
   font-family: 'Poppins', sans-serif;
 }

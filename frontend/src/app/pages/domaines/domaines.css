@@ -1,34 +1,33 @@
-.domains-section {
-  background-color: #ffffff;
-  padding-top: 8rem;
-  padding-bottom: 5rem;
-}
+/* ============================= */
+/*       AREAS OF PRACTICE       */
+/* ============================= */
 
-.domains-section h2 {
-  color: #bfa14a;
-  font-weight: 700;
-  text-transform: uppercase;
-  text-align: center;
-  margin-bottom: 3rem;
-}
-
+/* Animation lors du hover */
 .domain-card {
-  background-color: #f9f9f9;
-  border-top: 4px solid #bfa14a;
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
+  transition: all 0.35s ease;
 }
 
 .domain-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+  transform: translateY(-6px);
 }
 
+/* Image arrondie et stable */
 .domain-card img {
-  height: 160px;
-  object-fit: cover;
-  border-radius: 0.5rem;
-  margin-bottom: 1rem;
+  transition: all 0.35s ease;
+}
+
+.domain-card:hover img {
+  filter: brightness(1.03);
+}
+
+/* Correction responsive padding */
+@media (max-width: 768px) {
+  .domain-card img {
+    height: 180px !important;
+  }
+}
+
+/* Section title spacing */
+.section-title {
+  letter-spacing: 1px;
 }

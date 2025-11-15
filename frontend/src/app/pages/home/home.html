@@ -1,144 +1,216 @@
+<!-- WRAPPER ANTI-DEFORMATION -->
+<div class="hero-global-wrapper w-full relative">
+  <div class="w-full max-w-none relative">
 
-<!-- ===== SECTION HERO ===== -->
-<section class="hero-container relative sm: min-h-svh md:min-h-svh lg min-h-svh font-['Poppins']">
+    <!-- ===== SECTION HERO ===== -->
+    <section class="hero-container relative min-h-screen font-['Poppins'] overflow-hidden">
 
-  <!-- Fond blanc gauche -->
-  <div class="absolute inset-y-0 left-0 w-[52%] md:w-[50%] bg-white hero-left-clip z-[2]"></div>
+      <!-- Fond blanc gauche (DESKTOP) -->
+      <div class="hidden lg:block absolute inset-y-0 left-0 
+                  w-[52%] md:w-[50%] bg-white hero-left-clip z-[2]"></div>
 
-  <!-- Bande dorée diagonale -->
-  <div
-    class="absolute inset-y-0 left-[40%] sm:left-[42%] md:left-[43%] w-[40px] sm:w-[50px]
-           bg-gradient-to-b from-[#bfa14a] to-[#2a2a2a] transform skew-x-[16.5deg] origin-right z-[3]">
+      <!-- Bande dorée diagonale (DESKTOP) -->
+      <div
+        class="hidden lg:block absolute inset-y-0 left-[40%] sm:left-[42%] md:left-[43%] 
+               w-[40px] sm:w-[50px]
+               bg-gradient-to-b from-[#bfa14a] to-[#2a2a2a] 
+               transform skew-x-[16deg] origin-right z-[3]">
+      </div>
+
+      <!-- Image droite (DESKTOP) -->
+      <div
+        class="hidden lg:block absolute inset-y-0 right-0 
+               w-[70%] sm:w-[65%] md:w-[63%] 
+               bg-cover bg-center hero-right-clip z-[1]"
+        style="background-image: url('/images/1.png')">
+      </div>
+      
+      <!-- Mobile image -->
+      <div class="lg:hidden absolute inset-0 bg-cover bg-center opacity-20"
+           style="background-image: url('/images/1.png')"></div>
+
+      <!-- Contenu texte -->
+      <div class="relative z-[4] w-full md:w-[42%] 
+                  px-6 sm:px-10 md:px-14 lg:px-16 
+                  pt-28 md:pt-32 pb-10 space-y-6">
+
+        <h4 class="text-[#bfa14a] font-semibold tracking-widest uppercase text-sm sm:text-base">
+          NOVALEX–CAMEROUN.COM
+        </h4>
+
+        <p class="text-gray-700 leading-relaxed text-sm sm:text-base pr-2">
+          Tsapy & Partners is one of Cameroon’s established law firms, offering 
+          strong litigation, commercial, and corporate legal services.
+        </p>
+
+        <div class="flex items-center space-x-4">
+          <button class="text-2xl">←</button>
+          <button class="text-2xl">→</button>
+          <div class="h-[6px] w-[120px] sm:w-[120px] bg-gradient-to-r from-gray-400 to-black"></div>
+        </div>
+
+        <h1
+          class="text-[14vw] sm:text-[10vw] md:text-[7rem] lg:text-[9rem] 
+                 font-extrabold text-[#bfa14a] uppercase leading-none">
+          Lawyer
+        </h1>
+
+      </div>
+
+    </section>
+
   </div>
+</div>
 
-  <!-- Image droite -->
-  <div
-    class="absolute inset-y-0 right-0 w-[70%] sm:w-[65%] md:w-[63%] bg-cover bg-center hero-right-clip z-[1]"
-    style="background-image: url('/images/1.png')">
-  </div>
+<!-- ========================= -->
+<!--         ABOUT US          -->
+<!-- ========================= -->
+<section class="relative bg-white py-24 px-6 sm:px-12 grid md:grid-cols-2 gap-10 items-center">
 
-  <!-- Contenu texte -->
-  <div class="relative z-[4] w-full md:w-[42%] px-6 sm:px-10 md:px-14 lg:px-16 pt-28 md:pt-32 pb-10 space-y-6">
-  
-    <h4 class="text-[#bfa14a] font-semibold tracking-widest uppercase text-sm sm:text-base">
-      www.Novalex-Cameroun.com
-    </h4>
-
-    <p class="text-gray-700 leading-relaxed text-sm sm:text-base pr-2">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-      et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-      aliquip ex ea commodo consequat.
-    </p>
-
-    <div class="flex items-center space-x-4">
-      <button class="text-xl">←</button>
-      <button class="text-xl">→</button>
-      <div class="h-[2px] w-[90px] sm:w-[120px] bg-gradient-to-r from-gray-400 to-black"></div>
-    </div>
-
-    <h1
-      class="text-[14vw] sm:text-[10vw] md:text-[7rem] lg:text-[9rem] font-extrabold text-[#bfa14a] uppercase leading-none">
-      Lawyer
-    </h1>
-
-  </div>
-
-</section>
-
-<!-- ===== ABOUT ===== -->
-<section class="relative bg-white py-30 px-6 sm:px-12 grid md:grid-cols-2 gap-10 items-center">
-  <!-- ✅ Barre horizontale décorative -->
-  <div class="absolute top-50 left-0 h-[30px] w-[30%] bg-gradient-to-r from-[#f3c847] via-[#d8be72] to-[#2a2a2a] rounded-r-md"></div>
   <div>
-    <h2 class="text-2xl font-semibold text-[#bfa14a] mb-4 border-l-4 border-[#bfa14a] pl-4">About Us</h2>
-    <p class="text-gray-700 mb-4 text-sm sm:text-base">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+    <h2 class="text-3xl font-semibold text-[#bfa14a] mb-4 border-l-4 border-[#bfa14a] pl-4">
+      About Us
+    </h2>
+
+    <p class="text-gray-700 mb-6">
+      Founded in 1993, Tsapy & Partners has grown into one of Cameroon’s most reputable law firms,
+      providing high-level legal services to individuals, corporations, and international partners.
     </p>
-    <p class="text-gray-700 mb-6 text-sm sm:text-base">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+
+    <p class="text-gray-700 mb-6">
+      With a strong team of seasoned attorneys, the firm has handled over 4000 cases, combining 
+      expertise, integrity, and professionalism in every legal matter.
     </p>
-    <h3 class="text-3xl font-semibold text-[#bfa14a] uppercase">Introduce Our Lawyer</h3>
+
+    <h3 class="text-2xl font-semibold text-[#bfa14a] uppercase">
+      Excellence In Legal Practice
+    </h3>
   </div>
 
   <div class="relative">
-    <img src="/images/CH__3241.jpg" class="rounded-lg shadow-lg w-full" alt="Lawyers" />
-    <div class="absolute bottom-2 right-4 bg-gradient-to-r from-[#bfa14a] to-[#2a2a2a] text-white px-6 py-3 rounded-md">
-      <p class="text-3xl font-bold">95.5%</p>
-      <p class="text-sm">Our Project</p>
+    <img src="/images/CH__3241.jpg" class="rounded-lg shadow-lg w-full" alt="Lawyer" />
+    <div class="absolute bottom-2 right-4 bg-gradient-to-r from-[#bfa14a] to-[#2a2a2a] text-white px-6 py-3 rounded-md shadow-lg">
+      <p class="text-3xl font-bold">30+</p>
+      <p class="text-sm">Years of Experience</p>
     </div>
   </div>
+
 </section>
 
-<!-- ===== VISION & MISSION ===== -->
-<section class="relative py-20 px-6 sm:px-12 bg-gray-50 grid md:grid-cols-2 gap-10 items-center">
+
+
+<!-- ========================= -->
+<!--     VISION & MISSION      -->
+<!-- ========================= -->
+<section class="py-24 px-6 sm:px-12 bg-gray-50 grid md:grid-cols-2 gap-10 items-center">
+
+  <img src="/images/vision.png" class="rounded-lg shadow-lg w-full" alt="Vision" />
+
   <div>
-    <img src="/images/vision.png" class="rounded-lg shadow-lg w-full" alt="Vision" />
-  </div>
-  <div>
-    <h2 class="text-[#bfa14a] text-3xl font-semibold mb-4">Vision and Mission</h2>
+    <h2 class="text-3xl font-semibold text-[#bfa14a] mb-4">Vision & Mission</h2>
+
     <p class="text-gray-700 mb-6">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+      We aim to improve access to justice in Cameroon and across Africa by providing 
+      dependable, innovative, and ethical legal representation.
     </p>
+
     <div class="grid md:grid-cols-2 gap-6">
+
       <div class="bg-gradient-to-r from-[#bfa14a] to-[#2a2a2a] text-white p-6 rounded-lg">
         <h3 class="font-semibold mb-2">Our Vision</h3>
-        <p class="text-sm leading-relaxed">Lorem ipsum dolor sit amet consectetur.</p>
+        <p class="text-sm">To be a leading African law firm recognized for excellence and integrity.</p>
       </div>
+
       <div class="bg-gradient-to-r from-[#bfa14a] to-[#2a2a2a] text-white p-6 rounded-lg">
         <h3 class="font-semibold mb-2">Our Mission</h3>
-        <p class="text-sm leading-relaxed">Exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        <p class="text-sm">To deliver high-impact legal services that protect, defend, and empower clients.</p>
       </div>
+
     </div>
   </div>
+
 </section>
 
-<!-- ===== TEAM ===== -->
-<section class="relative py-20 px-6 sm:px-12 text-center bg-white">
-  <h2 class="text-3xl font-semibold text-[#bfa14a] mb-10">Meet Our Best Team</h2>
+
+
+<!-- ========================= -->
+<!--         OUR TEAM          -->
+<!-- ========================= -->
+<section class="py-24 px-6 sm:px-12 bg-white text-center">
+
+  <h2 class="text-3xl font-semibold text-[#bfa14a] mb-10">Meet Our Team</h2>
+
   <div class="grid md:grid-cols-2 gap-12">
     <div>
       <img src="/images/CH__3174.jpg" alt="Lawyer" class="rounded-lg shadow-lg mb-4" />
-      <p class="bg-gradient-to-r from-[#bfa14a] to-[#2a2a2a] text-white py-2 font-semibold uppercase">Joseph Lavoisier Tsapy</p>
+      <p class="bg-gradient-to-r from-[#bfa14a] to-[#2a2a2a] text-white py-2 font-semibold uppercase">
+        Joseph Lavoisier Tsapy
+      </p>
     </div>
+
     <div>
       <img src="/images/CH__3171.jpg" alt="Lawyer" class="rounded-lg shadow-lg mb-4" />
-      <p class="bg-gradient-to-r from-[#bfa14a] to-[#2a2a2a] text-white py-2 font-semibold uppercase">Junior Lavoisier Tsapy</p>
+      <p class="bg-gradient-to-r from-[#bfa14a] to-[#2a2a2a] text-white py-2 font-semibold uppercase">
+        Junior Lavoisier Tsapy
+      </p>
     </div>
   </div>
+
 </section>
 
-<!-- ===== SERVICES ===== -->
-<section class="relative py-20 px-6 sm:px-12 bg-gray-50 grid md:grid-cols-2 gap-10 items-center">
+
+
+<!-- ========================= -->
+<!--        SERVICES           -->
+<!-- ========================= -->
+<section class="py-24 px-6 sm:px-12 bg-gray-50 grid md:grid-cols-2 gap-10 items-center">
+
   <div>
-    <h2 class="text-3xl font-semibold text-[#bfa14a] mb-6">Our Best Services</h2>
+    <h2 class="text-3xl font-semibold text-[#bfa14a] mb-6">Our Services</h2>
+
     <div class="space-y-6">
       <div>
-        <div class="bg-gradient-to-r from-[#bfa14a] to-[#2a2a2a] text-white inline-block px-4 py-2 rounded-full font-bold mb-2">01</div>
-        <h3 class="text-xl font-semibold">Legal Consultation</h3>
-        <p class="text-gray-600">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+        <div class="bg-gradient-to-r from-[#bfa14a] to-[#2a2a2a] text-white inline-block px-4 py-2 rounded-full font-bold mb-2">
+          01
+        </div>
+        <h3 class="text-xl font-semibold">Litigation & Dispute Resolution</h3>
+        <p class="text-gray-600">Representation in civil, criminal, and commercial cases.</p>
       </div>
+
       <div>
-        <div class="bg-gradient-to-r from-[#bfa14a] to-[#2a2a2a] text-white inline-block px-4 py-2 rounded-full font-bold mb-2">02</div>
-        <h3 class="text-xl font-semibold">Document Drafting</h3>
-        <p class="text-gray-600">Exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        <div class="bg-gradient-to-r from-[#bfa14a] to-[#2a2a2a] text-white inline-block px-4 py-2 rounded-full font-bold mb-2">
+          02
+        </div>
+        <h3 class="text-xl font-semibold">Corporate & Commercial Law</h3>
+        <p class="text-gray-600">Company formation, contract drafting, business structuring.</p>
       </div>
     </div>
   </div>
+
   <div class="space-y-6">
-    <img src="/images/service1.jpg" alt="Service" class="rounded-lg shadow-lg" />
-    <img src="/images/service2.jpg" alt="Service" class="rounded-lg shadow-lg" />
+    <img src="/images/service1.jpg" class="rounded-lg shadow-lg" alt="Service" />
+    <img src="/images/service2.jpg" class="rounded-lg shadow-lg" alt="Service" />
   </div>
+
 </section>
-<!-- ===== CONTACT ===== -->
-<section class="relative py-20 px-6 sm:px-12 bg-white text-center">
-  <h2 class="text-3xl font-semibold text-[#bfa14a] mb-6">Get in Touch</h2>
-  <p class="text-gray-700 mb-8">
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-    Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+
+
+
+<!-- ========================= -->
+<!--         CONTACT           -->
+<!-- ========================= -->
+<section class="py-24 px-6 sm:px-12 bg-white text-center">
+
+  <h2 class="text-3xl font-semibold text-[#bfa14a] mb-6">Get In Touch</h2>
+
+  <p class="text-gray-700 max-w-xl mx-auto mb-8">
+    For consultations, appointments, or inquiries, reach out to our team anytime.
+    We are committed to offering professional and reliable legal support.
   </p>
-  <button
-    class="bg-gradient-to-r from-[#bfa14a] to-[#2a2a2a] text-white px-6 py-3 rounded-md hover:scale-105 transition text-sm font-semibold"
-  >
+
+  <button class="bg-gradient-to-r from-[#bfa14a] to-[#2a2a2a]
+                 text-white px-6 py-3 rounded-md hover:scale-105 transition font-semibold">
     Contact Us
   </button>
+
 </section>

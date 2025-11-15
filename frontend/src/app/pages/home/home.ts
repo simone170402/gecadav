@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, HostListener } from '@angular/core';
+import { Component, AfterViewInit, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-home',
@@ -7,18 +7,20 @@ import { Component, AfterViewInit, HostListener } from '@angular/core';
   styleUrl: './home.css'
 })
 export class Home implements AfterViewInit {
-  @HostListener('window:scroll', [])
-  onScroll() {
-    const elements = document.querySelectorAll('.scroll-reveal');
-    elements.forEach((el: any) => {
-      const rect = el.getBoundingClientRect();
-      if (rect.top < window.innerHeight - 100) {
-        el.classList.add('show');
-      }
-    });
-  }
+
+  constructor(private host: ElementRef) {}
 
   ngAfterViewInit() {
-    this.onScroll();
+    const elements = this.host.nativeElement.querySelectorAll('.scroll-reveal');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+        }
+      });
+    }, { threshold: 0.2 });
+
+    elements.forEach((el: HTMLElement) => observer.observe(el));
   }
 }
