@@ -6,6 +6,13 @@
   position: relative;
   width: 100%;
   font-family: 'Poppins', sans-serif;
+  height: 100svh; /* unité MODERNE, fiable, cross-browser */
+  min-height: 100svh;
+}
+
+.hero-bg,
+.hero-right-clip {
+  height: 100%;
 }
 
 /* TITRE */
@@ -45,6 +52,14 @@
     padding-top: 90px;
   }
 }
+
+@media (min-width: 1400px) {
+  .hero-container {
+    min-height: 100vh;
+    height: auto;
+  }
+}
+
 
 /* ===========================================
    CLIP-PATH EXACT (TON DESIGN)
