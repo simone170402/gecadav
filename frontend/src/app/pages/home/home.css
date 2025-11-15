@@ -6,13 +6,6 @@
   position: relative;
   width: 100%;
   font-family: 'Poppins', sans-serif;
-  height: 100svh; /* unité MODERNE, fiable, cross-browser */
-  min-height: 100svh;
-}
-
-.hero-bg,
-.hero-right-clip {
-  height: 100%;
 }
 
 /* TITRE */
@@ -57,10 +50,10 @@
    CLIP-PATH EXACT (TON DESIGN)
 =========================================== */
 
-
 .hero-left-clip {
   clip-path: polygon(0 0, 0 100%, 95% 100%, 70% 0);
 }
+
 
 .hero-right-clip {
   clip-path: polygon(0 0, 20% 100%, 100% 100%, 100% 0);
