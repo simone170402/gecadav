@@ -4,7 +4,6 @@
 
 .hero-container {
   position: relative;
-  width: 100%;
   font-family: 'Poppins', sans-serif;
 }
 
@@ -51,9 +50,8 @@
 =========================================== */
 
 .hero-left-clip {
-  clip-path: polygon(0 0, 0 100%, 95% 100%, 70% 0);
+  clip-path: polygon(0 0, 0 100%, 100% 100%, 78% 0);
 }
-
 
 .hero-right-clip {
   clip-path: polygon(0 0, 20% 100%, 100% 100%, 100% 0);
@@ -83,8 +81,6 @@
   .hero-container > div[style*="background-image"] {
     position: absolute !important;
     inset: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
     opacity: 0.18 !important;
     background-size: cover !important;
   }
@@ -93,7 +89,6 @@
   .hero-container > div.relative {
     position: relative !important;
     z-index: 10 !important;
-    width: 100% !important;
     padding: 4rem 1.5rem !important;
   }
 
@@ -102,7 +97,6 @@
     font-size: 16vw !important;
   }
 }
-
 
 /* ===========================================
    GLOBAL STYLES
