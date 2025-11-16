@@ -11,10 +11,7 @@ export class Home implements AfterViewInit {
   constructor(private el: ElementRef) {}
 
   ngAfterViewInit() {
-    // 1. Ajuster dynamiquement la hauteur du HERO
     this.adjustHeroHeight();
-
-    // 2. Activer les animations scroll reveal
     this.initScrollReveal();
   }
 
@@ -23,16 +20,21 @@ export class Home implements AfterViewInit {
     this.adjustHeroHeight();
   }
 
-  /** Ajuste dynamiquement la hauteur du Hero */
+  private getHeaderHeight(): number {
+    const header = document.querySelector('header') as HTMLElement;
+    return header ? header.offsetHeight : 0;
+  }
+
   private adjustHeroHeight() {
     const hero = this.el.nativeElement.querySelector('.hero-container');
     if (hero) {
       const screenHeight = window.innerHeight;
-      hero.style.height = `${screenHeight}px`;
+      const headerHeight = this.getHeaderHeight();
+
+      hero.style.height = `${screenHeight - headerHeight}px`;
     }
   }
 
-  /** Initialise les animations scroll reveal */
   private initScrollReveal() {
     const elements = this.el.nativeElement.querySelectorAll('.scroll-reveal');
 
