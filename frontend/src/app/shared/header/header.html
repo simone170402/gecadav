@@ -78,26 +78,25 @@
 
   <!-- MENU MOBILE -->
   <div *ngIf="isMenuOpen" class="md:hidden bg-white shadow-md py-4 space-y-3 text-center animate-fadeIn">
-    <a routerLink="/" (click)="toggleMenu()" class="block hover:text-[#bfa14a]">Home</a>
-    <a routerLink="/apropos" (click)="toggleMenu()" class="block hover:text-[#bfa14a]">About Us</a>
-    <a routerLink="/vision" (click)="toggleMenu()" class="block hover:text-[#bfa14a]">Vision & Mission</a>
-    <a routerLink="/cabinet" (click)="toggleMenu()" class="block hover:text-[#bfa14a]">Our Firm</a>
-    <a routerLink="/avocats" (click)="toggleMenu()" class="block hover:text-[#bfa14a]">Our Team</a>
-    <a routerLink="/domaines" (click)="toggleMenu()" class="block hover:text-[#bfa14a]">Services</a>
-    <a routerLink="/contact" (click)="toggleMenu()" class="block hover:text-[#bfa14a]">Contact</a>
+    <a routerLink="/" (click)="toggleMenu()" class="block text-black hover:text-[#bfa14a]">Home</a>
+    <a routerLink="/apropos" (click)="toggleMenu()" class="block text-black hover:text-[#bfa14a]">About Us</a>
+    <a routerLink="/vision" (click)="toggleMenu()" class="block text-black hover:text-[#bfa14a]">Vision & Mission</a>
+    <a routerLink="/cabinet" (click)="toggleMenu()" class="block text-black hover:text-[#bfa14a]">Our Firm</a>
+    <a routerLink="/avocats" (click)="toggleMenu()" class="block text-black hover:text-[#bfa14a]">Our Team</a>
+    <a routerLink="/domaines" (click)="toggleMenu()" class="block text-black hover:text-[#bfa14a]">Services</a>
+    <a routerLink="/contact" (click)="toggleMenu()" class="block text-black hover:text-[#bfa14a]">Contact</a>
 
-    <a
-      routerLink="/admin"
+    <a routerLink="/admin"
       (click)="toggleMenu()"
-      class="block bg-gradient-to-r from-gray-300 to-[#bfa14a] text-black py-3 rounded-md w-1/2 mx-auto"
-      >Espace Pro</a
-    >
-    <a
-      routerLink="/login"
+      class="block bg-gradient-to-r from-gray-300 to-[#bfa14a] text-black py-3 rounded-md w-1/2 mx-auto">
+      Espace Pro
+    </a>
+
+    <a routerLink="/login"
       (click)="toggleMenu()"
-      class="block bg-gradient-to-r from-[#bfa14a] to-[#2a2a2a] text-white py-3 rounded-md w-1/2 mx-auto"
-      >Sign In</a
-    >
+      class="block bg-gradient-to-r from-[#bfa14a] to-[#2a2a2a] text-white py-3 rounded-md w-1/2 mx-auto">
+      Sign In
+    </a>
   </div>
 
 </header>
