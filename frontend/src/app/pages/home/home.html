@@ -40,25 +40,86 @@
           NOVALEX–CAMEROUN.COM
         </h4>
 
-        <p class="text-gray-700 leading-relaxed text-sm sm:text-base pr-2">
-          Tsapy & Partners is one of Cameroon’s established law firms, offering 
-          strong litigation, commercial, and corporate legal services.SSS
-          SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
-          SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
-          SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
-          SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
-          SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
-          SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
-          SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+        <!-- ZONE DES PARAGRAPHES -->
+        <div 
+          [@slideHorizontal]="direction"
+          class="relative min-h-[160px] overflow-hidden"
+        >
+          <!-- Paragraphe 1 -->
+          <div 
+            class="hero-paragraph"
+            *ngIf="currentSection === 1"
+            >
+            Tsapy & Partners is a full-service law firm ranked among Cameroon’s most trusted legal institutions. 
+            Our firm provides strategic, results-oriented counsel in corporate, commercial, and litigation matters.
+            With over 30 years of experience, we combine deep legal expertise with a strong understanding of the
+            local business environment.
+          </div>
 
-        </p>
+          <!-- Paragraphe 2 -->
+          <div 
+            class="hero-paragraph"
+            *ngIf="currentSection === 2"
+          >
+            Our attorneys assist national and international clients in complex civil and commercial disputes, 
+            contract structuring, regulatory compliance, arbitration, and high-stakes negotiations.  
+            We are known for our rigorous legal analysis, our discretion, and our ability to secure favorable outcomes.
+          </div>
 
-        <div class="flex items-center space-x-4">
-          <button class="text-2xl">←</button>
-          <button class="text-2xl">→</button>
-          <div class="h-[6px] w-[120px] sm:w-[120px] bg-gradient-to-r from-gray-400 to-black"></div>
+          <!-- Paragraphe 3 -->
+          <div 
+            class="hero-paragraph"
+            *ngIf="currentSection === 3"
+            >
+            Beyond litigation, Tsapy & Partners supports companies, institutions, and entrepreneurs in their daily 
+            legal operations—ensuring risk prevention, legal security, and sustainable growth.  
+            Our mission is to provide reliable, ethical, and excellence-driven legal support to every client.
+          </div>
+
         </div>
 
+        <!-- BOUTONS -->
+        <div class="flex items-center space-x-4 mt-4">
+          <!-- Bouton gauche -->
+          <button
+            class="nav-btn"
+            (click)="previousSection()"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24" stroke="white" class="w-4 h-4">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+
+          <!-- Bouton droit -->
+          <button
+            class="nav-btn rotate-180"
+            (click)="nextSection()"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24" stroke="white" class="w-4 h-4">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+
+          <div class="h-[6px] w-[120px] bg-gradient-to-r from-gray-400 to-black"></div>
+        </div>
+        <!-- MESSAGE INDICATEUR -->
+        <div class="scroll-hint flex items-center space-x-2 mt-2">
+          <span class="text-[#bfa14a] font-semibold text-sm tracking-wide">
+            Swipe or click to explore
+          </span>
+
+          <svg class="w-4 h-4 text-[#bfa14a] animate-bounce" 
+              fill="none" stroke="currentColor" stroke-width="2" 
+              viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" 
+                  d="M13 5l7 7-7 7" />
+          </svg>
+        </div>
+        
         <h1
           class="text-[14vw] sm:text-[10vw] md:text-[7rem] lg:text-[9rem] 
                  font-extrabold text-[#bfa14a] uppercase leading-none">
@@ -66,7 +127,6 @@
         </h1>
 
       </div>
-
     </section>
 
   </div>

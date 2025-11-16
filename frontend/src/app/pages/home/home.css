@@ -22,13 +22,6 @@
   letter-spacing: 3px;
 }
 
-/* PARAGRAPHE */
-.hero-container p {
-  color: #444;
-  line-height: 1.7;
-  max-width: 90%;
-}
-
 /* ===========================================
    CLIP-PATH EXACT (TON DESIGN)
 =========================================== */
@@ -41,37 +34,33 @@
   clip-path: polygon(0 0, 20% 100%, 100% 100%, 100% 0);
 }
 
+
 /* ===========================================
-   RESPONSIVE FIX (TAILLE EXACTE RESPECTÉE)
+   RESPONSIVE FIX
 =========================================== */
 
 @media (max-width: 1023px) {
 
-  /* Supprime les clips pour éviter les bugs */
   .hero-left-clip,
   .hero-right-clip {
     clip-path: none !important;
     width: 100% !important;
-    left: 0 !important;
   }
 
-  /* Cache la diagonale dorée qui se déforme */
   .hero-container > div[style*="gradient"],
   .hero-container > div[class*="skew"] {
     display: none !important;
   }
 
-  /* L’image devient un fond */
   .hero-container > div[style*="background-image"] {
     position: absolute !important;
     inset: 0 !important;
     width: 100% !important;
-    height: 100% !important;
+    height: 100vh !important;
     opacity: 1 !important;
     background-size: cover !important;
   }
 
-  /* Le texte est recentré et lisible */
   .hero-container > div.relative {
     position: relative !important;
     z-index: 10 !important;
@@ -79,12 +68,46 @@
     padding: 4rem 1.5rem !important;
   }
 
-  /* Le titre devient responsive */
   .hero-container h1 {
     font-size: 16vw !important;
   }
 }
 
+/* PARAGRAPHES SLIDER */
+.hero-paragraph {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #444;
+  max-width: 95%;
+  min-height: 160px;
+  text-align: justify;
+}
+
+.scroll-hint svg {
+  animation-duration: 1.3s;
+}
+
+.scroll-hint span {
+  opacity: 0.85;
+}
+
+/* BOUTONS SLIDER */
+.nav-btn {
+  width: 42px;
+  height: 42px;
+  background: linear-gradient(to right, #bfa14a, #2a2a2a);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .3s ease;
+  box-shadow: 0 3px 8px rgba(0,0,0,.25);
+}
+
+.nav-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 5px 12px rgba(0,0,0,.35);
+}
 
 /* ===========================================
    GLOBAL STYLES

@@ -1,17 +1,71 @@
 import { Component, AfterViewInit, ElementRef, HostListener } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { trigger, transition, style, animate, group, query } from '@angular/animations';
 
 @Component({
   selector: 'app-home',
   standalone: true,
+  imports: [CommonModule],
   templateUrl: './home.html',
-  styleUrl: './home.css'
+  styleUrl: './home.css',
+  animations: [
+
+    trigger('slideHorizontal', [
+
+      // 🔥 FORWARD (→) — paragraphe suivant
+      transition('forward => *', [
+
+        query(':enter', [
+          style({ opacity: 0, transform: 'translateX(80px)' })
+        ], { optional: true }),
+
+        group([
+          query(':leave', [
+            animate('350ms ease-in',
+              style({ opacity: 0, transform: 'translateX(-80px)' })
+            )
+          ], { optional: true }),
+
+          query(':enter', [
+            animate('350ms ease-out',
+              style({ opacity: 1, transform: 'translateX(0)' })
+            )
+          ], { optional: true })
+        ])
+      ]),
+
+      // 🔥 BACKWARD (←) — paragraphe précédent
+      transition('backward => *', [
+
+        query(':enter', [
+          style({ opacity: 0, transform: 'translateX(-80px)' })
+        ], { optional: true }),
+
+        group([
+          query(':leave', [
+            animate('350ms ease-in',
+              style({ opacity: 0, transform: 'translateX(80px)' })
+            )
+          ], { optional: true }),
+
+          query(':enter', [
+            animate('350ms ease-out',
+              style({ opacity: 1, transform: 'translateX(0)' })
+            )
+          ], { optional: true })
+        ])
+      ])
+    ])
+  ]
 })
 export class Home implements AfterViewInit {
+
+  currentSection = 1;
+  direction: 'forward' | 'backward' = 'forward';
 
   constructor(private el: ElementRef) {}
 
   ngAfterViewInit() {
-    // On laisse le temps au header de s'afficher (fonts, logo, etc.)
     setTimeout(() => {
       this.centerHeroText();
       this.initScrollReveal();
@@ -23,11 +77,24 @@ export class Home implements AfterViewInit {
     this.centerHeroText();
   }
 
-  /** ⭐ Centre le texte verticalement dans le Hero sans chevaucher le header */
+  nextSection() {
+    if (this.currentSection < 3) {
+      this.direction = 'forward';
+      this.currentSection++;
+    }
+  }
+
+  previousSection() {
+    if (this.currentSection > 1) {
+      this.direction = 'backward';
+      this.currentSection--;
+    }
+  }
+
   private centerHeroText() {
-    const hero = this.el.nativeElement.querySelector('.hero-container') as HTMLElement;
-    const text = this.el.nativeElement.querySelector('.hero-text') as HTMLElement;
-    const header = document.querySelector('header') as HTMLElement;
+    const hero = this.el.nativeElement.querySelector('.hero-container');
+    const text = this.el.nativeElement.querySelector('.hero-text');
+    const header = document.querySelector('header');
 
     if (!hero || !text || !header) return;
 
@@ -35,20 +102,14 @@ export class Home implements AfterViewInit {
     const heroHeight = hero.getBoundingClientRect().height;
     const textHeight = text.getBoundingClientRect().height;
 
-    // Calcul centrage vertical
     let topOffset = (heroHeight - textHeight) / 2;
+    const minOffset = headerHeight + 40;
 
-    // Sécurité : toujours sous le header
-    const minOffset = headerHeight + 40; 
-
-    if (topOffset < minOffset) {
-      topOffset = minOffset;
-    }
+    if (topOffset < minOffset) topOffset = minOffset;
 
     text.style.marginTop = `${topOffset}px`;
   }
 
-  /** ⭐ Animation au scroll */
   private initScrollReveal() {
     const elements = this.el.nativeElement.querySelectorAll('.scroll-reveal');
 
