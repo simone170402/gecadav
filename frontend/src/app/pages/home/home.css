@@ -29,23 +29,6 @@
   max-width: 90%;
 }
 
-/* TOP SPACING */
-.hero-container {
-  padding-top: 180px;
-}
-
-@media (max-width: 1024px) {
-  .hero-container {
-    padding-top: 180px;
-  }
-}
-
-@media (max-width: 768px) {
-  .hero-container {
-    padding-top: 180px;
-  }
-}
-
 /* ===========================================
    CLIP-PATH EXACT (TON DESIGN)
 =========================================== */
