@@ -7,8 +7,8 @@
   position: relative;
   width: 100%;
   font-family: 'Poppins', sans-serif;
-  height: 100dvh; /* remplace min-h-screen sans changer ton design */
-  min-height: 100dvh;
+  height: 100lvh; /* remplace min-h-screen sans changer ton design */
+  min-height: 100lvh;
 }
 
 /* TITRE */
