@@ -103,7 +103,7 @@ export class Home implements AfterViewInit {
     const textHeight = text.getBoundingClientRect().height;
 
     let topOffset = (heroHeight - textHeight) / 2;
-    const minOffset = headerHeight + 40;
+    const minOffset = headerHeight + 50;
 
     if (topOffset < minOffset) topOffset = minOffset;
 
