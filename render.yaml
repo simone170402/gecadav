@@ -3,7 +3,7 @@ services:
     name: cabinet-news-api
     runtime: docker
     repo: .
-    dockerfilePath: ./Dockerfile
+    dockerfilePath: ./backend/Dockerfile
     buildCommand: ""
     startCommand: ""
     plan: free
