@@ -99,6 +99,31 @@ footer {
   cursor: pointer;
 }
 
+.footer-column a {
+  color: #ddd;
+  text-decoration: none;
+}
+
+.footer-column a:hover {
+  color: #bfa14a;
+}
+
+.news-badge {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  margin-left: 6px;
+}
+
+.badge-cmr {
+  background: #007bff;
+}
+
+.badge-world {
+  background: #444;
+}
+
+
 /* Petite pastille dorée avant chaque ligne */
 .footer-column p::before {
   content: "";

@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: cabinet-news-api
+    runtime: docker
+    repo: .
+    dockerfilePath: ./Dockerfile
+    buildCommand: ""
+    startCommand: ""
+    plan: free
+    autoDeploy: true
+    envVars:
+      - key: PORT
+        value: "8080"

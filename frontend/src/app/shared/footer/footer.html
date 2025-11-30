@@ -42,17 +42,32 @@
 
     <div class="footer-column">
       <h3>Information</h3>
-      <p>About Us</p>
-      <p>Location</p>
-      <p>Privacy Policy</p>
-      <p>Customer</p>
-      <p>Client</p>
+      <p><a routerLink="apropos" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">About Us</a></p>
+      <p><a routerLink="vision" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Our Vision</a></p>
+      <p><a routerLink="cabinet" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Our Firm</a></p>
+      <p><a routerLink="avocats" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Our Team</a></p>
+      <p><a routerLink="domaines" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Services</a></p>
     </div>
 
     <div class="footer-column">
-      <h3>Latest News</h3>
-      <p>Latest News</p>
+      <h3>Latest Legal News</h3>
+
+      <div *ngIf="latestNews.length === 0">
+        <p>Loading news...</p>
+      </div>
+
+      <div *ngFor="let news of latestNews">
+        <p>
+          <a href="{{ news.url }}" target="_blank">
+            • {{ news.title }}
+          </a>
+          <span class="news-badge" [ngClass]="news.origin === 'Cameroon' ? 'badge-cmr' : 'badge-world'">
+            {{ news.origin }}
+          </span>
+        </p>
+      </div>
     </div>
+
 
     <div class="footer-column">
       <h3>Our Services</h3>
