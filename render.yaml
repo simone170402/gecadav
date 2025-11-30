@@ -2,10 +2,7 @@ services:
   - type: web
     name: cabinet-news-api
     runtime: docker
-    repo: .
-    dockerfilePath: ./backend/Dockerfile
-    buildCommand: ""
-    startCommand: ""
+    dockerfilePath: backend/Dockerfile
     plan: free
     autoDeploy: true
     envVars:
