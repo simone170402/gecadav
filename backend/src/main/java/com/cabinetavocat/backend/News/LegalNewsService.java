@@ -1,137 +1,184 @@
 package com.cabinetavocat.backend.News;
-
+import com.cabinetavocat.backend.News.NewsItem;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
+@Slf4j
 @Service
 public class LegalNewsService {
 
-    private List<NewsItem> cache = new ArrayList<>();
-    private Instant lastUpdate = Instant.EPOCH;
-    private static final Duration CACHE_DURATION = Duration.ofMinutes(30);
+    private List<NewsItem> cachedNews = new ArrayList<>();
 
-    public synchronized List<NewsItem> getNews() {
-        if (cache.isEmpty() || Duration.between(lastUpdate, Instant.now()).compareTo(CACHE_DURATION) > 0) {
-            refreshCache();
-        }
-        return cache;
-    }
-
-    @Scheduled(fixedRate = 30 * 60 * 1000) // toutes les 30 minutes
-    public void autoRefresh() {
-        refreshCache();
-    }
-
-    private synchronized void refreshCache() {
-        List<NewsItem> result = new ArrayList<>();
-
-        try { result.addAll(scrapeCameroonTribune()); } catch (Exception ignored) {}
-        try { result.addAll(scrapeActuCameroun()); } catch (Exception ignored) {}
-        try { result.addAll(scrapeJournalOfficiel()); } catch (Exception ignored) {}
-        try { result.addAll(scrapeBarreauCameroun()); } catch (Exception ignored) {}
-
-        if (result.size() > 20) result = result.subList(0, 20);
-
-        cache = result;
-        lastUpdate = Instant.now();
-    }
-
-    /* ============================ */
-    /*  SCRAPERS DES 4 SOURCES     */
-    /* ============================ */
-
-    // Cameroon Tribune - Justice
-    private List<NewsItem> scrapeCameroonTribune() throws Exception {
+    // ===========================
+    // 1. SCRAPER Cameroon Tribune
+    // ===========================
+    private List<NewsItem> fetchCameroonTribune() {
         List<NewsItem> list = new ArrayList<>();
-        String url = "https://www.cameroon-tribune.cm/articles/category/justice";
+        try {
+            Document doc = Jsoup.connect("https://www.cameroon-tribune.cm/articles/justice").get();
 
-        Document doc = Jsoup.connect(url).get();
-        Elements articles = doc.select("article");
+            Elements articles = doc.select(".article-wrapper"); // classe réelle
 
-        for (Element el : articles) {
-            Element a = el.selectFirst("a");
-            if (a == null) continue;
+            articles.forEach(a -> {
+                String title = a.select("h3").text();
+                String url = "https://www.cameroon-tribune.cm" + a.select("a").attr("href");
 
-            String title = a.text();
-            String link = a.absUrl("href");
-            String date = el.select("time").text();
+                NewsItem item = new NewsItem();
+                item.setTitle(title);
+                item.setUrl(url);
+                item.setOrigin("Cameroon Tribune");
 
-            list.add(new NewsItem(title, link, "Cameroon Tribune", "Cameroon", date));
+                list.add(item);
+            });
+
+        } catch (Exception e) {
+            log.error("Erreur Cameroon Tribune", e);
         }
         return list;
     }
 
-    // Actu Cameroun
-    private List<NewsItem> scrapeActuCameroun() throws Exception {
+    // ===========================
+    // 2. SCRAPER Actu Cameroun
+    // ===========================
+    private List<NewsItem> fetchActuCameroun() {
         List<NewsItem> list = new ArrayList<>();
-        String url = "https://actucameroun.com/category/justice/";
+        try {
+            Document doc = Jsoup.connect("https://actucameroun.com/category/societe/justice/").get();
 
-        Document doc = Jsoup.connect(url).get();
-        Elements posts = doc.select("article, .post");
+            Elements articles = doc.select("article");
 
-        for (Element post : posts) {
-            Element a = post.selectFirst("a");
-            if (a == null) continue;
+            articles.forEach(a -> {
+                String title = a.select("h3 a").text();
+                String url = a.select("h3 a").attr("href");
 
-            String title = a.text();
-            String link = a.absUrl("href");
-            String date = post.select("time").text();
+                NewsItem item = new NewsItem();
+                item.setTitle(title);
+                item.setUrl(url);
+                item.setOrigin("Actu Cameroun");
 
-            list.add(new NewsItem(title, link, "Actu Cameroun", "Cameroon", date));
+                list.add(item);
+            });
+
+        } catch (Exception e) {
+            log.error("Erreur Actu Cameroun", e);
         }
         return list;
     }
 
-    // Journal Officiel (SPM)
-    private List<NewsItem> scrapeJournalOfficiel() throws Exception {
+    // ===========================
+    // 3. SCRAPER Journal Officiel
+    // ===========================
+    private List<NewsItem> fetchJournalOfficiel() {
         List<NewsItem> list = new ArrayList<>();
-        String url = "https://www.spm.gov.cm/page/texte-loi";
+        try {
+            Document doc = Jsoup.connect("https://www.spm.gov.cm/journal-officiel/").get();
 
-        Document doc = Jsoup.connect(url).get();
-        Elements items = doc.select(".item");
+            Elements links = doc.select(".jo-item a");
 
-        for (Element it : items) {
-            Element a = it.selectFirst("a");
-            if (a == null) continue;
+            links.forEach(l -> {
+                NewsItem item = new NewsItem();
+                item.setTitle("Journal Officiel : " + l.text());
+                item.setUrl(l.attr("href"));
+                item.setOrigin("Journal Officiel");
 
-            String title = a.text();
-            String link = a.absUrl("href");
-            String date = it.select(".date, time").text();
+                list.add(item);
+            });
 
-            list.add(new NewsItem(title, link, "Journal Officiel", "Cameroon", date));
+        } catch (Exception e) {
+            log.error("Erreur Journal Officiel", e);
         }
         return list;
     }
 
-    // Barreau du Cameroun
-    private List<NewsItem> scrapeBarreauCameroun() throws Exception {
+    // ===========================
+    // 4. SCRAPER Barreau du Cameroun
+    // ===========================
+    private List<NewsItem> fetchBarreau() {
         List<NewsItem> list = new ArrayList<>();
-        String url = "https://barreau.cm/category/actualites/";
+        try {
+            Document doc = Jsoup.connect("https://barreau.cm/actualites").get();
 
-        Document doc = Jsoup.connect(url).get();
-        Elements articles = doc.select("article");
+            Elements articles = doc.select(".post-title");
 
-        for (Element el : articles) {
-            Element a = el.selectFirst("a");
-            if (a == null) continue;
+            articles.forEach(a -> {
+                String title = a.text();
+                String url = a.select("a").attr("href");
 
-            String title = a.text();
-            String link = a.absUrl("href");
-            String date = el.select("time").text();
+                NewsItem item = new NewsItem();
+                item.setTitle(title);
+                item.setUrl(url);
+                item.setOrigin("Barreau du Cameroun");
 
-            list.add(new NewsItem(title, link, "Barreau du Cameroun", "Cameroon", date));
+                list.add(item);
+            });
+
+        } catch (Exception e) {
+            log.error("Erreur Barreau", e);
         }
         return list;
+    }
+
+    // ===========================
+    // 5. SCRAPER Cour Suprême
+    // ===========================
+    private List<NewsItem> fetchCourSupreme() {
+        List<NewsItem> list = new ArrayList<>();
+        try {
+            Document doc = Jsoup.connect("https://www.coursupreme.cm/actualites").get();
+
+            Elements articles = doc.select(".item a");
+
+            articles.forEach(a -> {
+                NewsItem item = new NewsItem();
+                item.setTitle(a.text());
+                item.setUrl(a.attr("href"));
+                item.setOrigin("Cour Suprême");
+
+                list.add(item);
+            });
+
+        } catch (Exception e) {
+            log.error("Erreur Cour Suprême", e);
+        }
+        return list;
+    }
+
+    // ===============
+    // CRON : 1/jour
+    // ===============
+    @Scheduled(cron = "0 0 7 * * *", zone = "Africa/Douala")
+    public void refreshNews() {
+        List<NewsItem> all = new ArrayList<>();
+
+        all.addAll(fetchCameroonTribune());
+        all.addAll(fetchActuCameroun());
+        all.addAll(fetchJournalOfficiel());
+        all.addAll(fetchBarreau());
+        all.addAll(fetchCourSupreme());
+
+        // Retirer doublons
+        Set<String> seen = new HashSet<>();
+        List<NewsItem> unique = new ArrayList<>();
+
+        for (NewsItem n : all) {
+            if (!seen.contains(n.getUrl())) {
+                unique.add(n);
+                seen.add(n.getUrl());
+            }
+        }
+
+        cachedNews = unique;
+        log.info("Actualités mises à jour : " + unique.size());
+    }
+
+    public List<NewsItem> getNews() {
+        return cachedNews;
     }
 }
 

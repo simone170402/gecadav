@@ -1,12 +1,13 @@
 package com.cabinetavocat.backend.News;
-
+import com.cabinetavocat.backend.News.NewsItem;
+import com.cabinetavocat.backend.News.LegalNewsService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/news")
 @CrossOrigin(origins = "*")
+@RequestMapping("/news")
 public class LegalNewsController {
 
     private final LegalNewsService service;
@@ -20,3 +21,5 @@ public class LegalNewsController {
         return service.getNews();
     }
 }
+
+
