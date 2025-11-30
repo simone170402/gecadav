@@ -6,6 +6,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import jakarta.annotation.PostConstruct;
+
 
 import java.util.*;
 
@@ -152,6 +154,12 @@ public class LegalNewsService {
     // ===============
     // CRON : 1/jour
     // ===============
+    @PostConstruct
+    public void init() {
+        log.info("Initialisation : chargement immédiat des actualités...");
+        refreshNews(); // Remplit le cache au démarrage
+    }
+
     @Scheduled(cron = "0 0 7 * * *", zone = "Africa/Douala")
     public void refreshNews() {
         List<NewsItem> all = new ArrayList<>();
