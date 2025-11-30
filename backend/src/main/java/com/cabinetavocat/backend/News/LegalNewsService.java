@@ -125,7 +125,7 @@ public class LegalNewsService {
         }
         return list;
     }
-
+/* 
     // ===========================
     // 5. SCRAPER Cour Suprême
     // ===========================
@@ -150,6 +150,7 @@ public class LegalNewsService {
         }
         return list;
     }
+        */
 
     // ===============
     // CRON : 1/jour
@@ -168,7 +169,7 @@ public class LegalNewsService {
         all.addAll(fetchActuCameroun());
         all.addAll(fetchJournalOfficiel());
         all.addAll(fetchBarreau());
-        all.addAll(fetchCourSupreme());
+     //   all.addAll(fetchCourSupreme());
 
         // Retirer doublons
         Set<String> seen = new HashSet<>();
