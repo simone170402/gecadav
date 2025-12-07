@@ -23,7 +23,7 @@ public class LegalNewsService {
         List<NewsItem> list = new ArrayList<>();
         try {
             Document doc = Jsoup.connect(
-                    "https://www.cameroon-tribune.cm/articles/justice"
+                    "https://www.cameroon-tribune.cm/category2.html/1/fr.html/politique"
             ).get();
 
             Elements articles = doc.select(".article-wrapper");
@@ -54,7 +54,7 @@ public class LegalNewsService {
         List<NewsItem> list = new ArrayList<>();
         try {
             Document doc = Jsoup.connect(
-                    "https://actucameroun.com/category/societe/justice/"
+                    "https://actucameroun.com/toute-lactualite/"
             ).get();
 
             Elements articles = doc.select("article");
@@ -84,7 +84,7 @@ public class LegalNewsService {
     private List<NewsItem> fetchJournalOfficiel() {
         List<NewsItem> list = new ArrayList<>();
         try {
-            Document doc = Jsoup.connect("https://www.spm.gov.cm/journal-officiel/").get();
+            Document doc = Jsoup.connect("https://www.spm.gov.cm/site/?q=fr/news-categories/actualit%C3%A9s").get();
 
             Elements links = doc.select(".jo-item a");
 
