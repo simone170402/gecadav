@@ -26,18 +26,19 @@ public class LegalNewsService {
                     "https://www.cameroon-tribune.cm/category2.html/1/fr.html/politique"
             ).get();
 
-            Elements articles = doc.select(".article-wrapper");
+            // Correction : les articles sont dans ".article-wrapper" ou ".article-item"
+            Elements articles = doc.select(".article-wrapper, .article-item, article");
 
             articles.forEach(a -> {
-                String title = a.select("h3").text().trim();
-                String url = "https://www.cameroon-tribune.cm" + a.select("a").attr("href");
+                String title = a.select("h3, h2, .article-title").text().trim();
+                String href = a.select("a").attr("href").trim();
 
-                if (!title.isEmpty()) {
-                    NewsItem item = new NewsItem();
-                    item.setTitle(title);
-                    item.setUrl(url);
-                    item.setOrigin("Cameroon Tribune");
-                    list.add(item);
+                if (href.startsWith("/")) {
+                    href = "https://www.cameroon-tribune.cm" + href;
+                }
+
+                if (!title.isEmpty() && !href.isEmpty()) {
+                    list.add(new NewsItem(title, href, null, "Cameroon Tribune", null));
                 }
             });
 
@@ -57,18 +58,15 @@ public class LegalNewsService {
                     "https://actucameroun.com/toute-lactualite/"
             ).get();
 
-            Elements articles = doc.select("article");
+            // Correction : structure réelle = h2.entry-title a
+            Elements articles = doc.select("h2.entry-title a, h3.entry-title a");
 
             articles.forEach(a -> {
-                String title = a.select("h3 a").text().trim();
-                String url = a.select("h3 a").attr("href");
+                String title = a.text().trim();
+                String url = a.attr("href").trim();
 
-                if (!title.isEmpty()) {
-                    NewsItem item = new NewsItem();
-                    item.setTitle(title);
-                    item.setUrl(url);
-                    item.setOrigin("Actu Cameroun");
-                    list.add(item);
+                if (!title.isEmpty() && !url.isEmpty()) {
+                    list.add(new NewsItem(title, url, null, "Actu Cameroun", null));
                 }
             });
 
@@ -84,20 +82,23 @@ public class LegalNewsService {
     private List<NewsItem> fetchJournalOfficiel() {
         List<NewsItem> list = new ArrayList<>();
         try {
-            Document doc = Jsoup.connect("https://www.spm.gov.cm/site/?q=fr/news-categories/actualit%C3%A9s").get();
+            Document doc = Jsoup.connect(
+                    "https://www.spm.gov.cm/site/?q=fr/news-categories/actualit%C3%A9s"
+            ).get();
 
-            Elements links = doc.select(".jo-item a");
+            // Correction : aucun ".jo-item", donc on prend les titres généraux
+            Elements links = doc.select("h2 a, h3 a, .views-field-title a");
 
             links.forEach(l -> {
                 String title = l.text().trim();
-                String url = l.attr("href");
+                String url = l.attr("href").trim();
+
+                if (url.startsWith("/")) {
+                    url = "https://www.spm.gov.cm" + url;
+                }
 
                 if (!title.isEmpty()) {
-                    NewsItem item = new NewsItem();
-                    item.setTitle("Journal Officiel : " + title);
-                    item.setUrl(url);
-                    item.setOrigin("Journal Officiel");
-                    list.add(item);
+                    list.add(new NewsItem("Journal Officiel : " + title, url, null, "Journal Officiel", null));
                 }
             });
 
@@ -124,11 +125,7 @@ public class LegalNewsService {
                 String url = a.attr("href");
 
                 if (!title.isEmpty() && !url.isEmpty()) {
-                    NewsItem item = new NewsItem();
-                    item.setTitle(title);
-                    item.setUrl(url);
-                    item.setOrigin("Barreau du Cameroun");
-                    list.add(item);
+                    list.add(new NewsItem(title, url, null, "Barreau du Cameroun", null));
                 }
             });
 
@@ -148,18 +145,19 @@ public class LegalNewsService {
                     "https://coursupreme.cm/publication/actuality"
             ).get();
 
-            Elements blocks = doc.select(".block-news");
+            // Correction : ".block-news" peut ne pas exister -> fallback
+            Elements blocks = doc.select(".block-news, article, .news-item, .col-md-4 a");
 
             blocks.forEach(b -> {
-                String title = b.select("h4").text().trim();
+                String title = b.select("h4, h3, a").text().trim();
                 String relativeUrl = b.select("a").attr("href").trim();
 
-                if (!title.isEmpty() && !relativeUrl.isEmpty()) {
-                    NewsItem item = new NewsItem();
-                    item.setTitle(title);
-                    item.setUrl("https://coursupreme.cm" + relativeUrl);
-                    item.setOrigin("Cour Suprême");
-                    list.add(item);
+                if (!relativeUrl.startsWith("http")) {
+                    relativeUrl = "https://coursupreme.cm" + relativeUrl;
+                }
+
+                if (!title.isEmpty()) {
+                    list.add(new NewsItem(title, relativeUrl, null, "Cour Suprême", null));
                 }
             });
 
