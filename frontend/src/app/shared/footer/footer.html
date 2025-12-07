@@ -52,22 +52,28 @@
     <div class="footer-column">
       <h3>Latest Legal News</h3>
 
-      <div *ngIf="latestNews.length === 0">
+      <div *ngIf="loading">
         <p>Loading news...</p>
+      </div>
+
+      <div *ngIf="!loading && latestNews.length === 0">
+        <p>No news available.</p>
       </div>
 
       <div *ngFor="let news of latestNews">
         <p>
-          <a href="{{ news.url }}" target="_blank">
+          <a [href]="news.url" target="_blank">
             • {{ news.title }}
           </a>
-          <span class="news-badge" [ngClass]="news.origin === 'Cameroon' ? 'badge-cmr' : 'badge-world'">
+          <span
+            class="news-badge"
+            [ngClass]="news.origin === 'Barreau du Cameroun' ? 'badge-cmr' : 'badge-world'"
+          >
             {{ news.origin }}
           </span>
         </p>
       </div>
     </div>
-
 
     <div class="footer-column">
       <h3>Our Services</h3>
