@@ -23,7 +23,7 @@ public class LegalNewsService {
     private List<NewsItem> fetchCameroonTribune() {
         List<NewsItem> list = new ArrayList<>();
         try {
-            Document doc = Jsoup.connect("https://www.cameroon-tribune.cm/articles/justice").get();
+            Document doc = Jsoup.connect("https://www.cameroon-tribune.cm/category2.html/1/fr.html/politique").get();
 
             Elements articles = doc.select(".article-wrapper"); // classe réelle
 
@@ -79,7 +79,7 @@ public class LegalNewsService {
     private List<NewsItem> fetchJournalOfficiel() {
         List<NewsItem> list = new ArrayList<>();
         try {
-            Document doc = Jsoup.connect("https://www.spm.gov.cm/journal-officiel/").get();
+            Document doc = Jsoup.connect("https://prc.cm/fr/actualites").get();
 
             Elements links = doc.select(".jo-item a");
 
@@ -104,7 +104,7 @@ public class LegalNewsService {
     private List<NewsItem> fetchBarreau() {
         List<NewsItem> list = new ArrayList<>();
         try {
-            Document doc = Jsoup.connect("https://barreau.cm/actualites").get();
+            Document doc = Jsoup.connect("https://barreaucameroun.org/fr/en/archives-2/").get();
 
             Elements articles = doc.select(".post-title");
 
@@ -125,14 +125,14 @@ public class LegalNewsService {
         }
         return list;
     }
-/* 
+ 
     // ===========================
     // 5. SCRAPER Cour Suprême
     // ===========================
     private List<NewsItem> fetchCourSupreme() {
         List<NewsItem> list = new ArrayList<>();
         try {
-            Document doc = Jsoup.connect("https://www.coursupreme.cm/actualites").get();
+            Document doc = Jsoup.connect("https://coursupreme.cm/publication/actuality").get();
 
             Elements articles = doc.select(".item a");
 
@@ -150,7 +150,7 @@ public class LegalNewsService {
         }
         return list;
     }
-        */
+        
 
     // ===============
     // CRON : 1/jour
@@ -169,7 +169,7 @@ public class LegalNewsService {
         all.addAll(fetchActuCameroun());
         all.addAll(fetchJournalOfficiel());
         all.addAll(fetchBarreau());
-     //   all.addAll(fetchCourSupreme());
+        all.addAll(fetchCourSupreme());
 
         // Retirer doublons
         Set<String> seen = new HashSet<>();
@@ -188,6 +188,23 @@ public class LegalNewsService {
 
     public List<NewsItem> getNews() {
         return cachedNews;
+    }
+
+    static {
+        // Désactive la validation SSL pour Jsoup
+        javax.net.ssl.HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> true);
+
+        try {
+            javax.net.ssl.SSLContext sc = javax.net.ssl.SSLContext.getInstance("SSL");
+            sc.init(null, new javax.net.ssl.TrustManager[]{ new javax.net.ssl.X509TrustManager() {
+                public java.security.cert.X509Certificate[] getAcceptedIssuers() { return null; }
+                public void checkClientTrusted(java.security.cert.X509Certificate[] certs, String authType) {}
+                public void checkServerTrusted(java.security.cert.X509Certificate[] certs, String authType) {}
+            }}, new java.security.SecureRandom());
+            javax.net.ssl.HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 
