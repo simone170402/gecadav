@@ -1,0 +1,130 @@
+/* ===========================================
+   HERO BASIC SETTINGS
+=========================================== */
+
+.hero-container {
+  position: relative;
+  width: 100%;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* TITRE */
+.hero-container h1 {
+  font-weight: 800;
+  letter-spacing: -2px;
+  text-transform: uppercase;
+}
+
+/* SOUS-TITRE */
+.hero-container h4 {
+  color: #bfa14a;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+/* ===========================================
+   CLIP-PATH EXACT (TON DESIGN)
+=========================================== */
+
+.hero-left-clip {
+  clip-path: polygon(0 0, 0 100%, 100% 100%, 78% 0);
+}
+
+.hero-right-clip {
+  clip-path: polygon(0 0, 20% 100%, 100% 100%, 100% 0);
+}
+
+
+/* ===========================================
+   RESPONSIVE FIX
+=========================================== */
+
+@media (max-width: 1023px) {
+
+  .hero-left-clip,
+  .hero-right-clip {
+    clip-path: none !important;
+    width: 100% !important;
+  }
+
+  .hero-container > div[style*="gradient"],
+  .hero-container > div[class*="skew"] {
+    display: none !important;
+  }
+
+  .hero-container > div[style*="background-image"] {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100vh !important;
+    opacity: 1 !important;
+    background-size: cover !important;
+  }
+
+  .hero-container > div.relative {
+    position: relative !important;
+    z-index: 10 !important;
+    width: 100% !important;
+    padding: 4rem 1.5rem !important;
+  }
+
+  .hero-container h1 {
+    font-size: 16vw !important;
+  }
+}
+
+/* PARAGRAPHES SLIDER */
+.hero-paragraph {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #444;
+  max-width: 95%;
+  min-height: 160px;
+  text-align: justify;
+}
+
+.scroll-hint svg {
+  animation-duration: 1.3s;
+}
+
+.scroll-hint span {
+  opacity: 0.85;
+}
+
+/* BOUTONS SLIDER */
+.nav-btn {
+  width: 42px;
+  height: 42px;
+  background: linear-gradient(to right, #bfa14a, #2a2a2a);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .3s ease;
+  box-shadow: 0 3px 8px rgba(0,0,0,.25);
+}
+
+.nav-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 5px 12px rgba(0,0,0,.35);
+}
+
+/* ===========================================
+   GLOBAL STYLES
+=========================================== */
+
+section {
+  font-family: 'Poppins', sans-serif;
+}
+
+h1, h2, h3 {
+  letter-spacing: 1px;
+}
+
+img {
+  transition: transform 0.4s ease;
+}
+
+img:hover {
+  transform: scale(1.02);
+}

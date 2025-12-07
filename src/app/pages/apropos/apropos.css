@@ -1,0 +1,47 @@
+.about-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.about-section h2 {
+  position: relative;
+  color: #bfa14a;
+  font-weight: 700;
+}
+
+/* ✅ Barre horizontale dégradée */
+.about-section .decor-bar {
+  width: 25%;
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #f3c847, #444444);
+  margin-bottom: 1.5rem;
+}
+
+/* ✅ Encadré 95.5% */
+.about-section .stats-box {
+  background: linear-gradient(90deg, #f3c847, #444444);
+  color: white;
+  border-radius: 0.5rem;
+  padding: 1rem 2rem;
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+
+.about-section .stats-box p:first-child {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.about-section img {
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  transition: transform 0.4s ease;
+}
+
+.about-section img:hover {
+  transform: scale(1.03);
+}

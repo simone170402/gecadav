@@ -1,0 +1,47 @@
+/* ================================
+   ⚜️ HEADER GLOBAL (CORRIGÉ)
+================================ */
+
+/* Animation du menu mobile */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Transition douce */
+header, header img {
+  transition: all 0.4s ease-in-out;
+}
+
+/* Header fixé */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%; /* ✔ plus 100vw ! */
+  z-index: 999;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  header img { height: 2.5rem; }
+  header span { font-size: 1rem; }
+}
+
+/* -------------------------------
+   ⚠️ FIX overflow horizontal
+-------------------------------- */
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: hidden !important;
+}
+
+/* Désactive padding-top automatique */
+body {
+  padding-top: 0 !important;
+}

@@ -1,0 +1,323 @@
+/* ===============================
+   FOOTER GLOBAL
+=============================== */
+
+footer {
+  width: 100%;
+  background-color: #03466e;
+  color: #fff;
+  text-align: center;
+  margin-top: 40px; /* si tu veux un petit espace avec le contenu */
+}
+
+/* ===============================
+   PARTIE 1 : 3 BLOCS (Address / Email / Open Hours)
+=============================== */
+
+.footer-part-1 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 0;
+  background-color: rgb(1, 1, 15);
+  color: #fff;
+  border-bottom: 1px solid #444;
+  box-sizing: border-box;
+}
+
+.footer-column1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: left;
+  padding: 20px;
+  box-sizing: border-box;
+  border-right: 1px solid #444;
+}
+
+.footer-column1:last-child {
+  border-right: none;
+}
+
+.footer-column1 img {
+  max-width: 22px;
+  margin-right: 10px;
+}
+
+.footer-column1 p {
+  line-height: 1.4;
+  font-size: 14px;
+}
+
+.footer-column.logo-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;     /* Centre horizontalement */
+  justify-content: center; /* Centre verticalement */
+  gap: 15px;               /* Petit espace chic */
+}
+
+/* ===============================
+   PARTIE 2 : 4 COLONNES
+=============================== */
+
+.footer-part-2 {
+  padding: 25px 20px;
+  background-color: rgb(1, 1, 15);
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #444;
+  box-sizing: border-box;
+}
+
+.footer-column {
+  padding: 20px;
+  align-items: flex-start;
+  box-sizing: border-box;
+  flex: 1;
+}
+
+/* Titre de colonne */
+.footer-column h3 {
+  color: #fff;
+  font-size: 20px;
+  margin-bottom: 25px;
+  text-decoration-line: underline;
+  text-decoration-style: double;
+  text-decoration-color: gold;
+}
+
+/* Liens / lignes de contenu */
+.footer-column p {
+  margin-bottom: 12px;
+  font-size: 14px;
+  position: relative;
+  text-align: left;
+  padding-left: 18px;
+  text-decoration: none;
+  transition: color 0.3s;
+  cursor: pointer;
+}
+
+.footer-column a {
+  color: #ddd;
+  text-decoration: none;
+}
+
+.footer-column a:hover {
+  color: #bfa14a;
+}
+
+.news-badge {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  margin-left: 6px;
+}
+
+.badge-cmr {
+  background: #007bff;
+}
+
+.badge-world {
+  background: #444;
+}
+
+
+/* Petite pastille dorée avant chaque ligne */
+.footer-column p::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  background-color: gold;
+  transform: translateY(-50%);
+}
+
+/* Hover */
+.footer-column p:hover,
+.footer-column p.active {
+  color: gold;
+}
+
+/* Logo principal dans le footer (colonne 1) */
+.footer-column img.logo,
+.footer-column img.footer-logo {
+  width: 175px;
+  height: 175px;
+  object-fit: contain;
+  display: block;
+  margin-bottom: 15px;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Barre d’email / newsletter */
+.search-container {
+  width: 350px;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 5px 10px;
+  box-sizing: border-box;
+}
+
+.search-input {
+  flex-grow: 1;
+  border: none;
+  padding: 5px;
+  border-radius: 20px;
+  outline: none;
+  font-size: 14px;
+}
+
+.search-container img,
+.search-icon {
+  width: 20px;
+  height: 20px;
+  margin-left: 5px;
+  border-radius: 50%;
+  overflow: hidden;
+  transform: scale(1.2);
+}
+
+/* ===============================
+   PARTIE 3 : COPYRIGHT
+=============================== */
+
+.footer-part-3 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 10px;
+  background-color: rgb(1, 1, 15);
+  color: #fff;
+  font-size: 13px;
+}
+
+/* ===============================
+   RESPONSIVE FOOTER
+=============================== */
+
+/* En dessous de 900px : on empile les colonnes de la partie 2 */
+@media (max-width: 900px) {
+  .footer-part-2 {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-column {
+    width: 100%;
+    padding: 15px 10px;
+  }
+
+  .footer-column p {
+    text-align: center;
+    padding-left: 0;
+  }
+
+  .footer-column p::before {
+    display: none;
+  }
+
+  .search-container {
+    margin: 0 auto;
+  }
+}
+
+/* En dessous de 700px : la partie 1 passe en colonne */
+@media (max-width: 700px) {
+  .footer-part-1 {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-column1 {
+    border-right: none;
+    border-bottom: 1px solid #333;
+  }
+
+  .footer-column1:last-child {
+    border-bottom: none;
+  }
+}
+
+/* ===============================
+   FIX TITRES + ALIGNEMENT LISTES
+=============================== */
+
+.footer-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Titre parfaitement aligné au-dessus des puces */
+.footer-column h3 {
+  margin-bottom: 10px !important;
+  color: #d4af37; /* doré du site */
+  font-size: 22px;
+  text-decoration-line: underline;
+  text-decoration-style: double;
+  text-decoration-color: #bfa14a; /* doré plus profond */
+}
+
+/* Liste */
+.footer-column p {
+  margin: 6px 0;
+  padding-left: 18px;
+  font-size: 15px;
+  color: #e6e6e6; /* blanc légèrement doux */
+}
+
+/* Pastille rectifiée + couleur cohérente */
+.footer-column p::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  background-color: #d4af37; /* or principal du site */
+  transform: translateY(-50%);
+  border-radius: 2px;
+}
+
+/* Hover cohérent avec toute ton interface */
+.footer-column p:hover {
+  color: #d4af37;
+  transition: 0.2s;
+}
+
+/* ===============================
+   COULEURS GLOBALES FOOTER
+=============================== */
+
+footer,
+.footer-part-1,
+.footer-part-2,
+.footer-part-3 {
+  background-color: #01010F !important; /* noir profond uniforme */
+  color: #ffffff;
+}
+
+/* Icônes */
+.footer-column1 img {
+  filter: brightness(1.2);
+}
+
+/* Texte "Address / Email / Open Hours" */
+.footer-column1 p b {
+  color: #d4af37; /* doré vif */
+}
+
+/* Ligne de séparation (plus élégante) */
+.footer-part-1,
+.footer-part-2 {
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}

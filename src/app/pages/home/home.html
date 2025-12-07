@@ -1,0 +1,286 @@
+<!-- WRAPPER ANTI-DEFORMATION -->
+<div class="hero-global-wrapper w-full relative">
+  <div class="w-full max-w-none relative">
+
+    <!-- ===== SECTION HERO ===== -->
+    <section class="hero-container relative min-h-screen font-['Poppins'] overflow-hidden">
+
+      <!-- Fond blanc gauche (DESKTOP) -->
+      <div class="hidden lg:block absolute inset-y-0 left-0 
+                  w-[52%] md:w-[50%] bg-white hero-left-clip z-[2]"></div>
+
+      <!-- Bande dorée diagonale (DESKTOP) -->
+      <div
+        class="hidden lg:block absolute inset-y-0 left-[40%] sm:left-[42%] md:left-[43%] 
+               w-[40px] sm:w-[50px]
+               bg-gradient-to-b from-[#bfa14a] to-[#2a2a2a] 
+               transform skew-x-[16deg] origin-right z-[3]">
+      </div>
+
+      <!-- Image droite (DESKTOP) -->
+      <div
+        class="hidden lg:block absolute inset-y-0 right-0 
+               w-[70%] sm:w-[65%] md:w-[63%] 
+               bg-cover bg-center hero-right-clip z-[1]"
+        style="background-image: url('/images/1.png')">
+      </div>
+      
+      <!-- Mobile image -->
+      <div class="lg:hidden absolute inset-0 bg-cover bg-center opacity-50"
+           style="background-image: url('/images/1.png')"></div>
+
+      <!-- Contenu texte -->
+
+      <div class="hero-text relative z-[4] w-full md:w-[42%]
+            px-6 sm:px-10 md:px-14 lg:px-16 
+            pb-10 space-y-6">
+
+
+        <h4 class="text-[#bfa14a] font-semibold tracking-widest uppercase text-sm sm:text-base">
+          NOVALEX–CAMEROUN.COM
+        </h4>
+
+        <!-- ZONE DES PARAGRAPHES -->
+        <div 
+          [@slideHorizontal]="direction"
+          class="relative min-h-[160px] overflow-hidden"
+        >
+          <!-- Paragraphe 1 -->
+          <div 
+            class="hero-paragraph"
+            *ngIf="currentSection === 1"
+            >
+            Tsapy & Partners is a full-service law firm ranked among Cameroon’s most trusted legal institutions. 
+            Our firm provides strategic, results-oriented counsel in corporate, commercial, and litigation matters.
+            With over 30 years of experience, we combine deep legal expertise with a strong understanding of the
+            local business environment.
+          </div>
+
+          <!-- Paragraphe 2 -->
+          <div 
+            class="hero-paragraph"
+            *ngIf="currentSection === 2"
+          >
+            Our attorneys assist national and international clients in complex civil and commercial disputes, 
+            contract structuring, regulatory compliance, arbitration, and high-stakes negotiations.  
+            We are known for our rigorous legal analysis, our discretion, and our ability to secure favorable outcomes.
+          </div>
+
+          <!-- Paragraphe 3 -->
+          <div 
+            class="hero-paragraph"
+            *ngIf="currentSection === 3"
+            >
+            Beyond litigation, Tsapy & Partners supports companies, institutions, and entrepreneurs in their daily 
+            legal operations—ensuring risk prevention, legal security, and sustainable growth.  
+            Our mission is to provide reliable, ethical, and excellence-driven legal support to every client.
+          </div>
+
+        </div>
+
+        <!-- BOUTONS -->
+        <div class="flex items-center space-x-4 mt-4">
+          <!-- Bouton gauche -->
+          <button
+            class="nav-btn"
+            (click)="previousSection()"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24" stroke="white" class="w-4 h-4">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+
+          <!-- Bouton droit -->
+          <button
+            class="nav-btn rotate-180"
+            (click)="nextSection()"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24" stroke="white" class="w-4 h-4">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+
+          <div class="h-[6px] w-[120px] bg-gradient-to-r from-gray-400 to-black"></div>
+        </div>
+        <!-- MESSAGE INDICATEUR -->
+        <div class="scroll-hint flex items-center space-x-2 mt-2">
+          <span class="text-[#bfa14a] font-semibold text-sm tracking-wide">
+            Swipe or click to explore
+          </span>
+
+          <svg class="w-4 h-4 text-[#bfa14a] animate-bounce" 
+              fill="none" stroke="currentColor" stroke-width="2" 
+              viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" 
+                  d="M13 5l7 7-7 7" />
+          </svg>
+        </div>
+        
+        <h1
+          class="text-[14vw] sm:text-[10vw] md:text-[7rem] lg:text-[9rem] 
+                 font-extrabold text-[#bfa14a] uppercase leading-none">
+          Lawyer
+        </h1>
+
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- ========================= -->
+<!--         ABOUT US          -->
+<!-- ========================= -->
+<section class="relative bg-white py-24 px-6 sm:px-12 grid md:grid-cols-2 gap-10 items-center">
+
+  <div>
+    <h2 class="text-3xl font-semibold text-[#bfa14a] mb-4 border-l-4 border-[#bfa14a] pl-4">
+      About Us
+    </h2>
+
+    <p class="text-gray-700 mb-6">
+      Founded in 1993, Tsapy & Partners has grown into one of Cameroon’s most reputable law firms,
+      providing high-level legal services to individuals, corporations, and international partners.
+    </p>
+
+    <p class="text-gray-700 mb-6">
+      With a strong team of seasoned attorneys, the firm has handled over 4000 cases, combining 
+      expertise, integrity, and professionalism in every legal matter.
+    </p>
+
+    <h3 class="text-2xl font-semibold text-[#bfa14a] uppercase">
+      Excellence In Legal Practice
+    </h3>
+  </div>
+
+  <div class="relative">
+    <img src="/images/CH__3241.jpg" class="rounded-lg shadow-lg w-full" alt="Lawyer" />
+    <div class="absolute bottom-2 right-4 bg-gradient-to-r from-[#bfa14a] to-[#2a2a2a] text-white px-6 py-3 rounded-md shadow-lg">
+      <p class="text-3xl font-bold">30+</p>
+      <p class="text-sm">Years of Experience</p>
+    </div>
+  </div>
+
+</section>
+
+
+
+<!-- ========================= -->
+<!--     VISION & MISSION      -->
+<!-- ========================= -->
+<section class="py-24 px-6 sm:px-12 bg-gray-50 grid md:grid-cols-2 gap-10 items-center">
+
+  <img src="/images/vision.png" class="rounded-lg shadow-lg w-full" alt="Vision" />
+
+  <div>
+    <h2 class="text-3xl font-semibold text-[#bfa14a] mb-4">Vision & Mission</h2>
+
+    <p class="text-gray-700 mb-6">
+      We aim to improve access to justice in Cameroon and across Africa by providing 
+      dependable, innovative, and ethical legal representation.
+    </p>
+
+    <div class="grid md:grid-cols-2 gap-6">
+
+      <div class="bg-gradient-to-r from-[#bfa14a] to-[#2a2a2a] text-white p-6 rounded-lg">
+        <h3 class="font-semibold mb-2">Our Vision</h3>
+        <p class="text-sm">To be a leading African law firm recognized for excellence and integrity.</p>
+      </div>
+
+      <div class="bg-gradient-to-r from-[#bfa14a] to-[#2a2a2a] text-white p-6 rounded-lg">
+        <h3 class="font-semibold mb-2">Our Mission</h3>
+        <p class="text-sm">To deliver high-impact legal services that protect, defend, and empower clients.</p>
+      </div>
+
+    </div>
+  </div>
+
+</section>
+
+
+
+<!-- ========================= -->
+<!--         OUR TEAM          -->
+<!-- ========================= -->
+<section class="py-24 px-6 sm:px-12 bg-white text-center">
+
+  <h2 class="text-3xl font-semibold text-[#bfa14a] mb-10">Meet Our Team</h2>
+
+  <div class="grid md:grid-cols-2 gap-12">
+    <div>
+      <img src="/images/CH__3174.jpg" alt="Lawyer" class="rounded-lg shadow-lg mb-4" />
+      <p class="bg-gradient-to-r from-[#bfa14a] to-[#2a2a2a] text-white py-2 font-semibold uppercase">
+        Joseph Lavoisier Tsapy
+      </p>
+    </div>
+
+    <div>
+      <img src="/images/CH__3171.jpg" alt="Lawyer" class="rounded-lg shadow-lg mb-4" />
+      <p class="bg-gradient-to-r from-[#bfa14a] to-[#2a2a2a] text-white py-2 font-semibold uppercase">
+        Junior Lavoisier Tsapy
+      </p>
+    </div>
+  </div>
+
+</section>
+
+
+
+<!-- ========================= -->
+<!--        SERVICES           -->
+<!-- ========================= -->
+<section class="py-24 px-6 sm:px-12 bg-gray-50 grid md:grid-cols-2 gap-10 items-center">
+
+  <div>
+    <h2 class="text-3xl font-semibold text-[#bfa14a] mb-6">Our Services</h2>
+
+    <div class="space-y-6">
+      <div>
+        <div class="bg-gradient-to-r from-[#bfa14a] to-[#2a2a2a] text-white inline-block px-4 py-2 rounded-full font-bold mb-2">
+          01
+        </div>
+        <h3 class="text-xl font-semibold">Litigation & Dispute Resolution</h3>
+        <p class="text-gray-600">Representation in civil, criminal, and commercial cases.</p>
+      </div>
+
+      <div>
+        <div class="bg-gradient-to-r from-[#bfa14a] to-[#2a2a2a] text-white inline-block px-4 py-2 rounded-full font-bold mb-2">
+          02
+        </div>
+        <h3 class="text-xl font-semibold">Corporate & Commercial Law</h3>
+        <p class="text-gray-600">Company formation, contract drafting, business structuring.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="space-y-6">
+    <img src="/images/service1.jpg" class="rounded-lg shadow-lg" alt="Service" />
+    <img src="/images/service2.jpg" class="rounded-lg shadow-lg" alt="Service" />
+  </div>
+
+</section>
+
+
+
+<!-- ========================= -->
+<!--         CONTACT           -->
+<!-- ========================= -->
+<section class="py-24 px-6 sm:px-12 bg-white text-center">
+
+  <h2 class="text-3xl font-semibold text-[#bfa14a] mb-6">Get In Touch</h2>
+
+  <p class="text-gray-700 max-w-xl mx-auto mb-8">
+    For consultations, appointments, or inquiries, reach out to our team anytime.
+    We are committed to offering professional and reliable legal support.
+  </p>
+
+  <button class="bg-gradient-to-r from-[#bfa14a] to-[#2a2a2a]
+                 text-white px-6 py-3 rounded-md hover:scale-105 transition font-semibold">
+    Contact Us
+  </button>
+
+</section>

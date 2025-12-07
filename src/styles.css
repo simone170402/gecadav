@@ -1,0 +1,59 @@
+/* ============================
+   🔥 GLOBAL STYLE CLEAN
+   Pour Angular + Tailwind 4
+============================ */
+
+/* Import Tailwind CSS v4 */
+@import "tailwindcss";
+
+:root {
+  --container-8xl: 96rem;
+}
+
+/* Reset safe */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+@media (min-resolution: 1.25dppx) {
+  body {
+    zoom: 0.75;  
+  }
+}
+
+@media (min-resolution: 2dppx) {
+  body {
+    zoom: 0.65;  
+  }
+}
+
+@media (min-resolution: 1.5dppx) and (max-resolution: 1.99dppx) {
+  body {
+    zoom: 0.80;  
+  }
+}
+
+/* Scrollbar transparente + fine */
+::-webkit-scrollbar {
+  width: 3px;              /* Épaisseur */
+  background: transparent !important; /* Fond transparent */
+}
+
+/* Zone derrière la barre */
+::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+/* La barre elle-même (thumb) */
+::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.3);  /* Gris semi-transparent */
+  border-radius: 10px;
+}
+
+/* Au survol */
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,0,0,0.5);
+}
+

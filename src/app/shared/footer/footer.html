@@ -1,0 +1,88 @@
+<footer class="footer-global">
+
+  <!-- PART 1 : Address / Email / Hours -->
+  <div class="footer-part-1">
+
+    <div class="footer-column1">
+      <img src="/images/address.png" class="logo" alt="Address">
+      <div>
+        <p><b>Address</b></p>
+        <p>Carrefour Auberge, Bafoussam</p>
+      </div>
+    </div>
+
+    <div class="footer-column1">
+      <img src="/images/email.png" class="logo" alt="Email">
+      <div>
+        <p><b>Email</b></p>
+        <p>contact@cabinet-avocats.com</p>
+      </div>
+    </div>
+
+    <div class="footer-column1">
+      <img src="/images/horloge.png" class="logo" alt="Open Hours">
+      <div>
+        <p><b>Open Hours</b></p>
+        <p>Mon–Sat : 9am – 6pm</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PART 2 : Logo + Info Columns -->
+  <div class="footer-part-2">
+
+    <div class="footer-column">
+      <img src="/images/logo1-removebg-preview.png" class="footer-logo" alt="Logo">
+      <div class="search-container">
+        <input type="text" placeholder="Email Address" class="search-input">
+        <img src="/images/search-icon.jpeg" alt="Search" class="search-icon">
+      </div>
+    </div>
+
+    <div class="footer-column">
+      <h3>Information</h3>
+      <p><a routerLink="apropos" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">About Us</a></p>
+      <p><a routerLink="vision" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Our Vision</a></p>
+      <p><a routerLink="cabinet" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Our Firm</a></p>
+      <p><a routerLink="avocats" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Our Team</a></p>
+      <p><a routerLink="domaines" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Services</a></p>
+    </div>
+
+    <div class="footer-column">
+      <h3>Latest Legal News</h3>
+
+      <div *ngIf="latestNews.length === 0">
+        <p>Loading news...</p>
+      </div>
+
+      <div *ngFor="let news of latestNews">
+        <p>
+          <a href="{{ news.url }}" target="_blank">
+            • {{ news.title }}
+          </a>
+          <span class="news-badge" [ngClass]="news.origin === 'Cameroon' ? 'badge-cmr' : 'badge-world'">
+            {{ news.origin }}
+          </span>
+        </p>
+      </div>
+    </div>
+
+
+    <div class="footer-column">
+      <h3>Our Services</h3>
+      <p>Business</p>
+      <p>Personal</p>
+      <p>Financial</p>
+      <p>Criminal</p>
+      <p>Employment</p>
+    </div>
+
+  </div>
+
+  <!-- PART 3 : Copyright -->
+  <div class="footer-part-3">
+    <p>Copyright © 2025 Tsapy & Partners. All rights reserved.</p>
+  </div>
+
+</footer>

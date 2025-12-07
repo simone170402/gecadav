@@ -1,0 +1,33 @@
+/* ============================= */
+/*       AREAS OF PRACTICE       */
+/* ============================= */
+
+/* Animation lors du hover */
+.domain-card {
+  transition: all 0.35s ease;
+}
+
+.domain-card:hover {
+  transform: translateY(-6px);
+}
+
+/* Image arrondie et stable */
+.domain-card img {
+  transition: all 0.35s ease;
+}
+
+.domain-card:hover img {
+  filter: brightness(1.03);
+}
+
+/* Correction responsive padding */
+@media (max-width: 768px) {
+  .domain-card img {
+    height: 180px !important;
+  }
+}
+
+/* Section title spacing */
+.section-title {
+  letter-spacing: 1px;
+}
