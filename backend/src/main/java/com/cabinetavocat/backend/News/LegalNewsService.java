@@ -1,5 +1,5 @@
 package com.cabinetavocat.backend.News;
-import com.cabinetavocat.backend.News.NewsItem;
+
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -7,7 +7,6 @@ import org.jsoup.select.Elements;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import jakarta.annotation.PostConstruct;
-
 
 import java.util.*;
 
@@ -23,20 +22,23 @@ public class LegalNewsService {
     private List<NewsItem> fetchCameroonTribune() {
         List<NewsItem> list = new ArrayList<>();
         try {
-            Document doc = Jsoup.connect("https://www.cameroon-tribune.cm/category2.html/1/fr.html/politique").get();
+            Document doc = Jsoup.connect(
+                    "https://www.cameroon-tribune.cm/articles/justice"
+            ).get();
 
-            Elements articles = doc.select(".article-wrapper"); // classe réelle
+            Elements articles = doc.select(".article-wrapper");
 
             articles.forEach(a -> {
-                String title = a.select("h3").text();
+                String title = a.select("h3").text().trim();
                 String url = "https://www.cameroon-tribune.cm" + a.select("a").attr("href");
 
-                NewsItem item = new NewsItem();
-                item.setTitle(title);
-                item.setUrl(url);
-                item.setOrigin("Cameroon Tribune");
-
-                list.add(item);
+                if (!title.isEmpty()) {
+                    NewsItem item = new NewsItem();
+                    item.setTitle(title);
+                    item.setUrl(url);
+                    item.setOrigin("Cameroon Tribune");
+                    list.add(item);
+                }
             });
 
         } catch (Exception e) {
@@ -51,20 +53,23 @@ public class LegalNewsService {
     private List<NewsItem> fetchActuCameroun() {
         List<NewsItem> list = new ArrayList<>();
         try {
-            Document doc = Jsoup.connect("https://actucameroun.com/category/societe/justice/").get();
+            Document doc = Jsoup.connect(
+                    "https://actucameroun.com/category/societe/justice/"
+            ).get();
 
             Elements articles = doc.select("article");
 
             articles.forEach(a -> {
-                String title = a.select("h3 a").text();
+                String title = a.select("h3 a").text().trim();
                 String url = a.select("h3 a").attr("href");
 
-                NewsItem item = new NewsItem();
-                item.setTitle(title);
-                item.setUrl(url);
-                item.setOrigin("Actu Cameroun");
-
-                list.add(item);
+                if (!title.isEmpty()) {
+                    NewsItem item = new NewsItem();
+                    item.setTitle(title);
+                    item.setUrl(url);
+                    item.setOrigin("Actu Cameroun");
+                    list.add(item);
+                }
             });
 
         } catch (Exception e) {
@@ -79,17 +84,21 @@ public class LegalNewsService {
     private List<NewsItem> fetchJournalOfficiel() {
         List<NewsItem> list = new ArrayList<>();
         try {
-            Document doc = Jsoup.connect("https://prc.cm/fr/actualites").get();
+            Document doc = Jsoup.connect("https://www.spm.gov.cm/journal-officiel/").get();
 
             Elements links = doc.select(".jo-item a");
 
             links.forEach(l -> {
-                NewsItem item = new NewsItem();
-                item.setTitle("Journal Officiel : " + l.text());
-                item.setUrl(l.attr("href"));
-                item.setOrigin("Journal Officiel");
+                String title = l.text().trim();
+                String url = l.attr("href");
 
-                list.add(item);
+                if (!title.isEmpty()) {
+                    NewsItem item = new NewsItem();
+                    item.setTitle("Journal Officiel : " + title);
+                    item.setUrl(url);
+                    item.setOrigin("Journal Officiel");
+                    list.add(item);
+                }
             });
 
         } catch (Exception e) {
@@ -104,45 +113,54 @@ public class LegalNewsService {
     private List<NewsItem> fetchBarreau() {
         List<NewsItem> list = new ArrayList<>();
         try {
-            Document doc = Jsoup.connect("https://barreaucameroun.org/fr/en/archives-2/").get();
+            Document doc = Jsoup.connect(
+                    "https://barreaucameroun.org/fr/en/archives-2/"
+            ).get();
 
-            Elements articles = doc.select(".post-title");
+            Elements articles = doc.select(".post-title a");
 
             articles.forEach(a -> {
-                String title = a.text();
-                String url = a.select("a").attr("href");
+                String title = a.text().trim();
+                String url = a.attr("href");
 
-                NewsItem item = new NewsItem();
-                item.setTitle(title);
-                item.setUrl(url);
-                item.setOrigin("Barreau du Cameroun");
-
-                list.add(item);
+                if (!title.isEmpty() && !url.isEmpty()) {
+                    NewsItem item = new NewsItem();
+                    item.setTitle(title);
+                    item.setUrl(url);
+                    item.setOrigin("Barreau du Cameroun");
+                    list.add(item);
+                }
             });
 
         } catch (Exception e) {
-            log.error("Erreur Barreau", e);
+            log.error("Erreur Barreau du Cameroun", e);
         }
         return list;
     }
- 
+
     // ===========================
     // 5. SCRAPER Cour Suprême
     // ===========================
     private List<NewsItem> fetchCourSupreme() {
         List<NewsItem> list = new ArrayList<>();
         try {
-            Document doc = Jsoup.connect("https://coursupreme.cm/publication/actuality").get();
+            Document doc = Jsoup.connect(
+                    "https://coursupreme.cm/publication/actuality"
+            ).get();
 
-            Elements articles = doc.select(".item a");
+            Elements blocks = doc.select(".block-news");
 
-            articles.forEach(a -> {
-                NewsItem item = new NewsItem();
-                item.setTitle(a.text());
-                item.setUrl(a.attr("href"));
-                item.setOrigin("Cour Suprême");
+            blocks.forEach(b -> {
+                String title = b.select("h4").text().trim();
+                String relativeUrl = b.select("a").attr("href").trim();
 
-                list.add(item);
+                if (!title.isEmpty() && !relativeUrl.isEmpty()) {
+                    NewsItem item = new NewsItem();
+                    item.setTitle(title);
+                    item.setUrl("https://coursupreme.cm" + relativeUrl);
+                    item.setOrigin("Cour Suprême");
+                    list.add(item);
+                }
             });
 
         } catch (Exception e) {
@@ -150,15 +168,15 @@ public class LegalNewsService {
         }
         return list;
     }
-        
 
-    // ===============
-    // CRON : 1/jour
-    // ===============
+    // =====================================
+    // INIT + CRON QUOTIDIEN
+    // =====================================
+
     @PostConstruct
     public void init() {
         log.info("Initialisation : chargement immédiat des actualités...");
-        refreshNews(); // Remplit le cache au démarrage
+        refreshNews();
     }
 
     @Scheduled(cron = "0 0 7 * * *", zone = "Africa/Douala")
@@ -171,7 +189,7 @@ public class LegalNewsService {
         all.addAll(fetchBarreau());
         all.addAll(fetchCourSupreme());
 
-        // Retirer doublons
+        // Suppression doublons
         Set<String> seen = new HashSet<>();
         List<NewsItem> unique = new ArrayList<>();
 
@@ -183,17 +201,18 @@ public class LegalNewsService {
         }
 
         cachedNews = unique;
-        log.info("Actualités mises à jour : " + unique.size());
+        log.info("Actualités mises à jour : {}", unique.size());
     }
 
     public List<NewsItem> getNews() {
         return cachedNews;
     }
 
+    // =====================================
+    // Bypass SSL pour sites mal configurés
+    // =====================================
     static {
-        // Désactive la validation SSL pour Jsoup
         javax.net.ssl.HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> true);
-
         try {
             javax.net.ssl.SSLContext sc = javax.net.ssl.SSLContext.getInstance("SSL");
             sc.init(null, new javax.net.ssl.TrustManager[]{ new javax.net.ssl.X509TrustManager() {
@@ -202,9 +221,6 @@ public class LegalNewsService {
                 public void checkServerTrusted(java.security.cert.X509Certificate[] certs, String authType) {}
             }}, new java.security.SecureRandom());
             javax.net.ssl.HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception ignored) {}
     }
 }
-
