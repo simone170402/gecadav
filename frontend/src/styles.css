@@ -57,3 +57,9 @@ html, body {
   background: rgba(0,0,0,0.5);
 }
 
+.goog-logo-link {
+  display: none !important;
+}
+.goog-te-gadget {
+  font-size: 0 !important;
+}

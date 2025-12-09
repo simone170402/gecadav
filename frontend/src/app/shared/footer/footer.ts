@@ -15,7 +15,6 @@ export class Footer implements OnInit {
   latestNews: any[] = [];
   loading = true;
 
-  // 👉 Ton backend Render
   private backendUrl = 'https://gecadav-1.onrender.com/news';
 
   constructor(private http: HttpClient) {}
@@ -24,13 +23,27 @@ export class Footer implements OnInit {
     this.loadNews();
   }
 
+  truncate(text: string, max: number = 50) {
+    return text.length > max ? text.substring(0, max) + "…" : text;
+  }
+
+  removeDuplicates(list: any[]): any[] {
+    const seen = new Set();
+    return list.filter(item => {
+      if (!item.url || seen.has(item.url)) return false;
+      seen.add(item.url);
+      return true;
+    });
+  }
+
   loadNews() {
     this.loading = true;
 
     this.http.get<any[]>(this.backendUrl).subscribe({
       next: (data) => {
-        // On affiche les 6 premières
-        this.latestNews = data.slice(0, 6);
+        // Suppression doublons + prendre les 8 premiers
+        const filtered = this.removeDuplicates(data);
+        this.latestNews = filtered.slice(0, 5);
       },
       error: (err) => {
         console.error('Erreur lors du chargement des actualités : ', err);

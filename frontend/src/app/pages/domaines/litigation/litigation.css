@@ -1,0 +1,146 @@
+/* ===============================
+   GLOBAL WRAPPER
+   =============================== */
+.page-wrapper {
+  max-width: 1150px;
+  margin: 0 auto;
+  padding: 160px 30px 100px;
+  font-family: 'Poppins', sans-serif;
+  color: #3d3d3d;
+  line-height: 1.9;
+}
+
+/* ===============================
+   HEADER PREMIUM
+   =============================== */
+.page-header {
+  height: 280px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 12px;
+  display: flex;
+  align-items: flex-end;
+  padding: 40px;
+  position: relative;
+  margin-bottom: 50px;
+  overflow: hidden;
+}
+
+/* Overlay gold gradient */
+.page-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom right, rgba(0,0,0,0.1), rgba(0,0,0,0.55));
+}
+
+/* Header title */
+.page-header h1 {
+  position: relative;
+  z-index: 3;
+  font-size: 46px;
+  color: white;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* ===============================
+   SUBTITLE WITH DECORATION
+   =============================== */
+.section-title {
+  font-size: 30px;
+  font-weight: 600;
+  color: #bfa14a;
+  margin-top: 60px;
+  margin-bottom: 15px;
+  position: relative;
+  padding-bottom: 12px;
+}
+
+.section-title::after {
+  content: "";
+  position: absolute;
+  height: 4px;
+  width: 80px;
+  background: #bfa14a;
+  bottom: 0;
+  left: 0;
+  border-radius: 8px;
+}
+
+/* ===============================
+   PARAGRAPHS
+   =============================== */
+.page-wrapper p {
+  font-size: 17px;
+  margin-bottom: 20px;
+}
+
+/* ===============================
+   LISTS
+   =============================== */
+ul.pretty-list {
+  margin-left: 25px;
+  margin-top: 10px;
+}
+
+.pretty-list li {
+  margin-bottom: 12px;
+  padding-left: 5px;
+  font-size: 16px;
+}
+
+/* ===============================
+   SIDE SOMMAIRE (TABLE OF CONTENTS)
+   =============================== */
+.toc {
+  position: sticky;
+  top: 120px;
+  background: white;
+  padding: 20px;
+  border-left: 4px solid #bfa14a;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  width: 260px;
+  margin-right: 40px;
+}
+
+.toc h3 {
+  font-size: 20px;
+  margin-bottom: 12px;
+  color: #bfa14a;
+  font-weight: 600;
+}
+
+.toc a {
+  display: block;
+  text-decoration: none;
+  margin-bottom: 10px;
+  color: #444;
+  transition: 0.2s;
+}
+
+.toc a:hover {
+  color: #bfa14a;
+  transform: translateX(4px);
+}
+
+/* ===============================
+   LAYOUT (TOC + CONTENT)
+   =============================== */
+.page-flex {
+  display: flex;
+  gap: 40px;
+}
+
+/* Responsive */
+@media(max-width: 900px) {
+  .page-flex {
+    flex-direction: column;
+  }
+  .toc {
+    width: 100%;
+    position: relative;
+    top: 0;
+  }
+}

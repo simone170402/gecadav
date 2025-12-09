@@ -1,194 +1,241 @@
 <section class="pt-32 pb-20 bg-white px-6 md:px-16 lg:px-24 font-['Poppins']">
-  <h2 class="text-[#bfa14a] text-3xl md:text-4xl font-bold mb-4 text-center uppercase tracking-wide">
+
+  <!-- TITLE -->
+  <h2 class="section-title text-[#bfa14a] text-3xl md:text-4xl font-bold mb-4 text-center uppercase tracking-wide">
     Areas of Practice
   </h2>
+
   <p class="text-gray-600 text-sm md:text-base max-w-3xl mx-auto text-center mb-12">
-    Tsapy &amp; Partners offers comprehensive legal services across key practice areas, combining
-    deep local knowledge with international standards of excellence.
+    Tsapy &amp; Partners offers comprehensive legal services across key practice areas,
+    combining deep local knowledge with international standards of excellence.
   </p>
 
+  <!-- GRID -->
   <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
 
-    <!-- 1. Litigation & Dispute Resolution -->
-    <div class="bg-gray-50 border-t-4 border-[#bfa14a] p-6 rounded-lg shadow-sm hover:shadow-xl transition">
-      <img src="/images/litigation.jpg" alt="Litigation" class="rounded-md mb-4 h-40 w-full object-cover" />
-      <h3 class="font-semibold text-[#bfa14a] text-lg mb-2">Litigation &amp; Dispute Resolution</h3>
+    <!-- 1. Litigation -->
+    <div class="domain-card bg-gray-50 border-t-4 border-[#bfa14a] p-6 rounded-lg shadow-sm">
+      <img src="/images/litigation.jpg" alt="Litigation"
+           class="rounded-md mb-4 h-40 w-full object-cover" />
+      <h3 class="font-semibold text-[#bfa14a] text-lg mb-2">Litigation</h3>
       <p class="text-gray-600 text-sm mb-3">
         Representation in complex disputes before civil, criminal, commercial and administrative courts.
       </p>
-      <a routerLink="/domains/litigation" class="text-[#bfa14a] text-sm font-medium hover:underline">
-        Learn more →
-      </a>
+      <ul class="sub-services">
+        <li>Criminal litigation</li>
+        <li>Civil, family &amp; succession disputes</li>
+        <li>Land &amp; property disputes</li>
+        <li>Administrative litigation</li>
+      </ul>
+      <a routerLink="/domaines/litigation" class="learn-more">Learn more →</a>
     </div>
 
-    <!-- 2. Criminal Litigation -->
-    <div class="bg-gray-50 border-t-4 border-[#bfa14a] p-6 rounded-lg shadow-sm hover:shadow-xl transition">
-      <img src="/images/criminal-litigation.jpg" alt="Criminal Litigation"
-           class="rounded-md mb-4 h-40 w-full object-cover" />
-      <h3 class="font-semibold text-[#bfa14a] text-lg mb-2">Criminal Litigation</h3>
-      <p class="text-gray-600 text-sm mb-3">
-        Assistance from early investigation to trial to safeguard fundamental rights and due process.
-      </p>
-      <a routerLink="/domains/criminal-litigation" class="text-[#bfa14a] text-sm font-medium hover:underline">
-        Learn more →
-      </a>
-    </div>
-
-    <!-- 3. Civil, Family & Succession Litigation -->
-    <div class="bg-gray-50 border-t-4 border-[#bfa14a] p-6 rounded-lg shadow-sm hover:shadow-xl transition">
-      <img src="/images/civil-litigation.jpg" alt="Civil Litigation"
-           class="rounded-md mb-4 h-40 w-full object-cover" />
-      <h3 class="font-semibold text-[#bfa14a] text-lg mb-2">Civil, Family &amp; Succession</h3>
-      <p class="text-gray-600 text-sm mb-3">
-        Divorce, alimony, succession disputes, paternity, civil status and contractual liability.
-      </p>
-      <a routerLink="/domains/civil-litigation" class="text-[#bfa14a] text-sm font-medium hover:underline">
-        Learn more →
-      </a>
-    </div>
-
-    <!-- 4. Administrative & Public Law Litigation -->
-    <div class="bg-gray-50 border-t-4 border-[#bfa14a] p-6 rounded-lg shadow-sm hover:shadow-xl transition">
-      <img src="/images/admin-law.jpg" alt="Administrative Law"
-           class="rounded-md mb-4 h-40 w-full object-cover" />
-      <h3 class="font-semibold text-[#bfa14a] text-lg mb-2">Administrative &amp; Public Law</h3>
-      <p class="text-gray-600 text-sm mb-3">
-        Challenges against administrative acts, elections disputes and conflicts involving public bodies.
-      </p>
-      <a routerLink="/domains/administrative-litigation" class="text-[#bfa14a] text-sm font-medium hover:underline">
-        Learn more →
-      </a>
-    </div>
-
-    <!-- 5. Corporate & Commercial Law -->
-    <div class="bg-gray-50 border-t-4 border-[#bfa14a] p-6 rounded-lg shadow-sm hover:shadow-xl transition">
-      <img src="/images/corporate-law.jpg" alt="Corporate Law"
-           class="rounded-md mb-4 h-40 w-full object-cover" />
-      <h3 class="font-semibold text-[#bfa14a] text-lg mb-2">Corporate &amp; Commercial Law</h3>
-      <p class="text-gray-600 text-sm mb-3">
-        Day-to-day corporate support, commercial structuring and regulatory compliance for businesses.
-      </p>
-      <a routerLink="/domains/corporate-commercial" class="text-[#bfa14a] text-sm font-medium hover:underline">
-        Learn more →
-      </a>
-    </div>
-
-    <!-- 6. Mergers & Acquisitions -->
-    <div class="bg-gray-50 border-t-4 border-[#bfa14a] p-6 rounded-lg shadow-sm hover:shadow-xl transition">
+    <!-- 2. Mergers & Acquisitions -->
+    <div class="domain-card bg-gray-50 border-t-4 border-[#bfa14a] p-6 rounded-lg shadow-sm">
       <img src="/images/ma.jpg" alt="Mergers and Acquisitions"
            class="rounded-md mb-4 h-40 w-full object-cover" />
       <h3 class="font-semibold text-[#bfa14a] text-lg mb-2">Mergers &amp; Acquisitions</h3>
       <p class="text-gray-600 text-sm mb-3">
-        Strategic advice on local and cross-border transactions, restructurings and joint ventures.
+        Strategic advice on local and cross-border transactions, reorganisations and joint ventures.
       </p>
-      <a routerLink="/domains/mergers-acquisitions" class="text-[#bfa14a] text-sm font-medium hover:underline">
-        Learn more →
-      </a>
+      <ul class="sub-services">
+        <li>Cross-border M&amp;A</li>
+        <li>Corporate reorganisations</li>
+        <li>Joint ventures</li>
+        <li>Post-transaction integration</li>
+      </ul>
+      <a routerLink="/domaines/mergers-acquisitions" class="learn-more">Learn more →</a>
     </div>
 
-    <!-- 7. Business Registration & Corporate Governance -->
-    <div class="bg-gray-50 border-t-4 border-[#bfa14a] p-6 rounded-lg shadow-sm hover:shadow-xl transition">
-      <img src="/images/business-registration.jpg" alt="Business Registration"
-           class="rounded-md mb-4 h-40 w-full object-cover" />
-      <h3 class="font-semibold text-[#bfa14a] text-lg mb-2">Business Registration &amp; Governance</h3>
-      <p class="text-gray-600 text-sm mb-3">
-        Company incorporation, shareholders’ arrangements and on-going corporate governance support.
-      </p>
-      <a routerLink="/domains/business-registration" class="text-[#bfa14a] text-sm font-medium hover:underline">
-        Learn more →
-      </a>
-    </div>
-
-    <!-- 8. Corporate Restructuring & Insolvency -->
-    <div class="bg-gray-50 border-t-4 border-[#bfa14a] p-6 rounded-lg shadow-sm hover:shadow-xl transition">
-      <img src="/images/restructuring.jpg" alt="Corporate Restructuring"
-           class="rounded-md mb-4 h-40 w-full object-cover" />
-      <h3 class="font-semibold text-[#bfa14a] text-lg mb-2">Corporate Restructuring &amp; Insolvency</h3>
-      <p class="text-gray-600 text-sm mb-3">
-        Assistance in restructuring, bankruptcy, liquidation and corporate rescue procedures.
-      </p>
-      <a routerLink="/domains/restructuring-insolvency" class="text-[#bfa14a] text-sm font-medium hover:underline">
-        Learn more →
-      </a>
-    </div>
-
-    <!-- 9. Employment & Compensation -->
-    <div class="bg-gray-50 border-t-4 border-[#bfa14a] p-6 rounded-lg shadow-sm hover:shadow-xl transition">
+    <!-- 3. Employment & Compensation -->
+    <div class="domain-card bg-gray-50 border-t-4 border-[#bfa14a] p-6 rounded-lg shadow-sm">
       <img src="/images/employment.jpg" alt="Employment Law"
            class="rounded-md mb-4 h-40 w-full object-cover" />
       <h3 class="font-semibold text-[#bfa14a] text-lg mb-2">Employment &amp; Compensation</h3>
       <p class="text-gray-600 text-sm mb-3">
-        Labour advisory, HR strategies, workforce restructuring and labour disputes representation.
+        Support for employers on labour law, HR strategy and workforce management.
       </p>
-      <a routerLink="/domains/employment" class="text-[#bfa14a] text-sm font-medium hover:underline">
-        Learn more →
-      </a>
+      <ul class="sub-services">
+        <li>Day-to-day HR advisory</li>
+        <li>Workforce restructuring</li>
+        <li>Collective bargaining &amp; unions</li>
+        <li>Labour disputes</li>
+      </ul>
+      <a routerLink="/domaines/employment-compensation" class="learn-more">Learn more →</a>
     </div>
 
-    <!-- 10. Tax Advisory & Tax Disputes -->
-    <div class="bg-gray-50 border-t-4 border-[#bfa14a] p-6 rounded-lg shadow-sm hover:shadow-xl transition">
+    <!-- 4. Tax -->
+    <div class="domain-card bg-gray-50 border-t-4 border-[#bfa14a] p-6 rounded-lg shadow-sm">
       <img src="/images/tax.jpg" alt="Tax"
            class="rounded-md mb-4 h-40 w-full object-cover" />
-      <h3 class="font-semibold text-[#bfa14a] text-lg mb-2">Tax Advisory &amp; Disputes</h3>
+      <h3 class="font-semibold text-[#bfa14a] text-lg mb-2">Tax</h3>
       <p class="text-gray-600 text-sm mb-3">
-        Strategic tax planning, transactional tax and representation in tax controversy matters.
+        Strategic tax planning and robust support in tax controversy and disputes.
       </p>
-      <a routerLink="/domains/tax" class="text-[#bfa14a] text-sm font-medium hover:underline">
-        Learn more →
-      </a>
+      <ul class="sub-services">
+        <li>Transactional tax</li>
+        <li>Tax planning &amp; structuring</li>
+        <li>Tax audits &amp; investigations</li>
+        <li>Tax disputes &amp; litigation</li>
+      </ul>
+      <a routerLink="/domaines/tax" class="learn-more">Learn more →</a>
     </div>
 
-    <!-- 11. Intellectual Property -->
-    <div class="bg-gray-50 border-t-4 border-[#bfa14a] p-6 rounded-lg shadow-sm hover:shadow-xl transition">
+    <!-- 5. Intellectual Property -->
+    <div class="domain-card bg-gray-50 border-t-4 border-[#bfa14a] p-6 rounded-lg shadow-sm">
       <img src="/images/ip.jpg" alt="Intellectual Property"
            class="rounded-md mb-4 h-40 w-full object-cover" />
       <h3 class="font-semibold text-[#bfa14a] text-lg mb-2">Intellectual Property</h3>
       <p class="text-gray-600 text-sm mb-3">
-        Protection, enforcement and management of trademarks, designs and copyrights.
+        Protection and enforcement of trademarks, designs and copyrights in Africa and beyond.
       </p>
-      <a routerLink="/domains/intellectual-property" class="text-[#bfa14a] text-sm font-medium hover:underline">
-        Learn more →
-      </a>
+      <ul class="sub-services">
+        <li>Trade mark prosecution</li>
+        <li>Copyright protection</li>
+        <li>IP litigation</li>
+        <li>Portfolio management</li>
+      </ul>
+      <a routerLink="/domaines/intellectual-property" class="learn-more">Learn more →</a>
     </div>
 
-    <!-- 12. Commercial Contracts & Business Transactions -->
-    <div class="bg-gray-50 border-t-4 border-[#bfa14a] p-6 rounded-lg shadow-sm hover:shadow-xl transition">
+    <!-- 6. Commercial Law -->
+    <div class="domain-card bg-gray-50 border-t-4 border-[#bfa14a] p-6 rounded-lg shadow-sm">
       <img src="/images/commercial-law.jpg" alt="Commercial Law"
            class="rounded-md mb-4 h-40 w-full object-cover" />
-      <h3 class="font-semibold text-[#bfa14a] text-lg mb-2">Commercial Contracts</h3>
+      <h3 class="font-semibold text-[#bfa14a] text-lg mb-2">Commercial Law</h3>
       <p class="text-gray-600 text-sm mb-3">
-        Drafting and negotiation of distribution, agency, franchising, JV and e-commerce agreements.
+        Securing day-to-day business activities through robust contractual and commercial support.
       </p>
-      <a routerLink="/domains/commercial-contracts" class="text-[#bfa14a] text-sm font-medium hover:underline">
-        Learn more →
-      </a>
+      <ul class="sub-services">
+        <li>Commercial contracts</li>
+        <li>Sale of goods &amp; services</li>
+        <li>Distribution, agency &amp; franchising</li>
+        <li>Commercial disputes</li>
+      </ul>
+      <a routerLink="/domaines/commercial-law" class="learn-more">Learn more →</a>
     </div>
 
-    <!-- 13. Human Rights Consultancy -->
-    <div class="bg-gray-50 border-t-4 border-[#bfa14a] p-6 rounded-lg shadow-sm hover:shadow-xl transition">
+    <!-- 7. Corporate -->
+    <div class="domain-card bg-gray-50 border-t-4 border-[#bfa14a] p-6 rounded-lg shadow-sm">
+      <img src="/images/corporate-law.jpg" alt="Corporate"
+           class="rounded-md mb-4 h-40 w-full object-cover" />
+      <h3 class="font-semibold text-[#bfa14a] text-lg mb-2">Corporate</h3>
+      <p class="text-gray-600 text-sm mb-3">
+        Comprehensive support throughout the life cycle of companies and corporate structures.
+      </p>
+      <ul class="sub-services">
+        <li>Business registration</li>
+        <li>Share capital &amp; ownership changes</li>
+        <li>Shareholder agreements</li>
+        <li>Corporate governance &amp; secretariat</li>
+      </ul>
+      <a routerLink="/domaines/corporate" class="learn-more">Learn more →</a>
+    </div>
+
+    <!-- 8. Corporate Finance -->
+    <div class="domain-card bg-gray-50 border-t-4 border-[#bfa14a] p-6 rounded-lg shadow-sm">
+      <img src="/images/corporate-finance.jpg" alt="Corporate Finance"
+           class="rounded-md mb-4 h-40 w-full object-cover" />
+      <h3 class="font-semibold text-[#bfa14a] text-lg mb-2">Corporate Finance</h3>
+      <p class="text-gray-600 text-sm mb-3">
+        Advice on fundraising, grants and financing structures for growing businesses.
+      </p>
+      <ul class="sub-services">
+        <li>Fundraising &amp; investments</li>
+        <li>Bank financing</li>
+        <li>Grants &amp; incentives</li>
+        <li>Security packages &amp; guarantees</li>
+      </ul>
+      <a routerLink="/domaines/corporate-finance" class="learn-more">Learn more →</a>
+    </div>
+
+    <!-- 9. Insolvency & Bankruptcy -->
+    <div class="domain-card bg-gray-50 border-t-4 border-[#bfa14a] p-6 rounded-lg shadow-sm">
+      <img src="/images/insolvency.jpg" alt="Insolvency and Bankruptcy"
+           class="rounded-md mb-4 h-40 w-full object-cover" />
+      <h3 class="font-semibold text-[#bfa14a] text-lg mb-2">Insolvency &amp; Bankruptcy</h3>
+      <p class="text-gray-600 text-sm mb-3">
+        Preventive and corrective assistance in situations of financial distress.
+      </p>
+      <ul class="sub-services">
+        <li>Restructuring &amp; corporate rescue</li>
+        <li>Liquidation &amp; winding up</li>
+        <li>Directors’ duties &amp; disqualification</li>
+        <li>Insolvency procedures outcomes</li>
+      </ul>
+      <a routerLink="/domaines/insolvency-bankruptcy" class="learn-more">Learn more →</a>
+    </div>
+
+    <!-- 10. Human Rights Consultancy & Contentious Work -->
+    <div class="domain-card bg-gray-50 border-t-4 border-[#bfa14a] p-6 rounded-lg shadow-sm">
       <img src="/images/human-rights.jpg" alt="Human Rights Consultancy"
            class="rounded-md mb-4 h-40 w-full object-cover" />
-      <h3 class="font-semibold text-[#bfa14a] text-lg mb-2">Human Rights Consultancy</h3>
+      <h3 class="font-semibold text-[#bfa14a] text-lg mb-2">
+        Human Rights Consultancy &amp; Contentious Work
+      </h3>
       <p class="text-gray-600 text-sm mb-3">
-        Research, reporting and advisory on gender, child protection, IDPs, access to justice and fair trial.
+        Support to NGOs and institutions in the promotion and protection of human rights.
       </p>
-      <a routerLink="/domains/human-rights" class="text-[#bfa14a] text-sm font-medium hover:underline">
-        Learn more →
-      </a>
+      <ul class="sub-services">
+        <li>Research &amp; legal analysis</li>
+        <li>Drafting of reports &amp; studies</li>
+        <li>Gender &amp; child protection</li>
+        <li>Access to justice &amp; fair trial</li>
+      </ul>
+      <a routerLink="/domaines/human-rights" class="learn-more">Learn more →</a>
     </div>
 
-    <!-- 14. Immigration & International Trade -->
-    <div class="bg-gray-50 border-t-4 border-[#bfa14a] p-6 rounded-lg shadow-sm hover:shadow-xl transition">
-      <img src="/images/immigration-trade.jpg" alt="Immigration and Trade"
+    <!-- 11. Alternative Dispute Resolution -->
+    <div class="domain-card bg-gray-50 border-t-4 border-[#bfa14a] p-6 rounded-lg shadow-sm">
+      <img src="/images/adr.jpg" alt="Alternative Dispute Resolution"
            class="rounded-md mb-4 h-40 w-full object-cover" />
-      <h3 class="font-semibold text-[#bfa14a] text-lg mb-2">Immigration &amp; International Trade</h3>
+      <h3 class="font-semibold text-[#bfa14a] text-lg mb-2">Alternative Dispute Resolution</h3>
       <p class="text-gray-600 text-sm mb-3">
-        Immigration procedures, residency permits as well as support on import, export and customs issues.
+        Efficient and confidential resolution of disputes outside traditional court proceedings.
       </p>
-      <a routerLink="/domains/immigration-trade" class="text-[#bfa14a] text-sm font-medium hover:underline">
-        Learn more →
-      </a>
+      <ul class="sub-services">
+        <li>Mediation</li>
+        <li>Conciliation</li>
+        <li>Arbitration</li>
+        <li>Negotiated settlements</li>
+      </ul>
+      <a routerLink="/domaines/alternative-dispute-resolution" class="learn-more">Learn more →</a>
+    </div>
+
+    <!-- 12. Immigration -->
+    <div class="domain-card bg-gray-50 border-t-4 border-[#bfa14a] p-6 rounded-lg shadow-sm">
+      <img src="/images/immigration.jpg" alt="Immigration"
+           class="rounded-md mb-4 h-40 w-full object-cover" />
+      <h3 class="font-semibold text-[#bfa14a] text-lg mb-2">Immigration</h3>
+      <p class="text-gray-600 text-sm mb-3">
+        Assistance with immigration procedures for individuals and businesses in and out of Africa.
+      </p>
+      <ul class="sub-services">
+        <li>Residency &amp; work permits</li>
+        <li>Asylum &amp; protection</li>
+        <li>Regularisation of status</li>
+        <li>Corporate mobility support</li>
+      </ul>
+      <a routerLink="/domaines/immigration" class="learn-more">Learn more →</a>
+    </div>
+
+    <!-- 13. Import & Export -->
+    <div class="domain-card bg-gray-50 border-t-4 border-[#bfa14a] p-6 rounded-lg shadow-sm">
+      <img src="/images/import-export.jpg" alt="Import and Export"
+           class="rounded-md mb-4 h-40 w-full object-cover" />
+      <h3 class="font-semibold text-[#bfa14a] text-lg mb-2">Import &amp; Export</h3>
+      <p class="text-gray-600 text-sm mb-3">
+        Guidance on customs, cross-border trade and international movement of goods.
+      </p>
+      <ul class="sub-services">
+        <li>Customs duties &amp; procedures</li>
+        <li>Cross-border trade compliance</li>
+        <li>Trade &amp; logistics contracts</li>
+        <li>Transport &amp; risk management</li>
+      </ul>
+      <a routerLink="/domaines/import-export" class="learn-more">Learn more →</a>
     </div>
 
   </div>
 </section>
+

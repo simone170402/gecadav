@@ -104,23 +104,48 @@ footer {
   text-decoration: none;
 }
 
+.footer-column {
+    line-height: 1.6;
+}
+
+.footer-column p {
+    margin: 6px 0;
+}
+
+.footer-column a {
+    text-decoration: none;
+    color: #ddd;
+    font-weight: 400;
+    transition: color 0.2s ease;
+}
+
 .footer-column a:hover {
-  color: #bfa14a;
+    color: #f5c542;
 }
 
 .news-badge {
-  font-size: 10px;
-  padding: 2px 6px;
-  border-radius: 3px;
-  margin-left: 6px;
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-size: 10px;
+    margin-left: 8px;
+    font-weight: bold;
+    text-transform: uppercase;
 }
 
 .badge-cmr {
-  background: #007bff;
+    background-color: #0c3d22;
+    color: #a8ffd6;
 }
 
 .badge-world {
-  background: #444;
+    background-color: #1a1a1a;
+    color: #f4b300;
+}
+
+/* Ajout d'un petit point jaune élégant */
+.footer-news-dot {
+    color: #f4c542;
+    margin-right: 5px;
 }
 
 
@@ -153,6 +178,29 @@ footer {
   justify-content: center;
   align-items: center;
 }
+
+.footer-column p {
+    opacity: 0;
+    animation: fadeIn 0.6s ease forwards;
+}
+
+/* Colonne Latest Legal News élargie */
+.footer-column.news-column {
+  flex: 2.2; /* Elle prendra environ 2x la place des autres */
+}
+
+
+.footer-column p:nth-child(1) { animation-delay: 0.1s; }
+.footer-column p:nth-child(2) { animation-delay: 0.2s; }
+.footer-column p:nth-child(3) { animation-delay: 0.3s; }
+.footer-column p:nth-child(4) { animation-delay: 0.4s; }
+.footer-column p:nth-child(5) { animation-delay: 0.5s; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 
 /* Barre d’email / newsletter */
 .search-container {
