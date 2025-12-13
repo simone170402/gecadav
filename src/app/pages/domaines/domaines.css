@@ -2,32 +2,57 @@
 /*       AREAS OF PRACTICE       */
 /* ============================= */
 
-/* Animation lors du hover */
 .domain-card {
   transition: all 0.35s ease;
 }
 
 .domain-card:hover {
   transform: translateY(-6px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
 }
 
-/* Image arrondie et stable */
+/* Image hover effect */
 .domain-card img {
   transition: all 0.35s ease;
 }
 
 .domain-card:hover img {
-  filter: brightness(1.03);
+  filter: brightness(1.05);
 }
 
-/* Correction responsive padding */
+/* Sous-services (liste) */
+.sub-services {
+  margin-bottom: 0.75rem;
+  font-size: 0.8rem;
+  color: #4b5563; /* gray-600 */
+  list-style-type: disc;
+  padding-left: 1.1rem;
+}
+
+.sub-services li {
+  line-height: 1.3;
+}
+
+/* Mobile image height */
 @media (max-width: 768px) {
   .domain-card img {
     height: 180px !important;
   }
 }
 
-/* Section title spacing */
+/* Section title */
 .section-title {
   letter-spacing: 1px;
+}
+
+/* Learn more link */
+.learn-more {
+  color: #bfa14a;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.learn-more:hover {
+  text-decoration: underline;
 }

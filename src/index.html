@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <title>Cabinet Tsapy & Partners</title>
   <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <!-- Google Fonts (bonne méthode) -->
@@ -12,5 +12,34 @@
 </head>
 <body>
   <app-root></app-root>
+
+  <div id="google_translate_element2"></div>
+  <script>
+  function googleTranslateElementInit2() {
+    new google.translate.TranslateElement(
+      { pageLanguage: 'en', autoDisplay: false },
+      'google_translate_element2'
+    );
+  }
+  </script>
+
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit2"></script>
+
+  <script>
+  function doGTranslate(langPair) {
+    if (!langPair) return;
+    var lang = langPair.split('|')[1];
+    var select = document.querySelector('#google_translate_element2 select');
+    if (!select) {
+      setTimeout(() => doGTranslate(langPair), 300);
+      return;
+    }
+    select.value = lang;
+    select.dispatchEvent(new Event('change'));
+  }
+  </script>
+
+
+
 </body>
 </html>
