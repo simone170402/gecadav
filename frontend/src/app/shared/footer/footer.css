@@ -48,13 +48,7 @@ footer {
   font-size: 14px;
 }
 
-.footer-column.logo-column {
-  display: flex;
-  flex-direction: column;
-  align-items: center;     /* Centre horizontalement */
-  justify-content: center; /* Centre verticalement */
-  gap: 15px;               /* Petit espace chic */
-}
+
 
 /* ===============================
    PARTIE 2 : 4 COLONNES
@@ -170,14 +164,19 @@ footer {
 /* Logo principal dans le footer (colonne 1) */
 .footer-column img.logo,
 .footer-column img.footer-logo {
-  width: 175px;
-  height: 175px;
+  max-width: 150px; /* Taille maximale de l'image */
+  max-height: 150px;
+  width: auto;
+  height: auto;
   object-fit: contain;
   display: block;
   margin-bottom: 15px;
-  justify-content: center;
-  align-items: center;
+  opacity: 1;
+  filter: brightness(1);
+  margin: 0 auto;
 }
+
+
 
 .footer-column p {
     opacity: 0;

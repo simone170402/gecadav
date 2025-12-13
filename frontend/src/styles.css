@@ -15,6 +15,7 @@ html, body {
   margin: 0;
   padding: 0;
   font-family: 'Poppins', sans-serif;
+  top: 0 !important;
 }
 
 @media (min-resolution: 1.25dppx) {
@@ -35,31 +36,60 @@ html, body {
   }
 }
 
-/* Scrollbar transparente + fine */
+/* ---------- SCROLLBAR ---------- */
 ::-webkit-scrollbar {
-  width: 3px;              /* Épaisseur */
-  background: transparent !important; /* Fond transparent */
+  width: 3px;
+  background: transparent !important;
 }
 
-/* Zone derrière la barre */
 ::-webkit-scrollbar-track {
   background: transparent !important;
 }
 
-/* La barre elle-même (thumb) */
 ::-webkit-scrollbar-thumb {
-  background: rgba(0,0,0,0.3);  /* Gris semi-transparent */
+  background: rgba(0, 0, 0, 0.3);
   border-radius: 10px;
 }
 
-/* Au survol */
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
 }
 
-.goog-logo-link {
-  display: none !important;
+/* Cache la bannière Google */
+.goog-te-banner-frame,
+iframe.goog-te-banner-frame,
+.goog-te-banner {
+    display: none !important;
 }
-.goog-te-gadget {
-  font-size: 0 !important;
+
+body { top: 0 !important; }
+
+/* Cache la boîte Google */
+#google_translate_element2 {
+    display: none !important;
 }
+
+/* Cache le tooltip Google */
+#goog-gt-tt { display: none !important; }
+
+/* ===== Language flags (local, safe) ===== */
+.flag {
+  display: inline-block;
+  width: 24px;
+  height: 16px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 3px;
+  border: 1px solid #bfa14a;
+  cursor: pointer;
+}
+
+.flag-fr {
+  background-image: url('../public/images/fr.png');
+}
+
+.flag-en {
+  background-image: url('../public/images/en.png');
+}
+
+
