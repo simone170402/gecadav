@@ -34,15 +34,6 @@ export class Header implements AfterViewInit {
       });
   }
 
-  changeLang(lang: 'en' | 'fr') {
-  const select = document.querySelector<HTMLSelectElement>('select.goog-te-combo');
-  if (select) {
-    select.value = lang;
-    select.dispatchEvent(new Event('change'));
-  }
-}
-
-
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
   }
