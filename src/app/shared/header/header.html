@@ -101,6 +101,11 @@
         </a>
 
       </div>
+      <div class="flex items-center space-x-2">
+        <button type="button" (click)="changeLang('en')" class="hover:opacity-80"> <span class="flag flag-en"></span></button>
+        <button type="button" (click)="changeLang('fr')" class="hover:opacity-80"><span class="flag flag-fr"></span></button>
+      </div>
+
 
 
     </nav>
@@ -117,13 +122,13 @@
 
   <!-- MENU MOBILE -->
   <div *ngIf="isMenuOpen" class="md:hidden bg-white text-gray-900 shadow-md py-4 space-y-3 text-center animate-fadeIn">
-    <a routerLink="/" (click)="toggleMenu()" class="block hover:text-[#bfa14a]">Home</a>
-    <a routerLink="/apropos" (click)="toggleMenu()" class="block hover:text-[#bfa14a]">About Us</a>
-    <a routerLink="/vision" (click)="toggleMenu()" class="block hover:text-[#bfa14a]">Vision & Mission</a>
-    <a routerLink="/cabinet" (click)="toggleMenu()" class="block hover:text-[#bfa14a]">Our Firm</a>
-    <a routerLink="/avocats" (click)="toggleMenu()" class="block hover:text-[#bfa14a]">Our Team</a>
-    <a routerLink="/domaines" (click)="toggleMenu()" class="block hover:text-[#bfa14a]">Services</a>
-    <a routerLink="/contact" (click)="toggleMenu()" class="block hover:text-[#bfa14a]">Contact</a>
+    <a routerLink="/" (click)="toggleMenu()" class="block text-gray-900 hover:text-[#bfa14a]">Home</a>
+    <a routerLink="/apropos" (click)="toggleMenu()" class="block text-gray-900 hover:text-[#bfa14a]">About Us</a>
+    <a routerLink="/vision" (click)="toggleMenu()" class="block text-gray-900 hover:text-[#bfa14a]">Vision & Mission</a>
+    <a routerLink="/cabinet" (click)="toggleMenu()" class="block text-gray-900 hover:text-[#bfa14a]">Our Firm</a>
+    <a routerLink="/avocats" (click)="toggleMenu()" class="block text-gray-900 hover:text-[#bfa14a]">Our Team</a>
+    <a routerLink="/domaines" (click)="toggleMenu()" class="block text-gray-900 hover:text-[#bfa14a]">Services</a>
+    <a routerLink="/contact" (click)="toggleMenu()" class="block text-gray-900 hover:text-[#bfa14a]">Contact</a>
 
     <a routerLink="/admin" (click)="toggleMenu()"
       class="block bg-gradient-to-r from-gray-300 to-[#bfa14a] text-black py-3 rounded-md w-1/2 mx-auto">
@@ -134,6 +139,25 @@
       class="block bg-gradient-to-r from-[#bfa14a] to-[#2a2a2a] text-white py-3 rounded-md w-1/2 mx-auto">
       Sign In
     </a>
+  </div>
+  <!-- traduction -->
+   <!-- 🌍 Traduction (mobile) -->
+  <div class="flex justify-center items-center gap-4 pt-4 border-t border-gray-200">
+    <button
+      (click)="changeLang('en')"
+      aria-label="English"
+      class="text-2xl hover:scale-110 transition"
+    >
+      <span class="flag flag-en"></span>
+    </button>
+
+    <button
+      (click)="changeLang('fr')"
+      aria-label="Français"
+      class="text-2xl hover:scale-110 transition"
+    >
+      <span class="flag flag-fr"></span>
+    </button>
   </div>
 </header>
 
