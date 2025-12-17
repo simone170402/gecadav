@@ -6,7 +6,7 @@ import { Procurations } from './admin/procurations/procurations';
 import { Rendezvous } from './admin/rendezvous/rendezvous';
 import { Facturation } from './admin/facturation/facturation';
 import { Home } from './pages/home/home';
-import { Avocats } from './pages/avocats/avocats';
+import { Avocats as Avocats2 } from './pages/avocats/avocats';
 import { Contact } from './pages/contact/contact';
 import { Cabinet } from './pages/cabinet/cabinet';
 import { Domaines } from './pages/domaines/domaines';
@@ -26,6 +26,11 @@ import { HumanRights } from './pages/domaines/human-rights/human-rights';
 import { AlternativeDisputeResolution } from './pages/domaines/alternative-dispute-resolution/alternative-dispute-resolution';
 import { Immigration } from './pages/domaines/immigration/immigration';
 import { ImportExport } from './pages/domaines/import-export/import-export';
+import { Avocat1 } from './pages/avocats/avocat1/avocat1';
+import { Avocat2 } from './pages/avocats/avocat2/avocat2';
+import { Avocat3 } from './pages/avocats/avocat3/avocat3';
+import { Avocat4 } from './pages/avocats/avocat4/avocat4';
+import { Avocat5 } from './pages/avocats/avocat5/avocat5';
 
 
 export const routes: Routes = [
@@ -34,7 +39,7 @@ export const routes: Routes = [
   { path: '', component: Home },
   { path: 'apropos', component: Apropos },
   { path: 'cabinet', component: Cabinet },
-  { path: 'avocats', component: Avocats },
+  { path: 'avocats', component: Avocats2 },
   { path: 'domaines', component: Domaines },
   { path: 'contact', component: Contact },
   { path: 'vision', component: Vision },
@@ -53,6 +58,12 @@ export const routes: Routes = [
   { path: 'domaines/immigration', component: Immigration },
   { path: 'domaines/import-export', component: ImportExport },
 
+
+  { path: 'avocats/avocat1', component: Avocat1 },
+  { path: 'avocats/avocat2', component: Avocat2 },
+  { path: 'avocats/avocat3', component: Avocat3 },
+  { path: 'avocats/avocat4', component: Avocat4 },
+  { path: 'avocats/avocat5', component: Avocat5 },
 
   //  Partie admin
   {
