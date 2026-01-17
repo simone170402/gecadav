@@ -25,35 +25,60 @@ export class Contact {
   errorMsg = '';
 
   sendMessage() {
-    this.isSending = true;
-    this.successMsg = '';
-    this.errorMsg = '';
+  this.isSending = true;
+  this.successMsg = '';
+  this.errorMsg = '';
 
-    const finalSubject =
-      this.formData.subject === 'other'
-        ? this.formData.customSubject
-        : this.formData.subject;
+  const finalSubject =
+    this.formData.subject === 'other'
+      ? this.formData.customSubject
+      : this.formData.subject;
 
-    emailjs.send(
-      'service_twdl6dx',     // 🔴 remplace
-      'template_jvkxffg',    // 🔴 remplace
+  // 1️⃣ Mail vers le cabinet
+  emailjs.send(
+    'service_twdl6dx',
+    'template_jvkxffg',
+    {
+      name: this.formData.name,
+      email: this.formData.email,
+      subject: finalSubject,
+      message: this.formData.message,
+    },
+    'qQsVABTyMKFKp8ini'
+  )
+  .then(() => {
+
+    // 2️⃣ Mail AUTOMATIQUE vers le client
+    return emailjs.send(
+      'service_twdl6dx',
+      'template_yjwfe1e',
       {
         name: this.formData.name,
         email: this.formData.email,
         subject: finalSubject,
-        message: this.formData.message,
       },
-      'qQsVABTyMKFKp8ini'      // 🔴 remplace
-    )
-    .then(() => {
-      this.successMsg = 'Your message has been sent successfully. We will get back to you shortly.';
-      this.formData = { name:'', email:'', subject:'', customSubject:'', message:'' };
-    })
-    .catch(() => {
-      this.errorMsg = 'Something went wrong. Please try again later.';
-    })
-    .finally(() => {
-      this.isSending = false;
-    });
-  }
+      'qQsVABTyMKFKp8ini'
+    );
+
+  })
+  .then(() => {
+    this.successMsg =
+      'Your message has been sent successfully. A confirmation email has been sent to you.';
+    this.formData = {
+      name: '',
+      email: '',
+      subject: '',
+      customSubject: '',
+      message: ''
+    };
+  })
+  .catch(() => {
+    this.errorMsg =
+      'Something went wrong. Please try again later.';
+  })
+  .finally(() => {
+    this.isSending = false;
+  });
+}
+
 }
