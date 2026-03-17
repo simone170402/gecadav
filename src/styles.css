@@ -6,16 +6,21 @@
 /* Import Tailwind CSS v4 */
 @import "tailwindcss";
 
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
 :root {
   --container-8xl: 96rem;
 }
 
 /* Reset safe */
-html, body {
+html {
   margin: 0;
   padding: 0;
   font-family: 'Poppins', sans-serif;
-  top: 0 !important;
 }
 
 @media (min-resolution: 1.25dppx) {
@@ -36,43 +41,45 @@ html, body {
   }
 }
 
-/* ---------- SCROLLBAR ---------- */
+/* -------- SCROLLBAR -------- */
 ::-webkit-scrollbar {
-  width: 3px;
-  background: transparent !important;
+  width: 4px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent !important;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.35);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.55);
 }
 
-/* Cache la bannière Google */
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,0,0,.35) transparent;
+}
+
+/* -------- GOOGLE TRANSLATE (BEST EFFORT) -------- */
 .goog-te-banner-frame,
 iframe.goog-te-banner-frame,
-.goog-te-banner {
-    display: none !important;
+.goog-te-gadget,
+.goog-te-balloon-frame,
+#goog-gt-tt,
+.skiptranslate {
+  display: none !important;
 }
 
-body { top: 0 !important; }
-
-/* Cache la boîte Google */
-#google_translate_element2 {
-    display: none !important;
+body {
+  top: 0 !important;
 }
 
-/* Cache le tooltip Google */
-#goog-gt-tt { display: none !important; }
-
-/* ===== Language flags (local, safe) ===== */
+/* -------- LANGUAGE FLAGS -------- */
 .flag {
   display: inline-block;
   width: 24px;
@@ -83,6 +90,7 @@ body { top: 0 !important; }
   border: 1px solid #bfa14a;
   cursor: pointer;
 }
+
 
 .flag-fr {
   background-image: url('../public/images/fr.png');

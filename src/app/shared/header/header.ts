@@ -6,7 +6,7 @@ import { filter } from 'rxjs/operators';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterLinkActive, RouterOutlet, RouterLink],
+  imports: [CommonModule, RouterLinkActive, RouterLink],
   templateUrl: './header.html',
   styleUrl: './header.css'
 })
@@ -33,15 +33,6 @@ export class Header implements AfterViewInit {
         }, 100);
       });
   }
-
-  changeLang(lang: 'en' | 'fr') {
-  const select = document.querySelector<HTMLSelectElement>('select.goog-te-combo');
-  if (select) {
-    select.value = lang;
-    select.dispatchEvent(new Event('change'));
-  }
-}
-
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;

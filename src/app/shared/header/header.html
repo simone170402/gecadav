@@ -60,12 +60,12 @@
         Contact
       </a>
 
-      <a routerLink="/login"
+      <a routerLink="/admin/login"
         class="bg-gradient-to-r from-[#bfa14a] to-[#2a2a2a] text-white px-4 py-2.5 rounded-md hover:scale-105 transition text-sm">
         Sign In
       </a>
 
-      <a routerLink="/admin"
+      <a routerLink="/admin/dashboard"
         class="bg-gradient-to-r from-gray-300 to-[#bfa14a] text-black px-4 py-2.5 rounded-md hover:scale-105 transition text-sm">
         Espace Pro
       </a>
@@ -101,11 +101,6 @@
         </a>
 
       </div>
-      <div class="flex items-center space-x-2">
-        <button type="button" (click)="changeLang('en')" class="hover:opacity-80"> <span class="flag flag-en"></span></button>
-        <button type="button" (click)="changeLang('fr')" class="hover:opacity-80"><span class="flag flag-fr"></span></button>
-      </div>
-
 
 
     </nav>
@@ -130,37 +125,21 @@
     <a routerLink="/domaines" (click)="toggleMenu()" class="block text-gray-900 hover:text-[#bfa14a]">Services</a>
     <a routerLink="/contact" (click)="toggleMenu()" class="block text-gray-900 hover:text-[#bfa14a]">Contact</a>
 
-    <a routerLink="/admin" (click)="toggleMenu()"
+    <a routerLink="/admin/dashboard" (click)="toggleMenu()"
       class="block bg-gradient-to-r from-gray-300 to-[#bfa14a] text-black py-3 rounded-md w-1/2 mx-auto">
       Espace Pro
     </a>
 
-    <a routerLink="/login" (click)="toggleMenu()"
+    <a routerLink="/admin/login" (click)="toggleMenu()"
       class="block bg-gradient-to-r from-[#bfa14a] to-[#2a2a2a] text-white py-3 rounded-md w-1/2 mx-auto">
       Sign In
     </a>
-  </div>
-  <!-- traduction -->
-   <!-- 🌍 Traduction (mobile) -->
-  <div class="flex justify-center items-center gap-4 pt-4 border-t border-gray-200">
-    <button
-      (click)="changeLang('en')"
-      aria-label="English"
-      class="text-2xl hover:scale-110 transition"
-    >
+    <a href="#" onclick="doGTranslate('en|en')" title="English" aria-label="English">
       <span class="flag flag-en"></span>
-    </button>
+    </a>
 
-    <button
-      (click)="changeLang('fr')"
-      aria-label="Français"
-      class="text-2xl hover:scale-110 transition"
-    >
+    <a href="#" onclick="doGTranslate('en|fr')" title="Français" aria-label="Français">
       <span class="flag flag-fr"></span>
-    </button>
+    </a>
   </div>
 </header>
-
-<main>
-  <router-outlet></router-outlet>
-</main>

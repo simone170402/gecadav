@@ -233,36 +233,56 @@
 <!-- ========================= -->
 <!--        SERVICES           -->
 <!-- ========================= -->
-<section class="py-24 px-6 sm:px-12 bg-gray-50 grid md:grid-cols-2 gap-10 items-center">
+<section class="py-24 px-6 sm:px-12 bg-gray-50 space-y-24">
 
-  <div>
-    <h2 class="text-3xl font-semibold text-[#bfa14a] mb-6">Our Services</h2>
+  <h2 class="text-3xl font-semibold text-[#bfa14a] text-center">
+    Our Services
+  </h2>
 
-    <div class="space-y-6">
-      <div>
-        <div class="bg-gradient-to-r from-[#bfa14a] to-[#2a2a2a] text-white inline-block px-4 py-2 rounded-full font-bold mb-2">
-          01
-        </div>
-        <h3 class="text-xl font-semibold">Litigation & Dispute Resolution</h3>
-        <p class="text-gray-600">Representation in civil, criminal, and commercial cases.</p>
+  <!-- SERVICE 1 -->
+  <div class="grid md:grid-cols-2 gap-10 items-center">
+    <div>
+      <div class="bg-gradient-to-r from-[#bfa14a] to-[#2a2a2a] text-white inline-block px-4 py-2 rounded-full font-bold mb-4">
+        01
       </div>
-
-      <div>
-        <div class="bg-gradient-to-r from-[#bfa14a] to-[#2a2a2a] text-white inline-block px-4 py-2 rounded-full font-bold mb-2">
-          02
-        </div>
-        <h3 class="text-xl font-semibold">Corporate & Commercial Law</h3>
-        <p class="text-gray-600">Company formation, contract drafting, business structuring.</p>
-      </div>
+      <h3 class="text-xl font-semibold mb-2">
+        Litigation & Dispute Resolution
+      </h3>
+      <p class="text-gray-600">
+        Representation in civil, criminal, and commercial cases.
+      </p>
     </div>
+
+    <img
+      src="/images/litigation.png"
+      class="rounded-lg shadow-lg w-108 h-72 object-cover"
+      alt="Litigation & Dispute Resolution"
+    />
   </div>
 
-  <div class="space-y-6">
-    <img src="/images/service1.jpg" class="rounded-lg shadow-lg" alt="Service" />
-    <img src="/images/service2.jpg" class="rounded-lg shadow-lg" alt="Service" />
+  <!-- SERVICE 2 -->
+  <div class="grid md:grid-cols-2 gap-10 items-center">
+    <div>
+      <div class="bg-gradient-to-r from-[#bfa14a] to-[#2a2a2a] text-white inline-block px-4 py-2 rounded-full font-bold mb-4">
+        02
+      </div>
+      <h3 class="text-xl font-semibold mb-2">
+        Corporate & Commercial Law
+      </h3>
+      <p class="text-gray-600">
+        Company formation, contract drafting, business structuring.
+      </p>
+    </div>
+
+    <img
+      src="/images/commercial law.png"
+      class="rounded-lg shadow-lg w-108 h-72 object-cover"
+      alt="Corporate & Commercial Law"
+    />
   </div>
 
 </section>
+
 
 
 
@@ -280,7 +300,7 @@
 
   <button class="bg-gradient-to-r from-[#bfa14a] to-[#2a2a2a]
                  text-white px-6 py-3 rounded-md hover:scale-105 transition font-semibold">
-    Contact Us
+    <a routerLink="/contact" routerLinkActive="active-link" class="learn-more">Contact Us</a>
   </button>
 
 </section>

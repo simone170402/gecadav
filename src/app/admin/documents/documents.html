@@ -1,0 +1,55 @@
+<div class="space-y-6">
+
+<h2 class="text-2xl font-bold">Documents</h2>
+
+<div class="bg-white p-6 rounded shadow">
+
+<input type="text" placeholder="Nom document" [(ngModel)]="nom">
+
+<input type="text" placeholder="Type" [(ngModel)]="type">
+
+<input type="file" (change)="onFileSelected($event)">
+
+<button (click)="upload()">Upload</button>
+
+</div>
+
+<table>
+
+<tr>
+<th>Nom</th>
+<th>Type</th>
+<th>Date</th>
+<th>Actions</th>
+</tr>
+
+<tr *ngFor="let doc of documents">
+
+<td>{{doc.nom}}</td>
+<td>{{doc.type}}</td>
+<td>{{doc.dateUpload}}</td>
+
+<td>
+
+<a
+    href="http://localhost:8080/uploads/{{doc.fichier}}"
+    target="_blank"
+>
+
+Télécharger
+
+</a>
+
+<button (click)="delete(doc.id!)">
+
+Supprimer
+
+</button>
+
+</td>
+
+</tr>
+
+</table>
+
+</div>
