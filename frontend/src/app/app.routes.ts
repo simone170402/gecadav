@@ -1,18 +1,13 @@
 import { Routes } from '@angular/router';
-import { Dashboard } from './admin/dashboard/dashboard';
-import { Clients } from './admin/clients/clients';
-import { Affaires } from './admin/affaires/affaires';
-import { Procurations } from './admin/procurations/procurations';
-import { Rendezvous } from './admin/rendezvous/rendezvous';
-import { Facturation } from './admin/facturation/facturation';
+
 import { Home } from './pages/home/home';
 import { Avocats as Avocats2 } from './pages/avocats/avocats';
 import { Contact } from './pages/contact/contact';
 import { Cabinet } from './pages/cabinet/cabinet';
 import { Domaines } from './pages/domaines/domaines';
-import { Layout } from './admin/layout/layout';
 import { Apropos } from './pages/apropos/apropos';
 import { Vision } from './pages/vision/vision';
+
 import { Litigation } from './pages/domaines/litigation/litigation';
 import { MergersAcquisitions } from './pages/domaines/mergers-acquisitions/mergers-acquisitions';
 import { EmploymentCompensation } from './pages/domaines/employment-compensation/employment-compensation';
@@ -26,16 +21,19 @@ import { HumanRights } from './pages/domaines/human-rights/human-rights';
 import { AlternativeDisputeResolution } from './pages/domaines/alternative-dispute-resolution/alternative-dispute-resolution';
 import { Immigration } from './pages/domaines/immigration/immigration';
 import { ImportExport } from './pages/domaines/import-export/import-export';
+
 import { Avocat1 } from './pages/avocats/avocat1/avocat1';
 import { Avocat2 } from './pages/avocats/avocat2/avocat2';
 import { Avocat3 } from './pages/avocats/avocat3/avocat3';
 import { Avocat4 } from './pages/avocats/avocat4/avocat4';
 import { Avocat5 } from './pages/avocats/avocat5/avocat5';
 
+import { authGuard } from './core/auth.guard';
+import { Layout } from './admin/layout/layout';
+import { Login } from './admin/login/login';
 
 export const routes: Routes = [
   // 🌐 Partie publique
-
   { path: '', component: Home },
   { path: 'apropos', component: Apropos },
   { path: 'cabinet', component: Cabinet },
@@ -43,7 +41,8 @@ export const routes: Routes = [
   { path: 'domaines', component: Domaines },
   { path: 'contact', component: Contact },
   { path: 'vision', component: Vision },
-  // 🌐 Domaines - Pages individuelles
+
+  // 🌐 Domaines
   { path: 'domaines/litigation', component: Litigation },
   { path: 'domaines/mergers-acquisitions', component: MergersAcquisitions },
   { path: 'domaines/employment-compensation', component: EmploymentCompensation },
@@ -58,25 +57,50 @@ export const routes: Routes = [
   { path: 'domaines/immigration', component: Immigration },
   { path: 'domaines/import-export', component: ImportExport },
 
-
+  // 🌐 Avocats
   { path: 'avocats/avocat1', component: Avocat1 },
   { path: 'avocats/avocat2', component: Avocat2 },
   { path: 'avocats/avocat3', component: Avocat3 },
   { path: 'avocats/avocat4', component: Avocat4 },
   { path: 'avocats/avocat5', component: Avocat5 },
 
-  //  Partie admin
-  {
-    path: 'admin',
-    component: Layout, //  Layout avec la sidebar
-    children: [
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      { path: 'dashboard', component: Dashboard },
-      { path: 'clients', component: Clients },
-      { path: 'affaires', component: Affaires },
-      { path: 'facturation', component: Facturation },
-      { path: 'procurations', component: Procurations },
-      { path: 'rendezvous', component: Rendezvous },
-    ],
-  },
+  // 🔐 Login admin (public)
+  { path: 'admin/login', component: Login },
+
+  // 🔐 Partie admin protégée avec layout
+ {
+  path: 'admin',
+  component: Layout,
+  canActivate: [authGuard],
+  children: [
+    { path: 'dashboard', loadComponent: () => import('./admin/dashboard/dashboard').then(m => m.Dashboard) },
+
+    { path: 'clients', loadComponent: () => import('./admin/clients/clients').then(m => m.Clients) },
+
+    { path: 'affaires', loadComponent: () => import('./admin/affaires/affaires').then(m => m.Affaires) },
+
+    { path: 'facturation', loadComponent: () => import('./admin/facturation/facturation').then(m => m.Facturation) },
+
+    { path: 'procurations', loadComponent: () => import('./admin/procurations/procurations').then(m => m.Procurations) },
+
+    // 📅 calendrier rendez-vous
+    {
+      path: 'rendezvous',
+      loadComponent: () =>
+        import('./admin/rendezvous/rendezvous-calendar/rendezvous-calendar')
+          .then(m => m.RendezVousCalendarComponent)
+    },
+    {
+      path: 'documents',
+      loadComponent: () =>
+        import('./admin/documents/documents')
+          .then(m => m.Documents)
+    },
+
+    { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+  ]
+},
+
+  // fallback
+  { path: '**', redirectTo: '' }
 ];

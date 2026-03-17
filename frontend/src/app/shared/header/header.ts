@@ -6,7 +6,7 @@ import { filter } from 'rxjs/operators';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterLinkActive, RouterOutlet, RouterLink],
+  imports: [CommonModule, RouterLinkActive, RouterLink],
   templateUrl: './header.html',
   styleUrl: './header.css'
 })

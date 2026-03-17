@@ -1,1 +1,137 @@
-<p>clients works!</p>
+<div class="space-y-8">
+  <div>
+    <h2 class="text-3xl font-bold text-gray-800">Gestion des clients</h2>
+    <p class="text-gray-500 mt-1">Ajoutez, modifiez et consultez les clients du cabinet.</p>
+  </div>
+
+  <div class="grid lg:grid-cols-3 gap-8">
+    <!-- Formulaire -->
+    <div class="lg:col-span-1 bg-white rounded-2xl shadow p-6">
+      <h3 class="text-xl font-semibold mb-4 text-[#bfa14a]">
+        {{ selectedClientId ? 'Modifier le client' : 'Ajouter un client' }}
+      </h3>
+
+      <form [formGroup]="clientForm" (ngSubmit)="onSubmit()" class="space-y-4">
+        <div>
+          <label for="nom" class="block text-sm font-medium mb-1">Nom</label>
+          <input
+            id="nom"
+            type="text"
+            formControlName="nom"
+            placeholder="Entrez le nom"
+            class="w-full border rounded-lg px-4 py-2"
+          />
+        </div>
+
+        <div>
+          <label for="prenom" class="block text-sm font-medium mb-1">Prénom</label>
+          <input
+            id="prenom"
+            type="text"
+            formControlName="prenom"
+            placeholder="Entrez le prénom"
+            class="w-full border rounded-lg px-4 py-2"
+          />
+        </div>
+
+        <div>
+          <label for="email" class="block text-sm font-medium mb-1">Email</label>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            placeholder="exemple@email.com"
+            class="w-full border rounded-lg px-4 py-2"
+          />
+        </div>
+
+        <div>
+          <label for="telephone" class="block text-sm font-medium mb-1">Téléphone</label>
+          <input
+            id="telephone"
+            type="text"
+            formControlName="telephone"
+            placeholder="034 00 000 00"
+            class="w-full border rounded-lg px-4 py-2"
+          />
+        </div>
+
+        <div>
+          <label for="adresse" class="block text-sm font-medium mb-1">Adresse</label>
+          <textarea
+            id="adresse"
+            formControlName="adresse"
+            placeholder="Entrez l’adresse du client"
+            class="w-full border rounded-lg px-4 py-2"
+          ></textarea>
+        </div>
+
+        <div class="flex gap-3">
+          <button
+            type="submit"
+            class="bg-[#bfa14a] text-white px-5 py-2 rounded-lg hover:opacity-90"
+          >
+            {{ selectedClientId ? 'Mettre à jour' : 'Ajouter' }}
+          </button>
+
+          <button
+            type="button"
+            (click)="resetForm()"
+            class="bg-gray-200 text-gray-800 px-5 py-2 rounded-lg hover:bg-gray-300"
+          >
+            Réinitialiser
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Tableau -->
+    <div class="lg:col-span-2 bg-white rounded-2xl shadow p-6">
+      <h3 class="text-xl font-semibold mb-4 text-[#bfa14a]">Liste des clients</h3>
+
+      @if (isLoading) {
+        <p class="text-gray-500">Chargement...</p>
+      } @else {
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b text-gray-600">
+                <th class="py-3">Nom</th>
+                <th class="py-3">Prénom</th>
+                <th class="py-3">Email</th>
+                <th class="py-3">Téléphone</th>
+                <th class="py-3 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (client of clients; track client.id) {
+                <tr class="border-b hover:bg-gray-50">
+                  <td class="py-3">{{ client.nom }}</td>
+                  <td class="py-3">{{ client.prenom }}</td>
+                  <td class="py-3">{{ client.email }}</td>
+                  <td class="py-3">{{ client.telephone }}</td>
+                  <td class="py-3 text-right space-x-2">
+                    <button
+                      type="button"
+                      (click)="editClient(client)"
+                      class="bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700"
+                    >
+                      Modifier
+                    </button>
+                    <button
+                      type="button"
+                      (click)="deleteClient(client.id!)"
+                      class="bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700"
+                    >
+                      Supprimer
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </div>
+  </div>
+</div>

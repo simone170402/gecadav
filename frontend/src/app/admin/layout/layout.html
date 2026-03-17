@@ -1,19 +1,96 @@
-<div class="flex min-h-screen bg-gray-100">
+<div class="min-h-screen flex bg-gray-100">
   <!-- Sidebar -->
-  <aside class="w-64 bg-blue-800 text-white p-4 space-y-4">
-    <h2 class="text-2xl font-bold mb-6 text-center">Espace Avocat ⚖️</h2>
-    <nav class="space-y-3">
-      <a routerLink="/admin/dashboard" routerLinkActive="bg-blue-600" class="block p-2 rounded hover:bg-blue-600">Dashboard</a>
-      <a routerLink="/admin/clients" routerLinkActive="bg-blue-600" class="block p-2 rounded hover:bg-blue-600">Clients</a>
-      <a routerLink="/admin/affaires" routerLinkActive="bg-blue-600" class="block p-2 rounded hover:bg-blue-600">Affaires</a>
-      <a routerLink="/admin/procurations" routerLinkActive="bg-blue-600" class="block p-2 rounded hover:bg-blue-600">Procurations</a>
-      <a routerLink="/admin/rendezvous" routerLinkActive="bg-blue-600" class="block p-2 rounded hover:bg-blue-600">Rendez-vous</a>
-      <a routerLink="/admin/facturation" routerLinkActive="bg-blue-600" class="block p-2 rounded hover:bg-blue-600">Facturation</a>
+  <aside class="w-72 bg-[#1f1f1f] text-white flex flex-col shadow-xl">
+    <div class="p-6 border-b border-gray-700">
+      <h2 class="text-2xl font-bold text-[#bfa14a] text-center">
+        Espace Avocat ⚖️
+      </h2>
+      <p class="text-sm text-gray-400 text-center mt-2">
+        Gestion du cabinet
+      </p>
+    </div>
+
+    <nav class="flex-1 p-4 space-y-2">
+      <a
+        routerLink="/admin/dashboard"
+        routerLinkActive="bg-[#bfa14a] text-black"
+        class="block px-4 py-3 rounded-lg transition hover:bg-[#2c2c2c]"
+      >
+        Dashboard
+      </a>
+
+      <a
+        routerLink="/admin/clients"
+        routerLinkActive="bg-[#bfa14a] text-black"
+        class="block px-4 py-3 rounded-lg transition hover:bg-[#2c2c2c]"
+      >
+        Clients
+      </a>
+
+      <a
+        routerLink="/admin/affaires"
+        routerLinkActive="bg-[#bfa14a] text-black"
+        class="block px-4 py-3 rounded-lg transition hover:bg-[#2c2c2c]"
+      >
+        Affaires
+      </a>
+
+      <a
+        routerLink="/admin/procurations"
+        routerLinkActive="bg-[#bfa14a] text-black"
+        class="block px-4 py-3 rounded-lg transition hover:bg-[#2c2c2c]"
+      >
+        Procurations
+      </a>
+
+      <a
+        routerLink="/admin/rendezvous"
+        routerLinkActive="bg-[#bfa14a] text-black"
+        class="block px-4 py-3 rounded-lg transition hover:bg-[#2c2c2c]"
+      >
+        Rendez-vous
+      </a>
+
+      <a 
+        routerLink="/admin/documents"
+        routerLinkActive="bg-[#bfa14a] text-black"
+        class="block px-4 py-3 rounded-lg transition hover:bg-[#2c2c2c]"
+      >
+        Documents
+        </a>
+
+      <a
+        routerLink="/admin/facturation"
+        routerLinkActive="bg-[#bfa14a] text-black"
+        class="block px-4 py-3 rounded-lg transition hover:bg-[#2c2c2c]"
+      >
+        Facturation
+      </a>
     </nav>
+
+    <div class="p-4 border-t border-gray-700">
+      <button
+        (click)="logout()"
+        class="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg transition font-medium"
+      >
+        Déconnexion
+      </button>
+    </div>
   </aside>
 
   <!-- Contenu principal -->
-  <main class="flex-1 p-6">
-    <router-outlet></router-outlet>
-  </main>
+  <div class="flex-1 flex flex-col">
+    <!-- Topbar -->
+    <header class="bg-white shadow-sm px-6 py-4 flex justify-between items-center">
+      <div>
+        <h1 class="text-2xl font-semibold text-gray-800">Administration</h1>
+        <p class="text-sm text-gray-500">Bienvenue dans l’espace de gestion du cabinet</p>
+      </div>
+    </header>
+
+    <!-- Page content -->
+    <main class="flex-1 p-6">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
 </div>
