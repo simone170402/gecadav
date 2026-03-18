@@ -15,7 +15,7 @@ export class Footer implements OnInit {
   latestNews: any[] = [];
   loading = true;
 
-  private backendUrl = 'https://gecadav-1.onrender.com/news';
+  private backendUrl = 'https://api.cabinet-tsapy.com/news';
 
   constructor(private http: HttpClient) {}
 
