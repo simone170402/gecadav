@@ -1,97 +1,152 @@
-<!-- ===== HEADER GLOBAL ===== -->
 <header
-  class="fixed top-0 left-0 w-full z-50 transition-all duration-500"
+  class="site-header"
   [ngClass]="{
-    'bg-transparent text-white': isHomePage() && !isScrolled,
-    'bg-white text-gray-900 shadow-md': !isHomePage() || isScrolled
+    'header-home': isHomePage() && !isScrolled,
+    'header-solid': !isHomePage() || isScrolled
   }"
 >
-  <div class="flex justify-between items-center w-full px-4 sm:px-6 lg:px-10 py-2.5">
+  <div class="header-shell">
+    <!-- LEFT -->
+    <div class="header-left">
+      <a routerLink="/" class="brand-block">
+        <img
+          [src]="isHomePage() && !isScrolled
+            ? '/images/Law_Logo-removebg-preview.png'
+            : '/images/Law_Logo-removebg-preview.png'"
+          alt="Tsapy & Partners Logo"
+          class="brand-logo"
+          [ngClass]="{
+            'logo-large': !isScrolled,
+            'logo-small': isScrolled
+          }"
+        />
 
-    <!-- LOGO + NOM -->
-    <div class="flex items-center space-x-3 transition-all duration-500">
-      <img
-        src="/images/Law_Logo.png"
-        alt="Logo"
-        class="object-contain transition-all duration-500"
-        [ngClass]="{
-          'h-16 sm:h-20 md:h-24 lg:h-28': !isScrolled,
-          'h-10 sm:h-12 md:h-14 lg:h-16': isScrolled
-        }"
-      />
-
-      <span
-        class="font-bold tracking-wide transition-all duration-500 text-lg sm:text-xl md:text-2xl lg:text-3xl"
-        [ngClass]="{
-          'text-[#d4af37] drop-shadow-md': isHomePage(),
-          'text-[#bfa14a]': !isHomePage()
-        }"
-      >
-        Tsapy & Partners
-      </span>
+        <div class="brand-text-wrap">
+          <span
+            class="brand-name"
+            [ngClass]="{
+              'brand-home': isHomePage() && !isScrolled,
+              'brand-solid': !isHomePage() || isScrolled
+            }"
+          >
+            Tsapy & Partners
+          </span>
+        </div>
+      </a>
     </div>
 
-    <!-- NAV DESKTOP -->
-    <nav class="hidden md:flex items-center space-x-6 text-sm font-semibold">
-      <a routerLink="/" routerLinkActive="text-[#bfa14a]" [routerLinkActiveOptions]="{ exact: true }"
-        class="hover:text-[#bfa14a] transition">Home</a>
+    <!-- RIGHT -->
+    <div class="header-right">
+      <nav class="desktop-nav">
+        <a
+          routerLink="/"
+          routerLinkActive="nav-active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="nav-link"
+        >
+          Home
+        </a>
 
-      <a routerLink="/apropos" routerLinkActive="text-[#bfa14a]" class="transition-colors hover:text-[#bfa14a]">
-        About Us
-      </a>
+        <a routerLink="/apropos" routerLinkActive="nav-active" class="nav-link">
+          About Us
+        </a>
 
-      <a routerLink="/vision" routerLinkActive="text-[#bfa14a]" class="transition-colors hover:text-[#bfa14a]">
-        Vision & Mission
-      </a>
+        <a routerLink="/vision" routerLinkActive="nav-active" class="nav-link">
+          Vision & Mission
+        </a>
 
-      <a routerLink="/cabinet" routerLinkActive="text-[#bfa14a]" class="transition-colors hover:text-[#bfa14a]">
-        Our Firm
-      </a>
+        <a routerLink="/cabinet" routerLinkActive="nav-active" class="nav-link">
+          Our Firm
+        </a>
 
-      <a routerLink="/avocats" routerLinkActive="text-[#bfa14a]" class="transition-colors hover:text-[#bfa14a]">
-        Our Team
-      </a>
+        <a routerLink="/avocats" routerLinkActive="nav-active" class="nav-link">
+          Our Team
+        </a>
 
-      <a routerLink="/domaines" routerLinkActive="text-[#bfa14a]" class="transition-colors hover:text-[#bfa14a]">
-        Services
-      </a>
+        <a routerLink="/domaines" routerLinkActive="nav-active" class="nav-link">
+          Services
+        </a>
 
-      <a routerLink="/contact" routerLinkActive="text-[#bfa14a]" class="transition-colors hover:text-[#bfa14a]">
-        Contact
-      </a>
+        <a routerLink="/contact" routerLinkActive="nav-active" class="nav-link">
+          Contact
+        </a>
+      </nav>
 
-      <a routerLink="/admin/login"
-        class="bg-gradient-to-r from-[#bfa14a] to-[#2a2a2a] text-white px-4 py-2.5 rounded-md hover:scale-105 transition text-sm">
-        Sign In
-      </a>
+      <div class="header-actions">
+        <button aria-label="Search" class="search-btn">
+          <svg xmlns="http://www.w3.org/2000/svg"
+               class="search-icon"
+               fill="none"
+               viewBox="0 0 24 24"
+               stroke="currentColor">
+            <path stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1010.5 18a7.5 7.5 0 006.15-3.35z" />
+          </svg>
+        </button>
 
-      <a routerLink="/admin/dashboard"
-        class="bg-gradient-to-r from-gray-300 to-[#bfa14a] text-black px-4 py-2.5 rounded-md hover:scale-105 transition text-sm">
-        Espace Pro
-      </a>
+        <div class="lang-switch">
+          <a href="#" onclick="doGTranslate('en|en')" title="English" aria-label="English">
+            <span class="flag flag-en"></span>
+          </a>
 
+          <a href="#" onclick="doGTranslate('en|fr')" title="Français" aria-label="Français">
+            <span class="flag flag-fr"></span>
+          </a>
+        </div>
 
-      <!-- 🔍 Bouton recherche -->
+        <a routerLink="/admin/login" class="btn-header btn-signin">
+          Sign In
+        </a>
+
+        <a routerLink="/admin/dashboard" class="btn-header btn-pro">
+          Espace Pro
+        </a>
+      </div>
+
+      <!-- MOBILE TOGGLE -->
       <button
-        aria-label="Search"
-        class="border border-[#bfa14a] rounded-md px-3 py-2 ml-2
-              hover:bg-[#bfa14a] hover:text-white transition
-              flex items-center justify-center"
+        class="mobile-toggle"
+        (click)="toggleMenu()"
+        aria-label="Open menu"
+        [attr.aria-expanded]="isMenuOpen"
       >
-        <svg xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor">
-          <path stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1010.5 18a7.5 7.5 0 006.15-3.35z" />
+        <svg *ngIf="!isMenuOpen" xmlns="http://www.w3.org/2000/svg" class="mobile-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 6h16M4 12h16m-7 6h7" />
+        </svg>
+
+        <svg *ngIf="isMenuOpen" xmlns="http://www.w3.org/2000/svg" class="mobile-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
-      <!-- Lang switch with flags -->
-      <div class="flex items-center space-x-2">
+    </div>
+  </div>
 
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" [class.mobile-menu-open]="isMenuOpen">
+    <div class="mobile-menu-inner">
+      <a routerLink="/" (click)="toggleMenu()" class="mobile-link">Home</a>
+      <a routerLink="/apropos" (click)="toggleMenu()" class="mobile-link">About Us</a>
+      <a routerLink="/vision" (click)="toggleMenu()" class="mobile-link">Vision & Mission</a>
+      <a routerLink="/cabinet" (click)="toggleMenu()" class="mobile-link">Our Firm</a>
+      <a routerLink="/avocats" (click)="toggleMenu()" class="mobile-link">Our Team</a>
+      <a routerLink="/domaines" (click)="toggleMenu()" class="mobile-link">Services</a>
+      <a routerLink="/contact" (click)="toggleMenu()" class="mobile-link">Contact</a>
+
+      <div class="mobile-actions">
+        <a routerLink="/admin/dashboard" (click)="toggleMenu()" class="mobile-btn mobile-btn-pro">
+          Espace Pro
+        </a>
+
+        <a routerLink="/admin/login" (click)="toggleMenu()" class="mobile-btn mobile-btn-signin">
+          Sign In
+        </a>
+      </div>
+
+      <div class="mobile-lang">
         <a href="#" onclick="doGTranslate('en|en')" title="English" aria-label="English">
           <span class="flag flag-en"></span>
         </a>
@@ -99,47 +154,7 @@
         <a href="#" onclick="doGTranslate('en|fr')" title="Français" aria-label="Français">
           <span class="flag flag-fr"></span>
         </a>
-
       </div>
-
-
-    </nav>
-
-    <!-- BOUTON MOBILE -->
-    <button class="md:hidden cursor-pointer" (click)="toggleMenu()" aria-label="Open menu">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#bfa14a]" fill="none" viewBox="0 0 24 24"
-        stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M4 6h16M4 12h16m-7 6h7" />
-      </svg>
-    </button>
-  </div>
-
-  <!-- MENU MOBILE -->
-  <div *ngIf="isMenuOpen" class="md:hidden bg-white text-gray-900 shadow-md py-4 space-y-3 text-center animate-fadeIn">
-    <a routerLink="/" (click)="toggleMenu()" class="block text-gray-900 hover:text-[#bfa14a]">Home</a>
-    <a routerLink="/apropos" (click)="toggleMenu()" class="block text-gray-900 hover:text-[#bfa14a]">About Us</a>
-    <a routerLink="/vision" (click)="toggleMenu()" class="block text-gray-900 hover:text-[#bfa14a]">Vision & Mission</a>
-    <a routerLink="/cabinet" (click)="toggleMenu()" class="block text-gray-900 hover:text-[#bfa14a]">Our Firm</a>
-    <a routerLink="/avocats" (click)="toggleMenu()" class="block text-gray-900 hover:text-[#bfa14a]">Our Team</a>
-    <a routerLink="/domaines" (click)="toggleMenu()" class="block text-gray-900 hover:text-[#bfa14a]">Services</a>
-    <a routerLink="/contact" (click)="toggleMenu()" class="block text-gray-900 hover:text-[#bfa14a]">Contact</a>
-
-    <a routerLink="/admin/dashboard" (click)="toggleMenu()"
-      class="block bg-gradient-to-r from-gray-300 to-[#bfa14a] text-black py-3 rounded-md w-1/2 mx-auto">
-      Espace Pro
-    </a>
-
-    <a routerLink="/admin/login" (click)="toggleMenu()"
-      class="block bg-gradient-to-r from-[#bfa14a] to-[#2a2a2a] text-white py-3 rounded-md w-1/2 mx-auto">
-      Sign In
-    </a>
-    <a href="#" onclick="doGTranslate('en|en')" title="English" aria-label="English">
-      <span class="flag flag-en"></span>
-    </a>
-
-    <a href="#" onclick="doGTranslate('en|fr')" title="Français" aria-label="Français">
-      <span class="flag flag-fr"></span>
-    </a>
+    </div>
   </div>
 </header>
