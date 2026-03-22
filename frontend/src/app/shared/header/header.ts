@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, AfterViewInit, NgZone } from '@angular/core';
-import { Router, NavigationEnd, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
 @Component({
@@ -10,69 +10,52 @@ import { filter } from 'rxjs/operators';
   templateUrl: './header.html',
   styleUrl: './header.css'
 })
-export class Header implements AfterViewInit {
+export class Header implements OnInit {
   isMenuOpen = false;
   isScrolled = false;
   currentUrl = '';
-  initialHeaderHeight = 0;
 
-  constructor(private router: Router, private ngZone: NgZone) {
-    // 🎯 Surveille les changements de page
+  constructor(private router: Router) {}
+
+  ngOnInit(): void {
+    this.currentUrl = this.router.url;
+    this.updateBodyPadding();
+
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe((event: any) => {
+      .subscribe((event: NavigationEnd) => {
         this.currentUrl = event.urlAfterRedirects;
-
-        // ⏱️ Laisse le DOM se stabiliser avant de calculer
-        setTimeout(() => {
-          if (!this.isHomePage()) {
-            this.setInitialHeaderHeight();
-          } else {
-            document.body.style.paddingTop = '0px';
-          }
-        }, 100);
+        this.isMenuOpen = false;
+        this.updateBodyPadding();
       });
   }
 
-  toggleMenu() {
+  toggleMenu(): void {
     this.isMenuOpen = !this.isMenuOpen;
   }
 
   isHomePage(): boolean {
-    return this.currentUrl === '/' || this.router.url === '/';
+    return this.currentUrl === '/' || this.currentUrl === '';
   }
 
-  // 🔹 Applique l'effet de scroll sur le header (sans changer la hauteur du contenu)
-  @HostListener('window:scroll', [])
-  onScroll() {
-    this.isScrolled = window.scrollY > 50;
-    // 👉 on ne touche pas à la hauteur du body ici
+  @HostListener('window:scroll')
+  onScroll(): void {
+    this.isScrolled = window.scrollY > 40;
   }
 
-  // 🔹 Ajuste seulement si la fenêtre est redimensionnée
-  @HostListener('window:resize', [])
-  onResize() {
-    if (!this.isHomePage()) {
-      this.setInitialHeaderHeight();
+  @HostListener('window:resize')
+  onResize(): void {
+    this.updateBodyPadding();
+  }
+
+  private updateBodyPadding(): void {
+    const header = document.querySelector('.site-header') as HTMLElement | null;
+    if (!header) return;
+
+    if (this.isHomePage()) {
+      document.body.style.paddingTop = '0px';
+    } else {
+      document.body.style.paddingTop = `${header.offsetHeight}px`;
     }
-  }
-
-  // 🔹 Définit une fois la hauteur initiale du header
-  private setInitialHeaderHeight() {
-    this.ngZone.runOutsideAngular(() => {
-      const header = document.querySelector('header');
-      if (header) {
-        this.initialHeaderHeight = header.clientHeight;
-        document.body.style.paddingTop = `${this.initialHeaderHeight}px`;
-      }
-    });
-  }
-
-  ngAfterViewInit() {
-    setTimeout(() => {
-      if (!this.isHomePage()) {
-        this.setInitialHeaderHeight();
-      }
-    }, 100);
   }
 }
