@@ -7,6 +7,7 @@ import { Cabinet } from './pages/cabinet/cabinet';
 import { Domaines } from './pages/domaines/domaines';
 import { Apropos } from './pages/apropos/apropos';
 import { Vision } from './pages/vision/vision';
+import { AvocatBafoussam } from './pages/avocat-bafoussam/avocat-bafoussam';
 
 import { Litigation } from './pages/domaines/litigation/litigation';
 import { MergersAcquisitions } from './pages/domaines/mergers-acquisitions/mergers-acquisitions';
@@ -41,7 +42,7 @@ export const routes: Routes = [
   { path: 'domaines', component: Domaines },
   { path: 'contact', component: Contact },
   { path: 'vision', component: Vision },
-
+  { path: 'avocat-bafoussam', component: AvocatBafoussam },
   // 🌐 Domaines
   { path: 'domaines/litigation', component: Litigation },
   { path: 'domaines/mergers-acquisitions', component: MergersAcquisitions },
