@@ -2,9 +2,11 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
-  OnDestroy
+  Inject,
+  OnDestroy,
+  PLATFORM_ID
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import {
   trigger,
@@ -92,16 +94,26 @@ export class Home implements AfterViewInit, OnDestroy {
   private revealObserver?: IntersectionObserver;
   private counterObserver?: IntersectionObserver;
   private autoSlideInterval?: ReturnType<typeof setInterval>;
+  private readonly isBrowser: boolean;
 
-  constructor(private el: ElementRef) {}
+  constructor(
+    private el: ElementRef,
+    @Inject(PLATFORM_ID) private platformId: object
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngAfterViewInit(): void {
+    if (!this.isBrowser) return;
+
     this.initScrollReveal();
     this.initCounterAnimation();
     this.startAutoSlide();
   }
 
   ngOnDestroy(): void {
+    if (!this.isBrowser) return;
+
     this.revealObserver?.disconnect();
     this.counterObserver?.disconnect();
 
@@ -112,26 +124,36 @@ export class Home implements AfterViewInit, OnDestroy {
 
   nextSlide(): void {
     this.currentSlide = (this.currentSlide + 1) % this.slides.length;
-    this.restartAutoSlide();
+    if (this.isBrowser) {
+      this.restartAutoSlide();
+    }
   }
 
   prevSlide(): void {
     this.currentSlide = (this.currentSlide - 1 + this.slides.length) % this.slides.length;
-    this.restartAutoSlide();
+    if (this.isBrowser) {
+      this.restartAutoSlide();
+    }
   }
 
   goToSlide(index: number): void {
     this.currentSlide = index;
-    this.restartAutoSlide();
+    if (this.isBrowser) {
+      this.restartAutoSlide();
+    }
   }
 
   private startAutoSlide(): void {
+    if (!this.isBrowser) return;
+
     this.autoSlideInterval = setInterval(() => {
       this.currentSlide = (this.currentSlide + 1) % this.slides.length;
     }, 6000);
   }
 
   private restartAutoSlide(): void {
+    if (!this.isBrowser) return;
+
     if (this.autoSlideInterval) {
       clearInterval(this.autoSlideInterval);
     }
@@ -139,6 +161,8 @@ export class Home implements AfterViewInit, OnDestroy {
   }
 
   private initScrollReveal(): void {
+    if (!this.isBrowser || typeof IntersectionObserver === 'undefined') return;
+
     const elements = this.el.nativeElement.querySelectorAll(
       '.scroll-reveal, .scroll-reveal-left, .scroll-reveal-right, .scroll-scale'
     );
@@ -147,7 +171,7 @@ export class Home implements AfterViewInit, OnDestroy {
       (entries, observer) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('show');
+            (entry.target as HTMLElement).classList.add('show');
             observer.unobserve(entry.target);
           }
         });
@@ -155,12 +179,14 @@ export class Home implements AfterViewInit, OnDestroy {
       { threshold: 0.14 }
     );
 
-    elements.forEach((element: HTMLElement) => {
+    elements.forEach((element: Element) => {
       this.revealObserver?.observe(element);
     });
   }
 
   private initCounterAnimation(): void {
+    if (!this.isBrowser || typeof IntersectionObserver === 'undefined') return;
+
     const statsSection = this.el.nativeElement.querySelector('.stats-section');
     if (!statsSection) return;
 
@@ -180,6 +206,8 @@ export class Home implements AfterViewInit, OnDestroy {
   }
 
   private animateCounters(): void {
+    if (!this.isBrowser) return;
+
     this.counters.forEach((counter) => {
       const duration = 1800;
       const startTime = performance.now();
