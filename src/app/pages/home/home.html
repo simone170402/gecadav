@@ -52,11 +52,13 @@
     <p class="partners-title">Trusted by companies, institutions and partners</p>
 
     <div class="partners-grid">
-      <div
-        class="partner-card"
-        *ngFor="let partner of partners; trackBy: trackByPartner"
-      >
-        {{ partner }}
+      <div class="partner-item" *ngFor="let partner of partners; trackBy: trackByPartner">
+        <img
+          [src]="partner.image"
+          alt="{{ partner.badge }} logo"
+          title="{{ partner.badge }} logo"
+        />
+    
       </div>
     </div>
   </div>
