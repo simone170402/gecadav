@@ -24,6 +24,11 @@ interface HeroSlide {
   description: string;
 }
 
+interface Partner {
+  image: string;
+  badge: string;
+}
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -77,12 +82,31 @@ export class Home implements AfterViewInit, OnDestroy {
     }
   ];
 
-  partners = [
-    'NOVALEX',
-    'AFRILEX',
-    'BUSINESS AFRICA',
-    'GLOBAL TRADE',
-    'LEGAL PARTNERS'
+  partners: Partner[] = [
+    {
+      image: '/images/partners/the-vision.png',
+      badge: 'Logo the vision'
+    },
+    {
+      image: '/images/partners/novalex.png',
+      badge: 'NOVALEX'
+    },
+    {
+      image: '/images/partners/afrilex.png',
+      badge: 'AFRILEX'
+    },
+    {
+      image: '/images/partners/business-africa.png',
+      badge: 'BUSINESS AFRICA'
+    },
+    {
+      image: '/images/partners/global-trade.png',
+      badge: 'GLOBAL TRADE'
+    },
+    {
+      image: '/images/partners/legal-partners.png',
+      badge: 'LEGAL PARTNERS'
+    }
   ];
 
   counters = [
@@ -234,7 +258,7 @@ export class Home implements AfterViewInit, OnDestroy {
     return item.label;
   }
 
-  trackByPartner(index: number, item: string): string {
-    return item;
+  trackByPartner(index: number, item: Partner): string {
+    return item.image;
   }
 }
