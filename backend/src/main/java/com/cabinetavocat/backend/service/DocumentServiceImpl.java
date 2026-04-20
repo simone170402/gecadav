@@ -18,7 +18,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 @Service
-public class DocumentServiceImpl implements DocumentService {
+public class DocumentServiceImpl extends DocumentService {
 
     private final DocumentRepository documentRepository;
     private final ClientRepository clientRepository;

@@ -1,30 +1,24 @@
 package com.cabinetavocat.backend.service;
 
-import com.cabinetavocat.backend.model.Document;
-import com.cabinetavocat.backend.repository.DocumentRepository;
-import org.springframework.stereotype.Service;
+import com.cabinetavocat.backend.auth.dto.DocumentDto;
+import com.cabinetavocat.backend.auth.dto.DocumentStatsDto;
+import org.springframework.core.io.Resource;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@Service
-public class DocumentService {
-
-    private final DocumentRepository repository;
-
-    public DocumentService(DocumentRepository repository) {
-        this.repository = repository;
-    }
-
-    public List<Document> getAll() {
-        return repository.findAll();
-    }
-
-    public Document save(Document document) {
-        return repository.save(document);
-    }
-
-    public void delete(Long id) {
-        repository.deleteById(id);
-    }
-
+public interface DocumentService {
+    List<DocumentDto> getAllDocuments();
+    DocumentDto getDocumentById(Long id);
+    DocumentDto uploadDocument(
+            MultipartFile file,
+            String categorie,
+            String uploadedBy,
+            Long clientId,
+            Long affaireId
+    );
+    Resource downloadDocument(Long id);
+    String getDownloadFileName(Long id);
+    void deleteDocument(Long id);
+    DocumentStatsDto getDocumentStats();
 }

@@ -1,10 +1,10 @@
 package com.cabinetavocat.backend.service;
 
 import com.cabinetavocat.backend.model.Facture;
-import org.openpdf.text.*;
-import org.openpdf.text.pdf.PdfPCell;
-import org.openpdf.text.pdf.PdfPTable;
-import org.openpdf.text.pdf.PdfWriter;
+import com.lowagie.text.*;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;

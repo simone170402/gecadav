@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
-public class AffaireServiceImpl implements AffaireService {
+public class AffaireServiceImpl extends AffaireService {
 
     private final AffaireRepository affaireRepository;
     private final ClientRepository clientRepository;
