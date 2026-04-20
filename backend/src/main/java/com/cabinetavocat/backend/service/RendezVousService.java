@@ -1,11 +1,10 @@
 package com.cabinetavocat.backend.service;
 
-import com.cabinetavocat.backend.model.RendezVous;
-import com.cabinetavocat.backend.repository.RendezVousRepository;
-import org.springframework.stereotype.Service;
+import com.cabinetavocat.backend.auth.dto.RendezVousDto;
 
 import java.util.List;
 
+<<<<<<< HEAD
 public class RendezVousService {
 
     private final RendezVousRepository repository;
@@ -30,4 +29,11 @@ public class RendezVousService {
     public void delete(Long id) {
         repository.deleteById(id);
     }
+=======
+public interface RendezVousService {
+    List<RendezVousDto> getAllRendezVous();
+    List<RendezVousDto> getUpcomingRendezVous();
+    RendezVousDto createRendezVous(RendezVousDto dto);
+    void deleteRendezVous(Long id);
+>>>>>>> main
 }

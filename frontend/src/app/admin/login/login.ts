@@ -19,23 +19,27 @@ export class Login {
   isLoading = false;
   errorMessage = '';
 
-  loginForm = this.fb.group({
+  loginForm = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]]
   });
 
-  onSubmit() {
+  navigateToPublicSite(): void {
+    this.router.navigate(['']);
+  }
+
+  onSubmit(): void {
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
       return;
     }
 
-    const { email, password } = this.loginForm.value;
+    const { email, password } = this.loginForm.getRawValue();
 
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.authService.login(email!, password!).subscribe({
+    this.authService.login(email, password).subscribe({
       next: () => {
         this.router.navigate(['/admin/dashboard']);
       },

@@ -1,6 +1,6 @@
 package com.cabinetavocat.backend.controller;
 
-import com.cabinetavocat.backend.model.RendezVous;
+import com.cabinetavocat.backend.auth.dto.RendezVousDto;
 import com.cabinetavocat.backend.service.RendezVousService;
 import org.springframework.web.bind.annotation.*;
 
@@ -8,32 +8,31 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/rendezvous")
-@CrossOrigin
 public class RendezVousController {
 
-    private final RendezVousService service;
+    private final RendezVousService rendezVousService;
 
-    public RendezVousController(RendezVousService service) {
-        this.service = service;
+    public RendezVousController(RendezVousService rendezVousService) {
+        this.rendezVousService = rendezVousService;
     }
 
     @GetMapping
-    public List<RendezVous> getAll() {
-        return service.getAll();
+    public List<RendezVousDto> getAllRendezVous() {
+        return rendezVousService.getAllRendezVous();
+    }
+
+    @GetMapping("/upcoming")
+    public List<RendezVousDto> getUpcomingRendezVous() {
+        return rendezVousService.getUpcomingRendezVous();
     }
 
     @PostMapping
-    public RendezVous create(@RequestBody RendezVous rdv) {
-        return service.create(rdv);
-    }
-
-    @PutMapping("/{id}")
-    public RendezVous update(@PathVariable Long id, @RequestBody RendezVous rdv) {
-        return service.update(id, rdv);
+    public RendezVousDto createRendezVous(@RequestBody RendezVousDto dto) {
+        return rendezVousService.createRendezVous(dto);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        service.delete(id);
+    public void deleteRendezVous(@PathVariable Long id) {
+        rendezVousService.deleteRendezVous(id);
     }
 }

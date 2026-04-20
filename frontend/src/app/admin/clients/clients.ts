@@ -1,115 +1,147 @@
-import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, OnInit, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ClientItem, ClientStats } from './clients.model';
 import { ClientsService } from './clients.service';
-import { Client } from './client.model';
 
 @Component({
   selector: 'app-clients',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './clients.html',
   styleUrl: './clients.css'
 })
 export class Clients implements OnInit {
   private clientsService = inject(ClientsService);
-  private fb = inject(FormBuilder);
 
-  clients: Client[] = [];
-  selectedClientId: number | null = null;
-  isLoading = false;
+  clients: ClientItem[] = [];
+  filteredClients: ClientItem[] = [];
+  stats: ClientStats | null = null;
 
-  clientForm = this.fb.group({
-    nom: ['', Validators.required],
-    prenom: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email]],
-    telephone: [''],
-    adresse: ['']
-  });
+  searchTerm = '';
+  typeFilter = 'Tous';
+  statusFilter = 'Tous';
+
+  isLoading = true;
+  errorMessage = '';
+  isDialogOpen = false;
+  selectedClient: ClientItem | null = null;
+
+  newClient = {
+    nom: '',
+    prenom: '',
+    email: '',
+    telephone: '',
+    entreprise: '',
+    type: 'Particulier' as 'Particulier' | 'Entreprise',
+    adresse: '',
+    notes: '',
+    statut: 'Actif' as 'Actif' | 'Inactif'
+  };
 
   ngOnInit(): void {
-    this.loadClients();
+    this.loadData();
   }
 
-  loadClients(): void {
+  loadData(): void {
     this.isLoading = true;
-    this.clientsService.getClients().subscribe({
-      next: (data: Client[]) => {
-        this.clients = data;
-        this.isLoading = false;
+    this.errorMessage = '';
+
+    this.clientsService.getAll().subscribe({
+      next: (clients) => {
+        this.clients = clients;
+        this.applyFilters();
+
+        this.clientsService.getStats().subscribe({
+          next: (stats) => {
+            this.stats = stats;
+            this.isLoading = false;
+          },
+          error: (err) => {
+            console.error(err);
+            this.errorMessage = 'Impossible de charger les statistiques clients.';
+            this.isLoading = false;
+          }
+        });
       },
-      error: (err: unknown) => {
-        console.error('Erreur chargement clients', err);
+      error: (err) => {
+        console.error(err);
+        this.errorMessage = 'Impossible de charger les clients.';
         this.isLoading = false;
       }
     });
   }
 
-  onSubmit(): void {
-    if (this.clientForm.invalid) {
-      this.clientForm.markAllAsTouched();
-      return;
-    }
+  applyFilters(): void {
+    const term = this.searchTerm.toLowerCase().trim();
 
-    const clientData: Client = {
-      nom: this.clientForm.value.nom ?? '',
-      prenom: this.clientForm.value.prenom ?? '',
-      email: this.clientForm.value.email ?? '',
-      telephone: this.clientForm.value.telephone ?? '',
-      adresse: this.clientForm.value.adresse ?? ''
-    };
+    this.filteredClients = this.clients.filter((client) => {
+      const matchesSearch =
+        client.nomComplet.toLowerCase().includes(term) ||
+        client.email.toLowerCase().includes(term) ||
+        client.reference.toLowerCase().includes(term);
 
-    if (this.selectedClientId !== null) {
-      this.clientsService.updateClient(this.selectedClientId, clientData).subscribe({
-        next: () => {
-          this.resetForm();
-          this.loadClients();
-        },
-        error: (err: unknown) => {
-          console.error('Erreur modification client', err);
-        }
-      });
-    } else {
-      this.clientsService.createClient(clientData).subscribe({
-        next: () => {
-          this.resetForm();
-          this.loadClients();
-        },
-        error: (err: unknown) => {
-          console.error('Erreur création client', err);
-        }
-      });
-    }
-  }
+      const matchesType =
+        this.typeFilter === 'Tous' || client.type === this.typeFilter;
 
-  editClient(client: Client): void {
-    this.selectedClientId = client.id ?? null;
-    this.clientForm.patchValue({
-      nom: client.nom,
-      prenom: client.prenom,
-      email: client.email,
-      telephone: client.telephone ?? '',
-      adresse: client.adresse ?? ''
+      const matchesStatus =
+        this.statusFilter === 'Tous' || client.statut === this.statusFilter;
+
+      return matchesSearch && matchesType && matchesStatus;
     });
   }
 
-  deleteClient(id: number): void {
-    if (!confirm('Voulez-vous vraiment supprimer ce client ?')) {
+  openCreateDialog(): void {
+    this.isDialogOpen = true;
+  }
+
+  closeDialog(): void {
+    this.isDialogOpen = false;
+    this.resetForm();
+  }
+
+  createClient(): void {
+    if (
+      !this.newClient.nom ||
+      !this.newClient.prenom ||
+      !this.newClient.email ||
+      !this.newClient.telephone
+    ) {
+      this.errorMessage = 'Veuillez remplir les champs obligatoires.';
       return;
     }
 
-    this.clientsService.deleteClient(id).subscribe({
+    this.clientsService.create(this.newClient).subscribe({
       next: () => {
-        this.loadClients();
+        this.closeDialog();
+        this.loadData();
       },
-      error: (err: unknown) => {
-        console.error('Erreur suppression client', err);
+      error: (err) => {
+        console.error(err);
+        this.errorMessage = 'Impossible de créer le client.';
       }
     });
+  }
+
+  viewClient(client: ClientItem): void {
+    this.selectedClient = client;
+  }
+
+  closeDetails(): void {
+    this.selectedClient = null;
   }
 
   resetForm(): void {
-    this.selectedClientId = null;
-    this.clientForm.reset();
+    this.newClient = {
+      nom: '',
+      prenom: '',
+      email: '',
+      telephone: '',
+      entreprise: '',
+      type: 'Particulier',
+      adresse: '',
+      notes: '',
+      statut: 'Actif'
+    };
   }
 }

@@ -1,8 +1,8 @@
 package com.cabinetavocat.backend.controller;
 
-import com.cabinetavocat.backend.model.Client;
+import com.cabinetavocat.backend.auth.dto.ClientDto;
+import com.cabinetavocat.backend.auth.dto.ClientStatsDto;
 import com.cabinetavocat.backend.service.ClientService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,30 +18,32 @@ public class ClientController {
     }
 
     @GetMapping
-    public List<Client> getAllClients() {
+    public List<ClientDto> getAllClients() {
         return clientService.getAllClients();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Client> getClientById(@PathVariable Long id) {
-        return clientService.getClientById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ClientDto getClientById(@PathVariable Long id) {
+        return clientService.getClientById(id);
     }
 
     @PostMapping
-    public ResponseEntity<Client> createClient(@RequestBody Client client) {
-        return ResponseEntity.ok(clientService.createClient(client));
+    public ClientDto createClient(@RequestBody ClientDto clientDto) {
+        return clientService.createClient(clientDto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Client> updateClient(@PathVariable Long id, @RequestBody Client client) {
-        return ResponseEntity.ok(clientService.updateClient(id, client));
+    public ClientDto updateClient(@PathVariable Long id, @RequestBody ClientDto clientDto) {
+        return clientService.updateClient(id, clientDto);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteClient(@PathVariable Long id) {
+    public void deleteClient(@PathVariable Long id) {
         clientService.deleteClient(id);
-        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/stats")
+    public ClientStatsDto getClientStats() {
+        return clientService.getClientStats();
     }
 }

@@ -1,137 +1,267 @@
-<div class="space-y-8">
-  <div>
-    <h2 class="text-3xl font-bold text-gray-800">Gestion des clients</h2>
-    <p class="text-gray-500 mt-1">Ajoutez, modifiez et consultez les clients du cabinet.</p>
-  </div>
-
-  <div class="grid lg:grid-cols-3 gap-8">
-    <!-- Formulaire -->
-    <div class="lg:col-span-1 bg-white rounded-2xl shadow p-6">
-      <h3 class="text-xl font-semibold mb-4 text-[#bfa14a]">
-        {{ selectedClientId ? 'Modifier le client' : 'Ajouter un client' }}
-      </h3>
-
-      <form [formGroup]="clientForm" (ngSubmit)="onSubmit()" class="space-y-4">
-        <div>
-          <label for="nom" class="block text-sm font-medium mb-1">Nom</label>
-          <input
-            id="nom"
-            type="text"
-            formControlName="nom"
-            placeholder="Entrez le nom"
-            class="w-full border rounded-lg px-4 py-2"
-          />
-        </div>
-
-        <div>
-          <label for="prenom" class="block text-sm font-medium mb-1">Prénom</label>
-          <input
-            id="prenom"
-            type="text"
-            formControlName="prenom"
-            placeholder="Entrez le prénom"
-            class="w-full border rounded-lg px-4 py-2"
-          />
-        </div>
-
-        <div>
-          <label for="email" class="block text-sm font-medium mb-1">Email</label>
-          <input
-            id="email"
-            type="email"
-            formControlName="email"
-            placeholder="exemple@email.com"
-            class="w-full border rounded-lg px-4 py-2"
-          />
-        </div>
-
-        <div>
-          <label for="telephone" class="block text-sm font-medium mb-1">Téléphone</label>
-          <input
-            id="telephone"
-            type="text"
-            formControlName="telephone"
-            placeholder="034 00 000 00"
-            class="w-full border rounded-lg px-4 py-2"
-          />
-        </div>
-
-        <div>
-          <label for="adresse" class="block text-sm font-medium mb-1">Adresse</label>
-          <textarea
-            id="adresse"
-            formControlName="adresse"
-            placeholder="Entrez l’adresse du client"
-            class="w-full border rounded-lg px-4 py-2"
-          ></textarea>
-        </div>
-
-        <div class="flex gap-3">
-          <button
-            type="submit"
-            class="bg-[#bfa14a] text-white px-5 py-2 rounded-lg hover:opacity-90"
-          >
-            {{ selectedClientId ? 'Mettre à jour' : 'Ajouter' }}
-          </button>
-
-          <button
-            type="button"
-            (click)="resetForm()"
-            class="bg-gray-200 text-gray-800 px-5 py-2 rounded-lg hover:bg-gray-300"
-          >
-            Réinitialiser
-          </button>
-        </div>
-      </form>
+<div class="clients-page">
+  <div class="page-header">
+    <div>
+      <h1>Clients</h1>
+      <p>Gérez votre portefeuille clients</p>
     </div>
 
-    <!-- Tableau -->
-    <div class="lg:col-span-2 bg-white rounded-2xl shadow p-6">
-      <h3 class="text-xl font-semibold mb-4 text-[#bfa14a]">Liste des clients</h3>
+    <button class="primary-btn" type="button" (click)="openCreateDialog()">
+      + Nouveau client
+    </button>
+  </div>
 
-      @if (isLoading) {
-        <p class="text-gray-500">Chargement...</p>
-      } @else {
-        <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse">
-            <thead>
-              <tr class="border-b text-gray-600">
-                <th class="py-3">Nom</th>
-                <th class="py-3">Prénom</th>
-                <th class="py-3">Email</th>
-                <th class="py-3">Téléphone</th>
-                <th class="py-3 text-right">Actions</th>
+  @if (errorMessage) {
+    <div class="error-box">{{ errorMessage }}</div>
+  }
+
+  @if (isLoading) {
+    <div class="card">Chargement des clients...</div>
+  } @else {
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div>
+          <p class="stat-label">Total clients</p>
+          <p class="stat-value">{{ stats?.totalClients ?? 0 }}</p>
+        </div>
+        <div class="stat-icon blue">👥</div>
+      </div>
+
+      <div class="stat-card">
+        <div>
+          <p class="stat-label">Clients actifs</p>
+          <p class="stat-value green">{{ stats?.clientsActifs ?? 0 }}</p>
+        </div>
+        <div class="stat-icon green-bg">✅</div>
+      </div>
+
+      <div class="stat-card">
+        <div>
+          <p class="stat-label">Entreprises</p>
+          <p class="stat-value purple">{{ stats?.entreprises ?? 0 }}</p>
+        </div>
+        <div class="stat-icon purple-bg">🏢</div>
+      </div>
+
+      <div class="stat-card">
+        <div>
+          <p class="stat-label">Particuliers</p>
+          <p class="stat-value orange">{{ stats?.particuliers ?? 0 }}</p>
+        </div>
+        <div class="stat-icon orange-bg">👤</div>
+      </div>
+    </div>
+
+    <div class="card filters-card">
+      <div class="filters-row">
+        <div class="search-box">
+          <input
+            type="text"
+            placeholder="Rechercher un client..."
+            [(ngModel)]="searchTerm"
+            (ngModelChange)="applyFilters()"
+          />
+        </div>
+
+        <select [(ngModel)]="typeFilter" (change)="applyFilters()">
+          <option value="Tous">Tous les types</option>
+          <option value="Particulier">Particulier</option>
+          <option value="Entreprise">Entreprise</option>
+        </select>
+
+        <select [(ngModel)]="statusFilter" (change)="applyFilters()">
+          <option value="Tous">Tous les statuts</option>
+          <option value="Actif">Actif</option>
+          <option value="Inactif">Inactif</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="card table-card">
+      <div class="table-wrap">
+        <table class="clients-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nom</th>
+              <th>Contact</th>
+              <th>Type</th>
+              <th>Statut</th>
+              <th>Affaires</th>
+              <th>Dernier contact</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (client of filteredClients; track client.id) {
+              <tr>
+                <td class="strong">{{ client.reference }}</td>
+                <td>
+                  <div>
+                    <p class="client-name">{{ client.nomComplet }}</p>
+                    @if (client.entreprise) {
+                      <p class="client-sub">{{ client.entreprise }}</p>
+                    }
+                  </div>
+                </td>
+                <td>
+                  <div class="contact-stack">
+                    <span>{{ client.email }}</span>
+                    <span>{{ client.telephone }}</span>
+                  </div>
+                </td>
+                <td>
+                  <span class="badge badge-type">{{ client.type }}</span>
+                </td>
+                <td>
+                  <span class="badge" [ngClass]="client.statut === 'Actif' ? 'badge-active' : 'badge-inactive'">
+                    {{ client.statut }}
+                  </span>
+                </td>
+                <td class="strong">{{ client.nombreAffaires }}</td>
+                <td>{{ client.dernierContact || '—' }}</td>
+                <td>
+                  <div class="actions-row">
+                    <button type="button" class="icon-btn" (click)="viewClient(client)">👁</button>
+                  </div>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              @for (client of clients; track client.id) {
-                <tr class="border-b hover:bg-gray-50">
-                  <td class="py-3">{{ client.nom }}</td>
-                  <td class="py-3">{{ client.prenom }}</td>
-                  <td class="py-3">{{ client.email }}</td>
-                  <td class="py-3">{{ client.telephone }}</td>
-                  <td class="py-3 text-right space-x-2">
-                    <button
-                      type="button"
-                      (click)="editClient(client)"
-                      class="bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700"
-                    >
-                      Modifier
-                    </button>
-                    <button
-                      type="button"
-                      (click)="deleteClient(client.id!)"
-                      class="bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700"
-                    >
-                      Supprimer
-                    </button>
-                  </td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </div>
-      }
+            }
+          </tbody>
+        </table>
+      </div>
     </div>
-  </div>
+  }
+
+  @if (isDialogOpen) {
+    <div class="modal-backdrop">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Nouveau client</h3>
+          <button type="button" class="ghost-btn" (click)="closeDialog()">✕</button>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Prénom *</label>
+            <input type="text" [(ngModel)]="newClient.prenom" />
+          </div>
+
+          <div class="form-group">
+            <label>Nom *</label>
+            <input type="text" [(ngModel)]="newClient.nom" />
+          </div>
+
+          <div class="form-group">
+            <label>Type *</label>
+            <select [(ngModel)]="newClient.type">
+              <option value="Particulier">Particulier</option>
+              <option value="Entreprise">Entreprise</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Statut *</label>
+            <select [(ngModel)]="newClient.statut">
+              <option value="Actif">Actif</option>
+              <option value="Inactif">Inactif</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Email *</label>
+            <input type="email" [(ngModel)]="newClient.email" />
+          </div>
+
+          <div class="form-group">
+            <label>Téléphone *</label>
+            <input type="text" [(ngModel)]="newClient.telephone" />
+          </div>
+
+          @if (newClient.type === 'Entreprise') {
+            <div class="form-group full-width">
+              <label>Nom de l’entreprise</label>
+              <input type="text" [(ngModel)]="newClient.entreprise" />
+            </div>
+          }
+
+          <div class="form-group full-width">
+            <label>Adresse</label>
+            <input type="text" [(ngModel)]="newClient.adresse" />
+          </div>
+
+          <div class="form-group full-width">
+            <label>Notes</label>
+            <textarea rows="3" [(ngModel)]="newClient.notes"></textarea>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="secondary-btn" (click)="closeDialog()">Annuler</button>
+          <button type="button" class="primary-btn" (click)="createClient()">Créer le client</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (selectedClient) {
+    <div class="modal-backdrop">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Détails du client</h3>
+          <button type="button" class="ghost-btn" (click)="closeDetails()">✕</button>
+        </div>
+
+        <div class="details-grid">
+          <div class="detail-block">
+            <p class="detail-label">Nom complet</p>
+            <p class="detail-value">{{ selectedClient.nomComplet }}</p>
+          </div>
+
+          <div class="detail-block">
+            <p class="detail-label">Type</p>
+            <p class="detail-value">{{ selectedClient.type }}</p>
+          </div>
+
+          <div class="detail-block">
+            <p class="detail-label">Email</p>
+            <p class="detail-value">{{ selectedClient.email }}</p>
+          </div>
+
+          <div class="detail-block">
+            <p class="detail-label">Téléphone</p>
+            <p class="detail-value">{{ selectedClient.telephone }}</p>
+          </div>
+
+          <div class="detail-block">
+            <p class="detail-label">Entreprise</p>
+            <p class="detail-value">{{ selectedClient.entreprise || '—' }}</p>
+          </div>
+
+          <div class="detail-block">
+            <p class="detail-label">Adresse</p>
+            <p class="detail-value">{{ selectedClient.adresse || '—' }}</p>
+          </div>
+
+          <div class="detail-block">
+            <p class="detail-label">Statut</p>
+            <p class="detail-value">{{ selectedClient.statut }}</p>
+          </div>
+
+          <div class="detail-block">
+            <p class="detail-label">Affaires</p>
+            <p class="detail-value">{{ selectedClient.nombreAffaires }}</p>
+          </div>
+
+          <div class="detail-block full-span">
+            <p class="detail-label">Notes</p>
+            <p class="detail-value">{{ selectedClient.notes || 'Aucune note' }}</p>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="secondary-btn" (click)="closeDetails()">Fermer</button>
+        </div>
+      </div>
+    </div>
+  }
 </div>

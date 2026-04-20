@@ -1,1 +1,365 @@
-<p>facturation works!</p>
+<div class="invoices-page">
+  <div class="page-header">
+    <div>
+      <h1>Facturation</h1>
+      <p>Gérez vos factures et paiements</p>
+    </div>
+
+    <button class="primary-btn" type="button" (click)="openCreateDialog()">
+      + Nouvelle facture
+    </button>
+  </div>
+
+  @if (errorMessage) {
+    <div class="error-box">{{ errorMessage }}</div>
+  }
+
+  @if (isLoading) {
+    <div class="card">Chargement des factures...</div>
+  } @else {
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-left">
+          <p class="stat-label">Revenus totaux</p>
+          <p class="stat-value">{{ stats?.revenusTotaux ?? '0.00 FCFA' }}</p>
+        </div>
+        <div class="stat-icon green-bg">💰</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-left">
+          <p class="stat-label">Factures payées</p>
+          <p class="stat-value green">{{ stats?.facturesPayees ?? 0 }}</p>
+        </div>
+        <div class="stat-icon green-bg">✅</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-left">
+          <p class="stat-label">En attente</p>
+          <p class="stat-value orange">{{ stats?.enAttente ?? 0 }}</p>
+        </div>
+        <div class="stat-icon orange-bg">⏳</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-left">
+          <p class="stat-label">En retard</p>
+          <p class="stat-value red">{{ stats?.enRetard ?? 0 }}</p>
+        </div>
+        <div class="stat-icon red-bg">🚨</div>
+      </div>
+    </div>
+
+    <div class="card filters-card">
+      <div class="filters-row">
+        <div class="search-box">
+          <input
+            type="text"
+            placeholder="Rechercher une facture..."
+            [(ngModel)]="searchTerm"
+            (ngModelChange)="applyFilters()"
+          />
+        </div>
+
+        <select [(ngModel)]="statusFilter" (change)="applyFilters()">
+          <option value="TOUS">Tous les statuts</option>
+          <option value="PAYEE">Payée</option>
+          <option value="EN_ATTENTE">En attente</option>
+          <option value="EN_RETARD">En retard</option>
+          <option value="ANNULEE">Annulée</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="invoices-list">
+      @for (invoice of filteredFactures; track invoice.id) {
+        <div class="invoice-card">
+          <div class="invoice-main">
+            <div class="invoice-icon-box">💳</div>
+
+            <div class="invoice-content">
+              <div class="invoice-top-line">
+                <h3>{{ invoice.reference }}</h3>
+
+                <span class="badge" [ngClass]="getStatusClass(invoice.statut)">
+                  {{ getStatusLabel(invoice.statut) }}
+                </span>
+              </div>
+
+              <p class="invoice-client">{{ invoice.clientNomComplet }}</p>
+              <p class="invoice-meta">
+                Émise le {{ invoice.dateEmission }} • Échéance :
+                {{ invoice.dateEcheance || '—' }}
+              </p>
+
+              @if (invoice.affaireReference) {
+                <p class="invoice-case">Affaire : {{ invoice.affaireReference }}</p>
+              }
+            </div>
+          </div>
+
+          <div class="invoice-right">
+            <p class="invoice-amount">{{ invoice.montantFormate }}</p>
+
+            <div class="invoice-actions">
+                <button class="secondary-btn" type="button" (click)="viewFacture(invoice)">
+                    Voir détails
+                </button>
+                <button class="secondary-btn" type="button" (click)="openEditDialog(invoice)">
+                    Modifier
+                </button>
+                <button class="secondary-btn" type="button" (click)="downloadPdf(invoice)">
+                    PDF
+                </button>
+                <button class="danger-btn" type="button" (click)="deleteFacture(invoice.id)">
+                    Supprimer
+                </button>
+            </div>
+            </div>
+        </div>
+      }
+    </div>
+  }
+
+  @if (isDialogOpen) {
+    <div class="modal-backdrop">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Nouvelle facture</h3>
+          <button type="button" class="ghost-btn" (click)="closeDialog()">✕</button>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Référence</label>
+            <input type="text" [(ngModel)]="newFacture.reference" placeholder="Auto si vide" />
+          </div>
+
+          <div class="form-group">
+            <label>Client *</label>
+            <select [(ngModel)]="newFacture.clientId" (ngModelChange)="onClientChange()">
+              <option [ngValue]="undefined">Sélectionner un client</option>
+              @for (client of clients; track client.id) {
+                <option [ngValue]="client.id">{{ client.nomComplet }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Affaire</label>
+            <select [(ngModel)]="newFacture.affaireId" [disabled]="filteredAffaires.length === 0">
+              <option [ngValue]="undefined">
+                {{ filteredAffaires.length === 0 ? 'Aucune affaire disponible' : 'Aucune affaire' }}
+              </option>
+              @for (affaire of filteredAffaires; track affaire.id) {
+                <option [ngValue]="affaire.id">
+                  {{ affaire.reference }} — {{ affaire.titre }}
+                </option>
+              }
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Montant *</label>
+            <input type="number" min="0" [(ngModel)]="newFacture.montant" />
+          </div>
+
+          <div class="form-group">
+            <label>Statut *</label>
+            <select [(ngModel)]="newFacture.statut">
+              <option value="EN_ATTENTE">En attente</option>
+              <option value="PAYEE">Payée</option>
+              <option value="EN_RETARD">En retard</option>
+              <option value="ANNULEE">Annulée</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Mode de paiement</label>
+            <select [(ngModel)]="newFacture.modePaiement">
+              <option value="">Sélectionner</option>
+              <option value="ESPECES">Espèces</option>
+              <option value="VIREMENT">Virement</option>
+              <option value="MOBILE_MONEY">Mobile Money</option>
+              <option value="CHEQUE">Chèque</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Date d’émission *</label>
+            <input type="date" [(ngModel)]="newFacture.dateEmission" />
+          </div>
+
+          <div class="form-group">
+            <label>Date d’échéance</label>
+            <input type="date" [(ngModel)]="newFacture.dateEcheance" />
+          </div>
+
+          <div class="form-group full-width">
+            <label>Description</label>
+            <textarea rows="4" [(ngModel)]="newFacture.description"></textarea>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="secondary-btn" (click)="closeDialog()">Annuler</button>
+          <button type="button" class="primary-btn" (click)="createFacture()">Créer la facture</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (isEditDialogOpen) {
+    <div class="modal-backdrop">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Modifier la facture</h3>
+          <button type="button" class="ghost-btn" (click)="closeEditDialog()">✕</button>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Référence</label>
+            <input type="text" [(ngModel)]="editFacture.reference" />
+          </div>
+
+          <div class="form-group">
+            <label>Client *</label>
+            <select [(ngModel)]="editFacture.clientId" (ngModelChange)="onEditClientChange()">
+              <option [ngValue]="undefined">Sélectionner un client</option>
+              @for (client of clients; track client.id) {
+                <option [ngValue]="client.id">{{ client.nomComplet }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Affaire</label>
+            <select [(ngModel)]="editFacture.affaireId" [disabled]="filteredEditAffaires.length === 0">
+              <option [ngValue]="undefined">
+                {{ filteredEditAffaires.length === 0 ? 'Aucune affaire disponible' : 'Aucune affaire' }}
+              </option>
+              @for (affaire of filteredEditAffaires; track affaire.id) {
+                <option [ngValue]="affaire.id">
+                  {{ affaire.reference }} — {{ affaire.titre }}
+                </option>
+              }
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Montant *</label>
+            <input type="number" min="0" [(ngModel)]="editFacture.montant" />
+          </div>
+
+          <div class="form-group">
+            <label>Statut *</label>
+            <select [(ngModel)]="editFacture.statut">
+              <option value="EN_ATTENTE">En attente</option>
+              <option value="PAYEE">Payée</option>
+              <option value="EN_RETARD">En retard</option>
+              <option value="ANNULEE">Annulée</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Mode de paiement</label>
+            <select [(ngModel)]="editFacture.modePaiement">
+              <option value="">Sélectionner</option>
+              <option value="ESPECES">Espèces</option>
+              <option value="VIREMENT">Virement</option>
+              <option value="MOBILE_MONEY">Mobile Money</option>
+              <option value="CHEQUE">Chèque</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Date d’émission *</label>
+            <input type="date" [(ngModel)]="editFacture.dateEmission" />
+          </div>
+
+          <div class="form-group">
+            <label>Date d’échéance</label>
+            <input type="date" [(ngModel)]="editFacture.dateEcheance" />
+          </div>
+
+          <div class="form-group full-width">
+            <label>Description</label>
+            <textarea rows="4" [(ngModel)]="editFacture.description"></textarea>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="secondary-btn" (click)="closeEditDialog()">Annuler</button>
+          <button type="button" class="primary-btn" (click)="updateFacture()">Enregistrer</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (selectedFacture) {
+    <div class="modal-backdrop">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Détails de la facture</h3>
+          <button type="button" class="ghost-btn" (click)="closeDetails()">✕</button>
+        </div>
+
+        <div class="details-grid">
+          <div class="detail-block">
+            <p class="detail-label">Référence</p>
+            <p class="detail-value">{{ selectedFacture.reference }}</p>
+          </div>
+
+          <div class="detail-block">
+            <p class="detail-label">Client</p>
+            <p class="detail-value">{{ selectedFacture.clientNomComplet }}</p>
+          </div>
+
+          <div class="detail-block">
+            <p class="detail-label">Montant</p>
+            <p class="detail-value">{{ selectedFacture.montantFormate }}</p>
+          </div>
+
+          <div class="detail-block">
+            <p class="detail-label">Statut</p>
+            <p class="detail-value">{{ getStatusLabel(selectedFacture.statut) }}</p>
+          </div>
+
+          <div class="detail-block">
+            <p class="detail-label">Date d’émission</p>
+            <p class="detail-value">{{ selectedFacture.dateEmission }}</p>
+          </div>
+
+          <div class="detail-block">
+            <p class="detail-label">Date d’échéance</p>
+            <p class="detail-value">{{ selectedFacture.dateEcheance || '—' }}</p>
+          </div>
+
+          <div class="detail-block">
+            <p class="detail-label">Mode de paiement</p>
+            <p class="detail-value">{{ selectedFacture.modePaiement || '—' }}</p>
+          </div>
+
+          <div class="detail-block">
+            <p class="detail-label">Affaire</p>
+            <p class="detail-value">{{ selectedFacture.affaireReference || '—' }}</p>
+          </div>
+
+          <div class="detail-block full-span">
+            <p class="detail-label">Description</p>
+            <p class="detail-value">{{ selectedFacture.description || 'Aucune description' }}</p>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+            <button type="button" class="secondary-btn" (click)="closeDetails()">Fermer</button>
+            <button type="button" class="secondary-btn" (click)="downloadPdf(selectedFacture)">PDF</button>
+            <button type="button" class="secondary-btn" (click)="openEditDialog(selectedFacture)">Modifier</button>
+            <button type="button" class="danger-btn" (click)="deleteFacture(selectedFacture.id)">Supprimer</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

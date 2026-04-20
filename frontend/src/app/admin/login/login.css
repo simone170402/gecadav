@@ -1,3 +1,12 @@
+
 :host {
   display: block;
+}
+
+input.ng-invalid.ng-touched {
+  border-color: #ef4444;
+}
+
+input.ng-invalid.ng-touched:focus {
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.15);
 }
