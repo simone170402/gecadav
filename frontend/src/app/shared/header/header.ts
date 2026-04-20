@@ -24,6 +24,10 @@ export class Header implements OnInit {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
+  isAdminRoute(): boolean {
+    return this.currentUrl.startsWith('/admin');
+  }
+
   ngOnInit(): void {
     this.currentUrl = this.router.url;
 
@@ -64,16 +68,26 @@ export class Header implements OnInit {
     this.updateBodyPadding();
   }
 
+
   private updateBodyPadding(): void {
     if (!this.isBrowser) return;
 
     const header = this.document.querySelector('.site-header') as HTMLElement | null;
-    if (!header) return;
+
+    if (this.isAdminRoute()) {
+      this.document.body.style.paddingTop = '0px';
+      return;
+    }
+
+    if (!header) {
+      this.document.body.style.paddingTop = '0px';
+      return;
+    }
 
     if (this.isHomePage()) {
       this.document.body.style.paddingTop = '0px';
     } else {
       this.document.body.style.paddingTop = `${header.offsetHeight}px`;
     }
-  }
+}
 }

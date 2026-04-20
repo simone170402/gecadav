@@ -18,11 +18,25 @@ public class Document {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String nom;
 
+    @Column(nullable = false)
     private String type;
+    // PDF, IMG, XLS, DOC...
 
+    @Column(nullable = false)
+    private String categorie;
+    // Contrats, Jugements, Pièces d'identité...
+
+    @Column(nullable = false)
     private String fichier;
+    // nom de fichier ou chemin
+
+    private Long taille;
+    // en octets
+
+    private String uploadedBy;
 
     private LocalDate dateUpload;
 
@@ -34,4 +48,10 @@ public class Document {
     @JoinColumn(name = "affaire_id")
     private Affaire affaire;
 
+    @PrePersist
+    public void prePersist() {
+        if (dateUpload == null) {
+            dateUpload = LocalDate.now();
+        }
+    }
 }

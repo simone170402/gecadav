@@ -1,47 +1,65 @@
-import { Injectable, inject, PLATFORM_ID } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { isPlatformBrowser } from '@angular/common';
-import { tap } from 'rxjs';
-import { environment } from '../../environments/environment';
+import { Observable, tap } from 'rxjs';
+
+export interface LoginResponse {
+  token: string;
+  email: string;
+  role: string;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private http = inject(HttpClient);
-  private platformId = inject(PLATFORM_ID);
+  private apiUrl = 'http://localhost:8080/api/auth';
 
-  private readonly apiUrl = `${environment.apiUrl}/api/auth`;
-  private readonly tokenKey = 'cabinet_token';
-
-  private get isBrowser(): boolean {
-    return isPlatformBrowser(this.platformId);
-  }
-
-  login(email: string, password: string) {
-    return this.http.post<{ token: string }>(`${this.apiUrl}/login`, { email, password }).pipe(
+  login(email: string, password: string): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, { email, password }).pipe(
       tap((response) => {
-        if (this.isBrowser) {
-          localStorage.setItem(this.tokenKey, response.token);
-        }
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('email', response.email);
+        localStorage.setItem('role', response.role);
       })
     );
   }
 
   logout(): void {
-    if (this.isBrowser) {
-      localStorage.removeItem(this.tokenKey);
-    }
+    localStorage.removeItem('token');
+    localStorage.removeItem('email');
+    localStorage.removeItem('role');
   }
 
-  get token(): string | null {
-    if (!this.isBrowser) {
-      return null;
-    }
-    return localStorage.getItem(this.tokenKey);
+  getToken(): string | null {
+    return localStorage.getItem('token');
+  }
+
+  getEmail(): string | null {
+    return localStorage.getItem('email');
+  }
+
+  getRole(): string | null {
+    return localStorage.getItem('role');
   }
 
   isLoggedIn(): boolean {
-    return !!this.token;
+    return !!this.getToken();
+  }
+
+  isAdmin(): boolean {
+    return this.getRole() === 'ADMIN';
+  }
+
+  isAvocat(): boolean {
+    return this.getRole() === 'AVOCAT';
+  }
+
+  isSecretaire(): boolean {
+    return this.getRole() === 'SECRETAIRE';
+  }
+
+  isComptable(): boolean {
+    return this.getRole() === 'COMPTABLE';
   }
 }

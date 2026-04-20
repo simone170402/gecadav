@@ -1,131 +1,215 @@
-import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, OnInit, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { AffaireItem, AffaireStats } from './affaires.model';
 import { AffairesService } from './affaires.service';
-import { Affaire } from './affaire.model';
-import { ClientsService } from '../clients/clients.service';
-import { Client } from '../clients/client.model';
 
 @Component({
   selector: 'app-affaires',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './affaires.html',
   styleUrl: './affaires.css'
 })
 export class Affaires implements OnInit {
   private affairesService = inject(AffairesService);
-  private clientsService = inject(ClientsService);
-  private fb = inject(FormBuilder);
 
-  affaires: Affaire[] = [];
-  clients: Client[] = [];
-  selectedAffaireId: number | null = null;
-  isLoading = false;
+  affaires: AffaireItem[] = [];
+  filteredAffaires: AffaireItem[] = [];
+  stats: AffaireStats | null = null;
 
-  affaireForm = this.fb.group({
-    titre: ['', Validators.required],
-    description: [''],
-    statut: ['', Validators.required],
-    dateOuverture: ['', Validators.required],
-    clientId: [null as number | null, Validators.required]
-  });
+  searchTerm = '';
+  selectedTab: 'all' | 'active' | 'closed' = 'all';
+  typeFilter = 'Tous les types';
+
+  isLoading = true;
+  errorMessage = '';
+  isDialogOpen = false;
+
+  newCase: {
+    titre: string;
+    clientId?: number;
+    type: string;
+    priorite: AffaireItem['priorite'];
+    assigneA: string;
+    dateEcheance: string;
+    description: string;
+    statut: AffaireItem['statut'];
+    progression: number;
+  } = {
+    titre: '',
+    clientId: undefined,
+    type: '',
+    priorite: 'medium',
+    assigneA: '',
+    dateEcheance: '',
+    description: '',
+    statut: 'En attente',
+    progression: 0
+  };
 
   ngOnInit(): void {
-    this.loadAffaires();
-    this.loadClients();
+    this.loadData();
   }
 
-  loadAffaires(): void {
+  loadData(): void {
     this.isLoading = true;
-    this.affairesService.getAffaires().subscribe({
-      next: (data: Affaire[]) => {
-        this.affaires = data;
-        this.isLoading = false;
+    this.errorMessage = '';
+
+    this.affairesService.getAll().subscribe({
+      next: (affaires) => {
+        this.affaires = affaires;
+        this.applyFilters();
+
+        this.affairesService.getStats().subscribe({
+          next: (stats) => {
+            this.stats = stats;
+            this.isLoading = false;
+          },
+          error: (err) => {
+            console.error(err);
+            this.errorMessage = 'Impossible de charger les statistiques des affaires.';
+            this.isLoading = false;
+          }
+        });
       },
-      error: (err: unknown) => {
-        console.error('Erreur chargement affaires', err);
+      error: (err) => {
+        console.error(err);
+        this.errorMessage = 'Impossible de charger les affaires.';
         this.isLoading = false;
       }
     });
   }
 
-  loadClients(): void {
-    this.clientsService.getClients().subscribe({
-      next: (data: Client[]) => {
-        this.clients = data;
-      },
-      error: (err: unknown) => {
-        console.error('Erreur chargement clients', err);
-      }
+  applyFilters(): void {
+    const term = this.searchTerm.toLowerCase().trim();
+
+    this.filteredAffaires = this.affaires.filter((item) => {
+      const matchesSearch =
+        item.titre.toLowerCase().includes(term) ||
+        item.client.toLowerCase().includes(term) ||
+        item.reference.toLowerCase().includes(term);
+
+      const matchesTab =
+        this.selectedTab === 'all' ||
+        (this.selectedTab === 'active' && item.statut !== 'Clôturée') ||
+        (this.selectedTab === 'closed' && item.statut === 'Clôturée');
+
+      const matchesType =
+        this.typeFilter === 'Tous les types' || item.type === this.typeFilter;
+
+      return matchesSearch && matchesTab && matchesType;
     });
   }
 
-  onSubmit(): void {
-    if (this.affaireForm.invalid) {
-      this.affaireForm.markAllAsTouched();
+  setTab(tab: 'all' | 'active' | 'closed'): void {
+    this.selectedTab = tab;
+    this.applyFilters();
+  }
+
+  openCreateDialog(): void {
+    this.isDialogOpen = true;
+  }
+
+  closeDialog(): void {
+    this.isDialogOpen = false;
+    this.resetForm();
+  }
+
+  createCase(): void {
+    if (!this.newCase.titre || !this.newCase.clientId || !this.newCase.type) {
+      this.errorMessage = 'Veuillez remplir les champs obligatoires.';
       return;
     }
 
-    const affaireData: Affaire = {
-      titre: this.affaireForm.value.titre ?? '',
-      description: this.affaireForm.value.description ?? '',
-      statut: this.affaireForm.value.statut ?? '',
-      dateOuverture: this.affaireForm.value.dateOuverture ?? '',
-      clientId: this.affaireForm.value.clientId ?? 0
-    };
-
-    if (this.selectedAffaireId !== null) {
-      this.affairesService.updateAffaire(this.selectedAffaireId, affaireData).subscribe({
-        next: () => {
-          this.resetForm();
-          this.loadAffaires();
-        },
-        error: (err: unknown) => {
-          console.error('Erreur modification affaire', err);
-        }
-      });
-    } else {
-      this.affairesService.createAffaire(affaireData).subscribe({
-        next: () => {
-          this.resetForm();
-          this.loadAffaires();
-        },
-        error: (err: unknown) => {
-          console.error('Erreur création affaire', err);
-        }
-      });
-    }
-  }
-
-  editAffaire(affaire: Affaire): void {
-    this.selectedAffaireId = affaire.id ?? null;
-    this.affaireForm.patchValue({
-      titre: affaire.titre,
-      description: affaire.description ?? '',
-      statut: affaire.statut,
-      dateOuverture: affaire.dateOuverture,
-      clientId: affaire.clientId
-    });
-  }
-
-  deleteAffaire(id: number): void {
-    if (!confirm('Voulez-vous vraiment supprimer cette affaire ?')) {
-      return;
-    }
-
-    this.affairesService.deleteAffaire(id).subscribe({
+    this.affairesService.create(this.newCase).subscribe({
       next: () => {
-        this.loadAffaires();
+        this.closeDialog();
+        this.loadData();
       },
-      error: (err: unknown) => {
-        console.error('Erreur suppression affaire', err);
+      error: (err) => {
+        console.error(err);
+        this.errorMessage = 'Impossible de créer l’affaire.';
       }
     });
+  }
+
+  get activeCasesCount(): number {
+    return this.affaires.filter(a => a.statut !== 'Clôturée').length;
+  }
+
+  get closedCasesCount(): number {
+    return this.affaires.filter(a => a.statut === 'Clôturée').length;
+  }
+
+  getStatusClass(status: string): string {
+    switch (status) {
+      case 'En cours':
+        return 'status-blue';
+      case 'Audience prévue':
+        return 'status-purple';
+      case 'En attente':
+        return 'status-orange';
+      case 'Clôturée':
+        return 'status-green';
+      default:
+        return 'status-gray';
+    }
+  }
+
+  getPriorityClass(priority: string): string {
+    switch (priority) {
+      case 'high':
+        return 'priority-red';
+      case 'medium':
+        return 'priority-orange';
+      case 'low':
+        return 'priority-green';
+      default:
+        return 'priority-gray';
+    }
+  }
+
+  
+
+  getPriorityLabel(priority: string): string {
+    switch (priority) {
+      case 'high':
+        return 'Urgent';
+      case 'medium':
+        return 'Moyen';
+      case 'low':
+        return 'Faible';
+      default:
+        return priority;
+    }
+  }
+
+  getBorderColor(priority: string): string {
+    switch (priority) {
+      case 'high':
+        return '#dc2626';
+      case 'medium':
+        return '#f59e0b';
+      case 'low':
+        return '#10b981';
+      default:
+        return '#94a3b8';
+    }
   }
 
   resetForm(): void {
-    this.selectedAffaireId = null;
-    this.affaireForm.reset();
-  }
+  this.newCase = {
+    titre: '',
+    clientId: undefined,
+    type: '',
+    priorite: 'medium',
+    assigneA: '',
+    dateEcheance: '',
+    description: '',
+    statut: 'En attente',
+    progression: 0
+  };
+}
+
 }

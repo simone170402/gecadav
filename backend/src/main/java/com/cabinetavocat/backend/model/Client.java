@@ -3,7 +3,7 @@ package com.cabinetavocat.backend.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "clients")
@@ -31,10 +31,31 @@ public class Client {
 
     private String adresse;
 
-    private LocalDateTime dateCreation;
+    @Column(nullable = false)
+    private String type;
+    // Particulier / Entreprise
+
+    private String entreprise;
+
+    @Column(nullable = false)
+    private String statut;
+    // Actif / Inactif
+
+    @Column(columnDefinition = "TEXT")
+    private String notes;
+
+    private LocalDate dateCreation;
 
     @PrePersist
     public void prePersist() {
-        this.dateCreation = LocalDateTime.now();
+        if (this.dateCreation == null) {
+            this.dateCreation = LocalDate.now();
+        }
+        if (this.type == null || this.type.isBlank()) {
+            this.type = "Particulier";
+        }
+        if (this.statut == null || this.statut.isBlank()) {
+            this.statut = "Actif";
+        }
     }
 }

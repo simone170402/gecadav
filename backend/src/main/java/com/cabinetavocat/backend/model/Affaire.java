@@ -25,11 +25,43 @@ public class Affaire {
     private String description;
 
     @Column(nullable = false)
+    private String type;
+
+    @Column(nullable = false)
     private String statut;
+    // En cours / Audience prévue / En attente / Clôturée
+
+    @Column(nullable = false)
+    private String priorite;
+    // high / medium / low
+
+    private String assigneA;
 
     private LocalDate dateOuverture;
+
+    private LocalDate dateEcheance;
+    private LocalDate dateCloture;
+
+    private Integer progression;
+    // 0 à 100
 
     @ManyToOne
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;
+
+    @PrePersist
+    public void prePersist() {
+        if (dateOuverture == null) {
+            dateOuverture = LocalDate.now();
+        }
+        if (statut == null || statut.isBlank()) {
+            statut = "En attente";
+        }
+        if (priorite == null || priorite.isBlank()) {
+            priorite = "medium";
+        }
+        if (progression == null) {
+            progression = 0;
+        }
+    }
 }

@@ -1,10 +1,8 @@
 package com.cabinetavocat.backend.controller;
 
-
-import com.cabinetavocat.backend.auth.dto.AffaireRequest;
-import com.cabinetavocat.backend.model.Affaire;
+import com.cabinetavocat.backend.auth.dto.AffaireDto;
+import com.cabinetavocat.backend.auth.dto.AffaireStatsDto;
 import com.cabinetavocat.backend.service.AffaireService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,30 +18,32 @@ public class AffaireController {
     }
 
     @GetMapping
-    public List<Affaire> getAllAffaires() {
+    public List<AffaireDto> getAllAffaires() {
         return affaireService.getAllAffaires();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Affaire> getAffaireById(@PathVariable Long id) {
-        return affaireService.getAffaireById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public AffaireDto getAffaireById(@PathVariable Long id) {
+        return affaireService.getAffaireById(id);
     }
 
     @PostMapping
-    public ResponseEntity<Affaire> createAffaire(@RequestBody AffaireRequest request) {
-        return ResponseEntity.ok(affaireService.createAffaire(request));
+    public AffaireDto createAffaire(@RequestBody AffaireDto affaireDto) {
+        return affaireService.createAffaire(affaireDto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Affaire> updateAffaire(@PathVariable Long id, @RequestBody AffaireRequest request) {
-        return ResponseEntity.ok(affaireService.updateAffaire(id, request));
+    public AffaireDto updateAffaire(@PathVariable Long id, @RequestBody AffaireDto affaireDto) {
+        return affaireService.updateAffaire(id, affaireDto);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAffaire(@PathVariable Long id) {
+    public void deleteAffaire(@PathVariable Long id) {
         affaireService.deleteAffaire(id);
-        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/stats")
+    public AffaireStatsDto getAffaireStats() {
+        return affaireService.getAffaireStats();
     }
 }

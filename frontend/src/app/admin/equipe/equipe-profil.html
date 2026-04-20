@@ -1,0 +1,94 @@
+<div class="profile-page">
+  @if (isLoading) {
+    <div class="card">Chargement du profil...</div>
+  } @else if (errorMessage) {
+    <div class="error-box">{{ errorMessage }}</div>
+  } @else if (profil) {
+    <div class="profile-header card">
+      <div class="avatar-circle big">{{ profil.initiales }}</div>
+
+      <div class="profile-main">
+        <h1>{{ profil.nomComplet }}</h1>
+        <p class="profile-role">{{ profil.role }}</p>
+        <p class="profile-specialty">{{ profil.specialite }}</p>
+
+        <div class="profile-contact">
+          <span>✉ {{ profil.email }}</span>
+          <span>📞 {{ profil.telephone || '—' }}</span>
+          <span>● {{ profil.statut }}</span>
+        </div>
+      </div>
+
+      <a routerLink="/admin/equipe" class="secondary-btn">← Retour</a>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <p class="stat-label">Affaires</p>
+        <p class="stat-value">{{ profil.nombreAffaires }}</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-label">Tâches</p>
+        <p class="stat-value">{{ profil.nombreTaches }}</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-label">Factures</p>
+        <p class="stat-value">{{ profil.nombreFactures }}</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-label">Rendez-vous</p>
+        <p class="stat-value">{{ profil.nombreRendezVous }}</p>
+      </div>
+    </div>
+
+    <div class="content-grid">
+      <div class="card">
+        <h3>Affaires assignées</h3>
+
+        @if (profil.affaires.length === 0) {
+          <p class="empty-text">Aucune affaire assignée.</p>
+        } @else {
+          <div class="list-stack">
+            @for (affaire of profil.affaires; track affaire.id) {
+              <div class="list-item">
+                <div>
+                  <p class="item-title">{{ affaire.reference }}</p>
+                  <p class="item-subtitle">{{ affaire.titre }}</p>
+                </div>
+
+                <div class="item-meta">
+                  <span>{{ affaire.statut }}</span>
+                  <span>{{ getPriorityLabel(affaire.priorite) }}</span>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="card">
+        <h3>Tâches assignées</h3>
+
+        @if (profil.taches.length === 0) {
+          <p class="empty-text">Aucune tâche assignée.</p>
+        } @else {
+          <div class="list-stack">
+            @for (tache of profil.taches; track tache.id) {
+              <div class="list-item">
+                <div>
+                  <p class="item-title">{{ tache.titre }}</p>
+                  <p class="item-subtitle">{{ tache.dueDate || '—' }}</p>
+                </div>
+
+                <div class="item-meta">
+                  <span>{{ getPriorityLabel(tache.priority) }}</span>
+                  <span>{{ tache.completed ? 'Terminée' : 'En cours' }}</span>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

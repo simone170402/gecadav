@@ -32,6 +32,7 @@ import { Avocat5 } from './pages/avocats/avocat5/avocat5';
 import { authGuard } from './core/auth.guard';
 import { Layout } from './admin/layout/layout';
 import { Login } from './admin/login/login';
+import { roleGuard } from './services/role.guard';
 
 export const routes: Routes = [
   // 🌐 Partie publique
@@ -43,6 +44,7 @@ export const routes: Routes = [
   { path: 'contact', component: Contact },
   { path: 'vision', component: Vision },
   { path: 'avocat-bafoussam', component: AvocatBafoussam },
+
   // 🌐 Domaines
   { path: 'domaines/litigation', component: Litigation },
   { path: 'domaines/mergers-acquisitions', component: MergersAcquisitions },
@@ -65,42 +67,83 @@ export const routes: Routes = [
   { path: 'avocats/avocat4', component: Avocat4 },
   { path: 'avocats/avocat5', component: Avocat5 },
 
-  // 🔐 Login admin (public)
+  // 🔐 Login admin
   { path: 'admin/login', component: Login },
 
-  // 🔐 Partie admin protégée avec layout
- {
-  path: 'admin',
-  component: Layout,
-  canActivate: [authGuard],
-  children: [
-    { path: 'dashboard', loadComponent: () => import('./admin/dashboard/dashboard').then(m => m.Dashboard) },
+  // 🔐 Admin protégé
+  {
+    path: 'admin',
+    component: Layout,
+    canActivate: [authGuard],
+    children: [
+      {
+        path: 'dashboard',
+        loadComponent: () => import('./admin/dashboard/dashboard').then(m => m.Dashboard)
+      },
 
-    { path: 'clients', loadComponent: () => import('./admin/clients/clients').then(m => m.Clients) },
+      {
+        path: 'clients',
+        loadComponent: () => import('./admin/clients/clients').then(m => m.Clients),
+        canActivate: [roleGuard(['ADMIN', 'AVOCAT', 'SECRETAIRE'])]
+      },
 
-    { path: 'affaires', loadComponent: () => import('./admin/affaires/affaires').then(m => m.Affaires) },
+      {
+        path: 'affaires',
+        loadComponent: () => import('./admin/affaires/affaires').then(m => m.Affaires),
+        canActivate: [roleGuard(['ADMIN', 'AVOCAT'])]
+      },
 
-    { path: 'facturation', loadComponent: () => import('./admin/facturation/facturation').then(m => m.Facturation) },
+      {
+        path: 'facturation',
+        loadComponent: () => import('./admin/facturation/facturation').then(m => m.Facturation),
+        canActivate: [roleGuard(['ADMIN', 'COMPTABLE', 'AVOCAT'])]
+      },
 
-    { path: 'procurations', loadComponent: () => import('./admin/procurations/procurations').then(m => m.Procurations) },
+      {
+        path: 'procurations',
+        loadComponent: () => import('./admin/procurations/procurations').then(m => m.Procurations),
+        canActivate: [roleGuard(['ADMIN', 'AVOCAT'])]
+      },
 
-    // 📅 calendrier rendez-vous
-    {
-      path: 'rendezvous',
-      loadComponent: () =>
-        import('./admin/rendezvous/rendezvous-calendar/rendezvous-calendar')
-          .then(m => m.RendezVousCalendarComponent)
-    },
-    {
-      path: 'documents',
-      loadComponent: () =>
-        import('./admin/documents/documents')
-          .then(m => m.Documents)
-    },
+      {
+        path: 'taches',
+        loadComponent: () => import('./admin/taches/taches').then(m => m.Taches),
+        canActivate: [roleGuard(['ADMIN', 'AVOCAT', 'SECRETAIRE'])]
+      },
 
-    { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
-  ]
-},
+      {
+        path: 'equipe',
+        loadComponent: () => import('./admin/equipe/equipe').then(m => m.Equipe),
+        canActivate: [roleGuard(['ADMIN', 'AVOCAT'])]
+      },
+
+      {
+        path: 'equipe/:id',
+        loadComponent: () => import('./admin/equipe/equipe-profil').then(m => m.EquipeProfil),
+        canActivate: [roleGuard(['ADMIN', 'AVOCAT'])]
+      },
+
+      {
+        path: 'statistiques',
+        loadComponent: () => import('./admin/statistiques/statistiques').then(m => m.Statistiques),
+        canActivate: [roleGuard(['ADMIN', 'AVOCAT', 'COMPTABLE'])]
+      },
+
+      {
+        path: 'rendezvous',
+        loadComponent: () => import('./admin/rendezvous/rendezvous').then(m => m.RendezVousComponent),
+        canActivate: [roleGuard(['ADMIN', 'AVOCAT', 'SECRETAIRE'])]
+      },
+
+      {
+        path: 'documents',
+        loadComponent: () => import('./admin/documents/documents').then(m => m.Documents),
+        canActivate: [roleGuard(['ADMIN', 'AVOCAT', 'SECRETAIRE'])]
+      },
+
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+    ]
+  },
 
   // fallback
   { path: '**', redirectTo: '' }

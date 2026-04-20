@@ -1,169 +1,172 @@
-<div class="space-y-8">
-
-  <div>
-    <h2 class="text-3xl font-bold text-gray-800">
-      Gestion des rendez-vous
-    </h2>
-    <p class="text-gray-500 mt-1">
-      Organisez les rendez-vous du cabinet
-    </p>
-  </div>
-
-  <div class="grid lg:grid-cols-3 gap-8">
-
-    <!-- FORMULAIRE -->
-
-    <div class="lg:col-span-1 bg-white rounded-2xl shadow p-6">
-
-      <h3 class="text-xl font-semibold mb-4 text-[#bfa14a]">
-
-        {{ selectedId ? 'Modifier le rendez-vous' : 'Ajouter un rendez-vous' }}
-
-      </h3>
-
-      <form [formGroup]="rdvForm" (ngSubmit)="onSubmit()" class="space-y-4">
-
-        <div>
-          <label for="date" class="block text-sm font-medium mb-1">Date</label>
-
-          <input
-            id="date"
-            type="date"
-            formControlName="date"
-            class="w-full border rounded-lg px-4 py-2"
-          />
-        </div>
-
-        <div>
-          <label for="heure" class="block text-sm font-medium mb-1">Heure</label>
-
-          <input
-            id="heure"
-            type="time"
-            formControlName="heure"
-            class="w-full border rounded-lg px-4 py-2"
-          />
-        </div>
-
-        <div>
-          <label for="lieu" class="block text-sm font-medium mb-1">Lieu</label>
-
-          <input
-            id="lieu"
-            type="text"
-            placeholder="Cabinet / Tribunal"
-            formControlName="lieu"
-            class="w-full border rounded-lg px-4 py-2"
-          />
-        </div>
-
-        <div>
-          <label for="note" class="block text-sm font-medium mb-1">Note</label>
-
-          <textarea
-            id="note"
-            placeholder="Notes du rendez-vous"
-            formControlName="note"
-            class="w-full border rounded-lg px-4 py-2"
-          ></textarea>
-        </div>
-
-        <div class="flex gap-3">
-
-          <button
-            type="submit"
-            class="bg-[#bfa14a] text-white px-5 py-2 rounded-lg hover:opacity-90"
-          >
-            {{ selectedId ? 'Mettre à jour' : 'Ajouter' }}
-          </button>
-
-          <button
-            type="button"
-            (click)="resetForm()"
-            class="bg-gray-200 text-gray-800 px-5 py-2 rounded-lg"
-          >
-            Réinitialiser
-          </button>
-
-        </div>
-
-      </form>
-
+<div class="appointments-page">
+  <div class="page-header">
+    <div>
+      <h1>Rendez-vous</h1>
+      <p>Gérez votre agenda et vos rendez-vous</p>
     </div>
 
-    <!-- TABLEAU -->
-
-    <div class="lg:col-span-2 bg-white rounded-2xl shadow p-6">
-
-      <h3 class="text-xl font-semibold mb-4 text-[#bfa14a]">
-        Liste des rendez-vous
-      </h3>
-
-      @if (isLoading) {
-
-        <p class="text-gray-500">Chargement...</p>
-
-      } @else {
-
-        <div class="overflow-x-auto">
-
-          <table class="w-full text-left border-collapse">
-
-            <thead>
-              <tr class="border-b text-gray-600">
-                <th class="py-3">Date</th>
-                <th class="py-3">Heure</th>
-                <th class="py-3">Lieu</th>
-                <th class="py-3">Note</th>
-                <th class="py-3 text-right">Actions</th>
-              </tr>
-            </thead>
-
-            <tbody>
-
-              @for (rdv of rendezvous; track rdv.id) {
-
-                <tr class="border-b hover:bg-gray-50">
-
-                  <td class="py-3">{{ rdv.date }}</td>
-                  <td class="py-3">{{ rdv.heure }}</td>
-                  <td class="py-3">{{ rdv.lieu }}</td>
-                  <td class="py-3">{{ rdv.note }}</td>
-
-                  <td class="py-3 text-right space-x-2">
-
-                    <button
-                      type="button"
-                      (click)="edit(rdv)"
-                      class="bg-blue-600 text-white px-3 py-1 rounded-lg"
-                    >
-                      Modifier
-                    </button>
-
-                    <button
-                      type="button"
-                      (click)="delete(rdv.id!)"
-                      class="bg-red-600 text-white px-3 py-1 rounded-lg"
-                    >
-                      Supprimer
-                    </button>
-
-                  </td>
-
-                </tr>
-
-              }
-
-            </tbody>
-
-          </table>
-
-        </div>
-
-      }
-
-    </div>
-
+    <button class="primary-btn" type="button" (click)="openCreateDialog()">
+      + Nouveau rendez-vous
+    </button>
   </div>
 
+  @if (errorMessage) {
+    <div class="error-box">{{ errorMessage }}</div>
+  }
+
+  @if (isLoading) {
+    <div class="card">Chargement des rendez-vous...</div>
+  } @else {
+    <div class="calendar-shell">
+      <div class="calendar-shell-header">
+        <div>
+          <h3>Agenda du cabinet</h3>
+          <p>Planifiez et suivez vos rendez-vous</p>
+        </div>
+
+        <div class="calendar-legend">
+          <span><i class="legend-dot consultation"></i> Consultation</span>
+          <span><i class="legend-dot signature"></i> Signature</span>
+          <span><i class="legend-dot audience"></i> Audience</span>
+          <span><i class="legend-dot suivi"></i> Suivi</span>
+        </div>
+      </div>
+
+      <div class="calendar-inner">
+        <full-calendar [options]="calendarOptions"></full-calendar>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Prochains rendez-vous</h3>
+
+      <div class="appointments-list">
+        @for (item of upcomingAppointments; track item.id) {
+          <div class="appointment-row" (click)="selectedEvent = item">
+            <div class="appointment-date-box">
+              <p>{{ item.date }}</p>
+              <strong>{{ item.startTime }}</strong>
+            </div>
+
+            <div class="appointment-main">
+              <p class="appointment-client">{{ item.client }}</p>
+              <p class="appointment-type">{{ item.type }}</p>
+            </div>
+
+            <div class="appointment-side">
+              <p>{{ item.endTime }}</p>
+              <p>{{ item.location }}</p>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  @if (isDialogOpen) {
+    <div class="modal-backdrop">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Nouveau rendez-vous</h3>
+          <button type="button" class="ghost-btn" (click)="closeDialog()">✕</button>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label>ID client *</label>
+            <input type="number" [(ngModel)]="newAppointment.clientId" />
+          </div>
+
+          <div class="form-group">
+            <label>Type de rendez-vous *</label>
+            <select [(ngModel)]="newAppointment.type">
+              <option value="">Sélectionner</option>
+              <option value="Consultation">Consultation</option>
+              <option value="Signature">Signature de contrat</option>
+              <option value="Audience">Audience</option>
+              <option value="Suivi">Suivi d'affaire</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Date *</label>
+            <input type="date" [(ngModel)]="newAppointment.date" />
+          </div>
+
+          <div class="form-group">
+            <label>Heure de début *</label>
+            <input type="time" [(ngModel)]="newAppointment.startTime" />
+          </div>
+
+          <div class="form-group">
+            <label>Heure de fin *</label>
+            <input type="time" [(ngModel)]="newAppointment.endTime" />
+          </div>
+
+          <div class="form-group">
+            <label>Lieu</label>
+            <input type="text" [(ngModel)]="newAppointment.location" />
+          </div>
+
+          <div class="form-group full-width">
+            <label>Notes</label>
+            <textarea rows="3" [(ngModel)]="newAppointment.notes"></textarea>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="secondary-btn" (click)="closeDialog()">Annuler</button>
+          <button type="button" class="primary-btn" (click)="createAppointment()">Créer le rendez-vous</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (selectedEvent) {
+    <div class="modal-backdrop">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Détails du rendez-vous</h3>
+          <button type="button" class="ghost-btn" (click)="closeDetails()">✕</button>
+        </div>
+
+        <div class="details-stack">
+          <div class="detail-item">
+            <p class="detail-label">Client</p>
+            <p class="detail-value">{{ selectedEvent.client }}</p>
+          </div>
+
+          <div class="detail-item">
+            <p class="detail-label">Type</p>
+            <p class="detail-value">{{ selectedEvent.type }}</p>
+          </div>
+
+          <div class="detail-item">
+            <p class="detail-label">Date</p>
+            <p class="detail-value">{{ selectedEvent.date }}</p>
+          </div>
+
+          <div class="detail-item">
+            <p class="detail-label">Heure</p>
+            <p class="detail-value">{{ selectedEvent.startTime }} à {{ selectedEvent.endTime }}</p>
+          </div>
+
+          <div class="detail-item">
+            <p class="detail-label">Lieu</p>
+            <p class="detail-value">{{ selectedEvent.location }}</p>
+          </div>
+
+          <div class="detail-item">
+            <p class="detail-label">Notes</p>
+            <p class="detail-value">{{ selectedEvent.notes || 'Aucune note' }}</p>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="secondary-btn" (click)="closeDetails()">Fermer</button>
+          <button type="button" class="danger-btn" (click)="deleteAppointment(selectedEvent.id)">Annuler le rendez-vous</button>
+        </div>
+      </div>
+    </div>
+  }
 </div>

@@ -1,142 +1,223 @@
-<div class="space-y-8">
-  <div>
-    <h2 class="text-3xl font-bold text-gray-800">Gestion des affaires</h2>
-    <p class="text-gray-500 mt-1">Ajoutez, modifiez et suivez les affaires du cabinet.</p>
+<div class="cases-page">
+  <div class="page-header">
+    <div>
+      <h1>Affaires</h1>
+      <p>Gérez vos dossiers et affaires en cours</p>
+    </div>
+
+    <button class="primary-btn" type="button" (click)="openCreateDialog()">
+      + Nouvelle affaire
+    </button>
   </div>
 
-  <div class="grid lg:grid-cols-3 gap-8">
-    <div class="lg:col-span-1 bg-white rounded-2xl shadow p-6">
-      <h3 class="text-xl font-semibold mb-4 text-[#bfa14a]">
-        {{ selectedAffaireId ? 'Modifier une affaire' : 'Ajouter une affaire' }}
-      </h3>
+  @if (errorMessage) {
+    <div class="error-box">{{ errorMessage }}</div>
+  }
 
-      <form [formGroup]="affaireForm" (ngSubmit)="onSubmit()" class="space-y-4">
+  @if (isLoading) {
+    <div class="card">Chargement des affaires...</div>
+  } @else {
+    <div class="stats-grid">
+      <div class="stat-card">
         <div>
-          <label for="titre" class="block text-sm font-medium mb-1">Titre</label>
+          <p class="stat-label">Total affaires</p>
+          <p class="stat-value">{{ stats?.totalAffaires ?? 0 }}</p>
+        </div>
+        <div class="stat-icon blue-bg">📁</div>
+      </div>
+
+      <div class="stat-card">
+        <div>
+          <p class="stat-label">En cours</p>
+          <p class="stat-value blue">{{ stats?.enCours ?? 0 }}</p>
+        </div>
+        <div class="stat-icon blue-bg">⏳</div>
+      </div>
+
+      <div class="stat-card">
+        <div>
+          <p class="stat-label">Urgentes</p>
+          <p class="stat-value red">{{ stats?.urgentes ?? 0 }}</p>
+        </div>
+        <div class="stat-icon red-bg">🚨</div>
+      </div>
+
+      <div class="stat-card">
+        <div>
+          <p class="stat-label">Clôturées</p>
+          <p class="stat-value green">{{ stats?.cloturees ?? 0 }}</p>
+        </div>
+        <div class="stat-icon green-bg">✅</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="filters-row">
+        <div class="search-box">
           <input
-            id="titre"
             type="text"
-            formControlName="titre"
-            placeholder="Ex: Litige commercial"
-            class="w-full border rounded-lg px-4 py-2"
+            placeholder="Rechercher une affaire..."
+            [(ngModel)]="searchTerm"
+            (ngModelChange)="applyFilters()"
           />
         </div>
 
-        <div>
-          <label for="clientId" class="block text-sm font-medium mb-1">Client</label>
-          <select
-            id="clientId"
-            formControlName="clientId"
-            class="w-full border rounded-lg px-4 py-2"
-          >
-            <option [ngValue]="null">Sélectionnez un client</option>
-            @for (client of clients; track client.id) {
-              <option [ngValue]="client.id">
-                {{ client.nom }} {{ client.prenom }}
-              </option>
-            }
-          </select>
-        </div>
+        <select [(ngModel)]="typeFilter" (change)="applyFilters()">
+          <option>Tous les types</option>
+          <option>Droit commercial</option>
+          <option>Droit de la famille</option>
+          <option>Droit du travail</option>
+          <option>Droit immobilier</option>
+          <option>Droit pénal</option>
+        </select>
+      </div>
 
-        <div>
-          <label for="statut" class="block text-sm font-medium mb-1">Statut</label>
-          <select
-            id="statut"
-            formControlName="statut"
-            class="w-full border rounded-lg px-4 py-2"
-          >
-            <option value="">Sélectionnez un statut</option>
-            <option value="En cours">En cours</option>
-            <option value="En attente">En attente</option>
-            <option value="Clôturée">Clôturée</option>
-          </select>
-        </div>
+      <div class="tabs-row">
+        <button
+          type="button"
+          class="tab-btn"
+          [ngClass]="selectedTab === 'all' ? 'tab-active' : ''"
+          (click)="setTab('all')"
+        >
+          Toutes ({{ affaires.length }})
+        </button>
 
-        <div>
-          <label for="dateOuverture" class="block text-sm font-medium mb-1">Date d’ouverture</label>
-          <input
-            id="dateOuverture"
-            type="date"
-            formControlName="dateOuverture"
-            class="w-full border rounded-lg px-4 py-2"
-          />
-        </div>
+        <button
+          type="button"
+          class="tab-btn"
+          [ngClass]="selectedTab === 'active' ? 'tab-active' : ''"
+          (click)="setTab('active')"
+        >
+          Actives ({{ activeCasesCount }})
+        </button>
 
-        <div>
-          <label for="description" class="block text-sm font-medium mb-1">Description</label>
-          <textarea
-            id="description"
-            formControlName="description"
-            placeholder="Décrivez l'affaire"
-            class="w-full border rounded-lg px-4 py-2"
-          ></textarea>
-        </div>
+        <button
+          type="button"
+          class="tab-btn"
+          [ngClass]="selectedTab === 'closed' ? 'tab-active' : ''"
+          (click)="setTab('closed')"
+        >
+          Clôturées ({{ closedCasesCount }})
+        </button>
+      </div>
 
-        <div class="flex gap-3">
-          <button
-            type="submit"
-            class="bg-[#bfa14a] text-white px-5 py-2 rounded-lg hover:opacity-90"
-          >
-            {{ selectedAffaireId ? 'Mettre à jour' : 'Ajouter' }}
-          </button>
+      <div class="cases-list">
+        @for (item of filteredAffaires; track item.id) {
+          <div class="case-card" [style.border-left-color]="getBorderColor(item.priorite)">
+            <div class="case-main">
+              <div class="case-top">
+                <div>
+                  <div class="case-top-line">
+                    <h3>{{ item.reference }}</h3>
 
-          <button
-            type="button"
-            (click)="resetForm()"
-            class="bg-gray-200 text-gray-800 px-5 py-2 rounded-lg hover:bg-gray-300"
-          >
-            Réinitialiser
-          </button>
-        </div>
-      </form>
+                    <span class="badge" [ngClass]="getPriorityClass(item.priorite)">
+                      {{ getPriorityLabel(item.priorite) }}
+                    </span>
+
+                    <span class="badge" [ngClass]="getStatusClass(item.statut)">
+                      {{ item.statut }}
+                    </span>
+                  </div>
+
+                  <p class="case-title">{{ item.titre }}</p>
+
+                  <div class="case-meta">
+                    <span>Client: {{ item.client }}</span>
+                    <span>•</span>
+                    <span>{{ item.type }}</span>
+                    <span>•</span>
+                    <span>Assigné à: {{ item.assigneA || '—' }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="progress-block">
+                <div class="progress-head">
+                  <span>Progression</span>
+                  <span>{{ item.progression }}%</span>
+                </div>
+
+                <div class="progress-bar">
+                  <div class="progress-fill" [style.width.%]="item.progression"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="case-side">
+              <div class="deadline-box">
+                <p class="deadline-label">Échéance</p>
+                <p class="deadline-value">{{ item.dateEcheance || '—' }}</p>
+              </div>
+
+              <button class="secondary-btn" type="button">Voir détails</button>
+            </div>
+          </div>
+        }
+      </div>
     </div>
+  }
 
-    <div class="lg:col-span-2 bg-white rounded-2xl shadow p-6">
-      <h3 class="text-xl font-semibold mb-4 text-[#bfa14a]">Liste des affaires</h3>
-
-      @if (isLoading) {
-        <p class="text-gray-500">Chargement...</p>
-      } @else {
-        <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse">
-            <thead>
-              <tr class="border-b text-gray-600">
-                <th class="py-3">Titre</th>
-                <th class="py-3">Client</th>
-                <th class="py-3">Statut</th>
-                <th class="py-3">Date</th>
-                <th class="py-3 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (affaire of affaires; track affaire.id) {
-                <tr class="border-b hover:bg-gray-50">
-                  <td class="py-3">{{ affaire.titre }}</td>
-                  <td class="py-3">{{ affaire.clientNom }}</td>
-                  <td class="py-3">{{ affaire.statut }}</td>
-                  <td class="py-3">{{ affaire.dateOuverture }}</td>
-                  <td class="py-3 text-right space-x-2">
-                    <button
-                      type="button"
-                      (click)="editAffaire(affaire)"
-                      class="bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700"
-                    >
-                      Modifier
-                    </button>
-                    <button
-                      type="button"
-                      (click)="deleteAffaire(affaire.id!)"
-                      class="bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700"
-                    >
-                      Supprimer
-                    </button>
-                  </td>
-                </tr>
-              }
-            </tbody>
-          </table>
+  @if (isDialogOpen) {
+    <div class="modal-backdrop">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Nouvelle affaire</h3>
+          <button type="button" class="ghost-btn" (click)="closeDialog()">✕</button>
         </div>
-      }
+
+        <div class="form-grid">
+          <div class="form-group full-width">
+            <label>Titre de l’affaire *</label>
+            <input type="text" [(ngModel)]="newCase.titre" />
+          </div>
+
+          <div class="form-group">
+            <label>ID client *</label>
+            <input type="number" [(ngModel)]="newCase.clientId" />
+          </div>
+
+          <div class="form-group">
+            <label>Type d’affaire *</label>
+            <select [(ngModel)]="newCase.type">
+              <option value="">Sélectionner</option>
+              <option value="Droit commercial">Droit commercial</option>
+              <option value="Droit de la famille">Droit de la famille</option>
+              <option value="Droit du travail">Droit du travail</option>
+              <option value="Droit immobilier">Droit immobilier</option>
+              <option value="Droit pénal">Droit pénal</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Priorité *</label>
+            <select [(ngModel)]="newCase.priorite">
+              <option value="high">Urgent</option>
+              <option value="medium">Moyen</option>
+              <option value="low">Faible</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Avocat assigné</label>
+            <input type="text" [(ngModel)]="newCase.assigneA" />
+          </div>
+
+          <div class="form-group">
+            <label>Échéance</label>
+            <input type="date" [(ngModel)]="newCase.dateEcheance" />
+          </div>
+
+          <div class="form-group full-width">
+            <label>Description</label>
+            <textarea rows="4" [(ngModel)]="newCase.description"></textarea>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="secondary-btn" (click)="closeDialog()">Annuler</button>
+          <button type="button" class="primary-btn" (click)="createCase()">Créer l’affaire</button>
+        </div>
+      </div>
     </div>
-  </div>
+  }
 </div>

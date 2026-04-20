@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
-import { Affaire } from './affaire.model';
+import { Observable } from 'rxjs';
+import { AffaireItem, AffaireStats } from './affaires.model';
 
 @Injectable({
   providedIn: 'root'
@@ -10,31 +10,23 @@ export class AffairesService {
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:8080/api/affaires';
 
-  getAffaires(): Observable<Affaire[]> {
-    return this.http.get<any[]>(this.apiUrl).pipe(
-      map((affaires) =>
-        affaires.map((affaire) => ({
-          id: affaire.id,
-          titre: affaire.titre,
-          description: affaire.description,
-          statut: affaire.statut,
-          dateOuverture: affaire.dateOuverture,
-          clientId: affaire.client?.id,
-          clientNom: affaire.client ? `${affaire.client.nom} ${affaire.client.prenom}` : ''
-        }))
-      )
-    );
+  getAll(): Observable<AffaireItem[]> {
+    return this.http.get<AffaireItem[]>(this.apiUrl);
   }
 
-  createAffaire(affaire: Affaire): Observable<Affaire> {
-    return this.http.post<Affaire>(this.apiUrl, affaire);
+  getStats(): Observable<AffaireStats> {
+    return this.http.get<AffaireStats>(`${this.apiUrl}/stats`);
   }
 
-  updateAffaire(id: number, affaire: Affaire): Observable<Affaire> {
-    return this.http.put<Affaire>(`${this.apiUrl}/${id}`, affaire);
+  create(payload: Partial<AffaireItem>): Observable<AffaireItem> {
+    return this.http.post<AffaireItem>(this.apiUrl, payload);
   }
 
-  deleteAffaire(id: number): Observable<void> {
+  update(id: number, payload: Partial<AffaireItem>): Observable<AffaireItem> {
+    return this.http.put<AffaireItem>(`${this.apiUrl}/${id}`, payload);
+  }
+
+  delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }
