@@ -1,122 +1,214 @@
-import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, OnInit, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import { CalendarOptions, DateSelectArg, EventClickArg } from '@fullcalendar/core';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import interactionPlugin from '@fullcalendar/interaction';
+
 import { RendezVousService } from './rendezvous.service';
-import { RendezVous } from './rendezvous.model';
+import { RendezVousItem } from './rendezvous.model';
 
 @Component({
   selector: 'app-rendezvous',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, FullCalendarModule],
   templateUrl: './rendezvous.html',
   styleUrl: './rendezvous.css'
 })
 export class RendezVousComponent implements OnInit {
+  private rendezVousService = inject(RendezVousService);
 
-  private service = inject(RendezVousService)
-  private fb = inject(FormBuilder)
+  rendezVousList: RendezVousItem[] = [];
+  upcomingAppointments: RendezVousItem[] = [];
 
-  rendezvous: RendezVous[] = []
-  selectedId: number | null = null
-  isLoading = false
+  isLoading = true;
+  errorMessage = '';
+  isDialogOpen = false;
+  selectedEvent: RendezVousItem | null = null;
 
-  rdvForm = this.fb.group({
-    date: ['', Validators.required],
-    heure: ['', Validators.required],
-    lieu: ['', Validators.required],
-    note: ['']
-  })
+  newAppointment = {
+    clientId: null as number | null,
+    type: '',
+    date: '',
+    startTime: '',
+    endTime: '',
+    location: '',
+    notes: '',
+    status: 'PLANIFIE',
+    affaireId: null as number | null
+  };
+
+  calendarOptions: CalendarOptions = {
+    plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
+    initialView: 'dayGridMonth',
+    locale: 'fr',
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'dayGridMonth,timeGridWeek,timeGridDay'
+    },
+    buttonText: {
+      today: "Aujourd'hui",
+      month: 'Mois',
+      week: 'Semaine',
+      day: 'Jour'
+    },
+    selectable: true,
+    editable: false,
+    events: [],
+    select: (arg) => this.handleDateSelect(arg),
+    eventClick: (arg) => this.handleEventClick(arg),
+    height: 650
+  };
 
   ngOnInit(): void {
-    this.loadRdv()
+    this.loadData();
   }
 
-  loadRdv(): void {
+  loadData(): void {
+    this.isLoading = true;
+    this.errorMessage = '';
 
-    this.isLoading = true
-
-    this.service.getAll().subscribe({
-      next: (data: RendezVous[]) => {
-        this.rendezvous = data
-        this.isLoading = false
+    this.rendezVousService.getAll().subscribe({
+      next: (data) => {
+        this.rendezVousList = data;
+        this.calendarOptions = {
+          ...this.calendarOptions,
+          events: this.mapToCalendarEvents(data)
+        };
+        this.loadUpcoming();
       },
-      error: (err: unknown) => {
-        console.error('Erreur chargement rendez-vous', err)
-        this.isLoading = false
+      error: (err) => {
+        console.error(err);
+        this.errorMessage = 'Impossible de charger les rendez-vous.';
+        this.isLoading = false;
       }
-    })
-
+    });
   }
 
-  onSubmit(): void {
+  loadUpcoming(): void {
+    this.rendezVousService.getUpcoming().subscribe({
+      next: (data) => {
+        this.upcomingAppointments = data;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error(err);
+        this.errorMessage = 'Impossible de charger les prochains rendez-vous.';
+        this.isLoading = false;
+      }
+    });
+  }
 
-    if (this.rdvForm.invalid) {
-      this.rdvForm.markAllAsTouched()
-      return
+  mapToCalendarEvents(data: RendezVousItem[]) {
+  return data.map((item) => {
+    let backgroundColor = '#6b7280';
+
+    if (item.type === 'Consultation') backgroundColor = '#3b82f6';
+    if (item.type === 'Signature') backgroundColor = '#10b981';
+    if (item.type === 'Audience') backgroundColor = '#f59e0b';
+    if (item.type === 'Suivi') backgroundColor = '#8b5cf6';
+
+    return {
+      id: String(item.id),
+      title: item.title || `${item.type} - ${item.client}`,
+      start: `${item.date}T${item.startTime}`,
+      end: `${item.date}T${item.endTime}`,
+      backgroundColor,
+      borderColor: backgroundColor,
+      textColor: '#ffffff',
+      extendedProps: {
+        rendezVous: item
+      }
+    };
+  });
+}
+
+  handleDateSelect(selectInfo: DateSelectArg): void {
+    const selectedDate = selectInfo.startStr.slice(0, 10);
+
+    this.newAppointment = {
+      clientId: null,
+      type: '',
+      date: selectedDate,
+      startTime: '',
+      endTime: '',
+      location: '',
+      notes: '',
+      status: 'PLANIFIE',
+      affaireId: null
+    };
+
+    this.isDialogOpen = true;
+  }
+
+  handleEventClick(clickInfo: EventClickArg): void {
+    this.selectedEvent = clickInfo.event.extendedProps['rendezVous'] as RendezVousItem;
+  }
+
+  openCreateDialog(): void {
+    this.isDialogOpen = true;
+  }
+
+  closeDialog(): void {
+    this.isDialogOpen = false;
+    this.resetForm();
+  }
+
+  closeDetails(): void {
+    this.selectedEvent = null;
+  }
+
+  createAppointment(): void {
+    if (
+      !this.newAppointment.clientId ||
+      !this.newAppointment.type ||
+      !this.newAppointment.date ||
+      !this.newAppointment.startTime ||
+      !this.newAppointment.endTime
+    ) {
+      this.errorMessage = 'Veuillez remplir les champs obligatoires.';
+      return;
     }
 
-    const rdv: RendezVous = {
-      date: this.rdvForm.value.date ?? '',
-      heure: this.rdvForm.value.heure ?? '',
-      lieu: this.rdvForm.value.lieu ?? '',
-      note: this.rdvForm.value.note ?? ''
-    }
-
-    if (this.selectedId !== null) {
-
-      this.service.update(this.selectedId, rdv).subscribe({
-        next: () => {
-          this.resetForm()
-          this.loadRdv()
-        },
-        error: (err: unknown) => {
-          console.error('Erreur modification RDV', err)
-        }
-      })
-
-    } else {
-
-      this.service.create(rdv).subscribe({
-        next: () => {
-          this.resetForm()
-          this.loadRdv()
-        },
-        error: (err: unknown) => {
-          console.error('Erreur création RDV', err)
-        }
-      })
-
-    }
-
+    this.rendezVousService.create(this.newAppointment).subscribe({
+      next: () => {
+        this.closeDialog();
+        this.loadData();
+      },
+      error: (err) => {
+        console.error(err);
+        this.errorMessage = 'Impossible de créer le rendez-vous.';
+      }
+    });
   }
 
-  edit(rdv: RendezVous) {
-
-    this.selectedId = rdv.id ?? null
-
-    this.rdvForm.patchValue({
-      date: rdv.date,
-      heure: rdv.heure,
-      lieu: rdv.lieu,
-      note: rdv.note ?? ''
-    })
-
+  deleteAppointment(id: number): void {
+    this.rendezVousService.delete(id).subscribe({
+      next: () => {
+        this.selectedEvent = null;
+        this.loadData();
+      },
+      error: (err) => {
+        console.error(err);
+        this.errorMessage = 'Impossible de supprimer le rendez-vous.';
+      }
+    });
   }
 
-  delete(id: number) {
-
-    if (!confirm("Supprimer ce rendez-vous ?")) return
-
-    this.service.delete(id).subscribe({
-      next: () => this.loadRdv(),
-      error: (err: unknown) => console.error(err)
-    })
-
+  resetForm(): void {
+    this.newAppointment = {
+      clientId: null,
+      type: '',
+      date: '',
+      startTime: '',
+      endTime: '',
+      location: '',
+      notes: '',
+      status: 'PLANIFIE',
+      affaireId: null
+    };
   }
-
-  resetForm() {
-    this.selectedId = null
-    this.rdvForm.reset()
-  }
-
 }

@@ -58,6 +58,10 @@ interface Partner {
 export class Home implements AfterViewInit, OnDestroy {
   currentSlide = 0;
 
+  get currentHeroBackground(): string {
+  return `url(${this.slides[this.currentSlide]?.image ?? ''})`;
+}
+
   slides: HeroSlide[] = [
     {
       image: 'https://images.unsplash.com/photo-1589391886645-d51941baf7fb?auto=format&fit=crop&w=1800&q=80',
@@ -84,27 +88,27 @@ export class Home implements AfterViewInit, OnDestroy {
 
   partners: Partner[] = [
     {
-      image: '/images/partners/the-vision.png',
+      image: '/images/logo_the_vision.png',
       badge: 'Logo the vision'
     },
     {
-      image: '/images/partners/novalex.png',
-      badge: 'NOVALEX'
+      image: '/images/tresor_voyage.jpg',
+      badge: 'Tresor Voyage'
     },
     {
-      image: '/images/partners/afrilex.png',
-      badge: 'AFRILEX'
+      image: '/images/rural_investment.jpg',
+      badge: 'Rural Investment'
     },
     {
-      image: '/images/partners/business-africa.png',
-      badge: 'BUSINESS AFRICA'
+      image: '/images/barreau_du_cameroun.jpg',
+      badge: 'BARREAU DU CAMEROUN'
     },
     {
-      image: '/images/partners/global-trade.png',
-      badge: 'GLOBAL TRADE'
+      image: '/images/Logo_chanas-assurances_Cameroun-1.png',
+      badge: 'Chanas assurance'
     },
     {
-      image: '/images/partners/legal-partners.png',
+      image: '/images/legal-partners.png',
       badge: 'LEGAL PARTNERS'
     }
   ];

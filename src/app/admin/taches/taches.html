@@ -1,0 +1,42 @@
+<div class="tasks-page">
+
+  <div class="page-header">
+    <div>
+      <h1>Tâches</h1>
+      <p>Gérez vos tâches</p>
+    </div>
+
+    <button class="primary-btn" (click)="create()">+ Ajouter</button>
+  </div>
+
+  <div class="tasks-list">
+
+    @for (task of tasks; track task.id) {
+      <div class="task-card" [class.completed]="task.completed">
+
+        <input type="checkbox"
+               [checked]="task.completed"
+               (change)="toggle(task.id)" />
+
+        <div class="task-content">
+          <h3>{{ task.titre }}</h3>
+
+          <div class="meta">
+            <span>{{ task.dueDate }}</span>
+            <span>•</span>
+            <span>{{ task.assignedTo }}</span>
+          </div>
+        </div>
+
+        <span class="badge" [ngClass]="task.priority">
+          {{ task.priority }}
+        </span>
+
+        <button class="danger-btn" (click)="delete(task.id)">✕</button>
+
+      </div>
+    }
+
+  </div>
+
+</div>

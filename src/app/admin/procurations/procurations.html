@@ -1,1 +1,268 @@
-<p>procurations works!</p>
+<div class="procurations-page">
+  <div class="page-header">
+    <div>
+      <h1>Procurations</h1>
+      <p>Créez et gérez les procurations clients</p>
+    </div>
+
+    <button class="primary-btn" type="button" (click)="openCreateDialog()">
+      + Nouvelle procuration
+    </button>
+  </div>
+
+  @if (errorMessage) {
+    <div class="error-box">{{ errorMessage }}</div>
+  }
+
+  @if (isLoading) {
+    <div class="card">Chargement des procurations...</div>
+  } @else {
+    <div class="stats-grid">
+      <div class="stat-card">
+        <p class="stat-label">Total</p>
+        <p class="stat-value">{{ stats?.total ?? 0 }}</p>
+      </div>
+
+      <div class="stat-card">
+        <p class="stat-label">Actives</p>
+        <p class="stat-value green">{{ stats?.actives ?? 0 }}</p>
+      </div>
+
+      <div class="stat-card">
+        <p class="stat-label">En attente</p>
+        <p class="stat-value orange">{{ stats?.enAttente ?? 0 }}</p>
+      </div>
+
+      <div class="stat-card">
+        <p class="stat-label">Expirées</p>
+        <p class="stat-value red">{{ stats?.expirees ?? 0 }}</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="search-box">
+        <input
+          type="text"
+          placeholder="Rechercher une procuration..."
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="applyFilters()"
+        />
+      </div>
+    </div>
+
+    <div class="procurations-list">
+      @for (proc of filteredProcurations; track proc.id) {
+        <div class="procuration-card">
+          <div class="procuration-left">
+            <div class="doc-badge">📄</div>
+
+            <div>
+              <div class="procuration-top-line">
+                <h3>{{ proc.reference }}</h3>
+
+                <span class="badge" [ngClass]="getStatusClass(proc.status)">
+                  {{ getStatusIcon(proc.status) }} {{ proc.status }}
+                </span>
+              </div>
+
+              <p class="client-name">{{ proc.client }}</p>
+              <p class="procuration-type">{{ proc.type }}</p>
+              <p class="scope-text">Étendue : {{ proc.scope }}</p>
+            </div>
+          </div>
+
+          <div class="procuration-right">
+            <div class="meta-box">
+              <p>Créée le {{ proc.createdDate }}</p>
+              <p>Expire le {{ proc.expiryDate }}</p>
+              <p>Par {{ proc.signedBy || '—' }}</p>
+            </div>
+
+            <div class="actions-row">
+                <button type="button" class="secondary-btn" (click)="viewProcuration(proc)">Voir</button>
+                <button type="button" class="secondary-btn" (click)="openEditDialog(proc)">Modifier</button>
+                <button type="button" class="secondary-btn" (click)="downloadPdf(proc)">PDF</button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  @if (isDialogOpen) {
+    <div class="modal-backdrop">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Nouvelle procuration</h3>
+          <button type="button" class="ghost-btn" (click)="closeDialog()">✕</button>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Client *</label>
+            <select [(ngModel)]="newProcuration.clientId">
+              <option [ngValue]="undefined">Sélectionner un client</option>
+              @for (client of clients; track client.id) {
+                <option [ngValue]="client.id">{{ client.nomComplet }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Type de procuration *</label>
+            <select [(ngModel)]="newProcuration.type">
+              <option value="">Sélectionner</option>
+              <option value="Procuration générale">Procuration générale</option>
+              <option value="Procuration spéciale">Procuration spéciale</option>
+              <option value="Procuration notariée">Procuration notariée</option>
+            </select>
+          </div>
+
+          <div class="form-group full-width">
+            <label>Étendue de la procuration *</label>
+            <textarea rows="4" [(ngModel)]="newProcuration.scope"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Durée de validité (mois) *</label>
+            <input type="number" min="1" max="60" [(ngModel)]="newProcuration.duration" />
+          </div>
+
+          <div class="form-group">
+            <label>Signée par</label>
+            <input type="text" [(ngModel)]="newProcuration.signedBy" />
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="secondary-btn" (click)="closeDialog()">Annuler</button>
+          <button type="button" class="primary-btn" (click)="createProcuration()">Créer la procuration</button>
+        </div>
+      </div>
+    </div>
+  }
+  @if (selectedProcuration) {
+  <div class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Détails de la procuration</h3>
+        <button type="button" class="ghost-btn" (click)="closeDetails()">✕</button>
+      </div>
+
+      <div class="details-grid">
+        <div class="detail-block">
+          <p class="detail-label">Référence</p>
+          <p class="detail-value">{{ selectedProcuration.reference }}</p>
+        </div>
+
+        <div class="detail-block">
+          <p class="detail-label">Client</p>
+          <p class="detail-value">{{ selectedProcuration.client }}</p>
+        </div>
+
+        <div class="detail-block">
+          <p class="detail-label">Type</p>
+          <p class="detail-value">{{ selectedProcuration.type }}</p>
+        </div>
+
+        <div class="detail-block">
+          <p class="detail-label">Statut</p>
+          <p class="detail-value">{{ selectedProcuration.status }}</p>
+        </div>
+
+        <div class="detail-block">
+          <p class="detail-label">Créée le</p>
+          <p class="detail-value">{{ selectedProcuration.createdDate }}</p>
+        </div>
+
+        <div class="detail-block">
+          <p class="detail-label">Expire le</p>
+          <p class="detail-value">{{ selectedProcuration.expiryDate }}</p>
+        </div>
+
+        <div class="detail-block">
+          <p class="detail-label">Signée par</p>
+          <p class="detail-value">{{ selectedProcuration.signedBy || '—' }}</p>
+        </div>
+
+        <div class="detail-block full-span">
+          <p class="detail-label">Étendue</p>
+          <p class="detail-value">{{ selectedProcuration.scope }}</p>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="secondary-btn" (click)="closeDetails()">Fermer</button>
+        <button type="button" class="secondary-btn" (click)="downloadPdf(selectedProcuration)">PDF</button>
+        <button type="button" class="primary-btn" (click)="openEditDialog(selectedProcuration)">Modifier</button>
+    </div>
+    </div>
+  </div>
+}
+@if (isEditDialogOpen) {
+  <div class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Modifier la procuration</h3>
+        <button type="button" class="ghost-btn" (click)="closeEditDialog()">✕</button>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Client *</label>
+          <select [(ngModel)]="editProcuration.clientId">
+            <option [ngValue]="undefined">Sélectionner un client</option>
+            @for (client of clients; track client.id) {
+              <option [ngValue]="client.id">{{ client.nomComplet }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Type *</label>
+          <select [(ngModel)]="editProcuration.type">
+            <option value="">Sélectionner</option>
+            <option value="Procuration générale">Procuration générale</option>
+            <option value="Procuration spéciale">Procuration spéciale</option>
+            <option value="Procuration notariée">Procuration notariée</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Statut *</label>
+          <select [(ngModel)]="editProcuration.status">
+            <option value="Active">Active</option>
+            <option value="En attente">En attente</option>
+            <option value="Expirée">Expirée</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Signée par</label>
+          <input type="text" [(ngModel)]="editProcuration.signedBy" />
+        </div>
+
+        <div class="form-group">
+          <label>Date de création</label>
+          <input type="date" [(ngModel)]="editProcuration.createdDate" />
+        </div>
+
+        <div class="form-group">
+          <label>Date d'expiration</label>
+          <input type="date" [(ngModel)]="editProcuration.expiryDate" />
+        </div>
+
+        <div class="form-group full-width">
+          <label>Étendue *</label>
+          <textarea rows="4" [(ngModel)]="editProcuration.scope"></textarea>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="secondary-btn" (click)="closeEditDialog()">Annuler</button>
+        <button type="button" class="primary-btn" (click)="updateProcuration()">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+}
+</div>

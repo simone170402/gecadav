@@ -4,7 +4,7 @@
 <section class="hero-section" [@heroAnim]="currentSlide">
   <div
     class="hero-slide-bg"
-    [style.background-image]="'url(' + slides[currentSlide].image + ')'"
+    [style.background-image]="currentHeroBackground"
   ></div>
 
   <div class="hero-overlay"></div>

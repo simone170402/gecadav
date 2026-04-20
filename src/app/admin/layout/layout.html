@@ -1,96 +1,190 @@
-<div class="min-h-screen flex bg-gray-100">
+<div class="min-h-screen bg-[#f8f6f1] flex">
   <!-- Sidebar -->
-  <aside class="w-72 bg-[#1f1f1f] text-white flex flex-col shadow-xl">
-    <div class="p-6 border-b border-gray-700">
-      <h2 class="text-2xl font-bold text-[#bfa14a] text-center">
-        Espace Avocat ⚖️
-      </h2>
-      <p class="text-sm text-gray-400 text-center mt-2">
-        Gestion du cabinet
-      </p>
+  <aside class="w-72 bg-[#1f1f1f] text-white flex flex-col shadow-2xl border-r border-[#2f2f2f]">
+    <!-- Brand -->
+    <div class="px-6 py-8 border-b border-[#343434]">
+      <div class="flex items-center gap-4">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#bfa14a] to-[#8f7632] flex items-center justify-center shadow-lg">
+          <img
+            src="/images/Law_Logo.png"
+            alt="Cabinet TSAPY"
+            class="w-8 h-8 object-contain"
+          />
+        </div>
+
+        <div>
+          <h2 class="text-lg font-bold tracking-wide text-white leading-tight">
+            Cabinet TSAPY
+          </h2>
+          <p class="text-sm text-[#bfa14a] font-medium">
+            Espace Avocat
+          </p>
+        </div>
+      </div>
     </div>
 
-    <nav class="flex-1 p-4 space-y-2">
-      <a
-        routerLink="/admin/dashboard"
-        routerLinkActive="bg-[#bfa14a] text-black"
-        class="block px-4 py-3 rounded-lg transition hover:bg-[#2c2c2c]"
-      >
-        Dashboard
-      </a>
+    <!-- Navigation -->
+    <div class="flex-1 px-4 py-6 overflow-y-auto">
+      <p class="px-3 mb-4 text-xs uppercase tracking-[0.25em] text-gray-500 font-semibold">
+        Navigation
+      </p>
 
-      <a
-        routerLink="/admin/clients"
-        routerLinkActive="bg-[#bfa14a] text-black"
-        class="block px-4 py-3 rounded-lg transition hover:bg-[#2c2c2c]"
-      >
-        Clients
-      </a>
+      <nav class="space-y-2">
+        @if (canSeeDashboard()) {
+          <a
+            routerLink="/admin/dashboard"
+            routerLinkActive="active-link"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="nav-link"
+          >
+            <span>Dashboard</span>
+          </a>
+        }
 
-      <a
-        routerLink="/admin/affaires"
-        routerLinkActive="bg-[#bfa14a] text-black"
-        class="block px-4 py-3 rounded-lg transition hover:bg-[#2c2c2c]"
-      >
-        Affaires
-      </a>
+        @if (canSeeClients()) {
+          <a
+            routerLink="/admin/clients"
+            routerLinkActive="active-link"
+            class="nav-link"
+          >
+            <span>Clients</span>
+          </a>
+        }
 
-      <a
-        routerLink="/admin/procurations"
-        routerLinkActive="bg-[#bfa14a] text-black"
-        class="block px-4 py-3 rounded-lg transition hover:bg-[#2c2c2c]"
-      >
-        Procurations
-      </a>
+        @if (canSeeAffaires()) {
+          <a
+            routerLink="/admin/affaires"
+            routerLinkActive="active-link"
+            class="nav-link"
+          >
+            <span>Affaires</span>
+          </a>
+        }
 
-      <a
-        routerLink="/admin/rendezvous"
-        routerLinkActive="bg-[#bfa14a] text-black"
-        class="block px-4 py-3 rounded-lg transition hover:bg-[#2c2c2c]"
-      >
-        Rendez-vous
-      </a>
+        @if (canSeeProcurations()) {
+          <a
+            routerLink="/admin/procurations"
+            routerLinkActive="active-link"
+            class="nav-link"
+          >
+            <span>Procurations</span>
+          </a>
+        }
 
-      <a 
-        routerLink="/admin/documents"
-        routerLinkActive="bg-[#bfa14a] text-black"
-        class="block px-4 py-3 rounded-lg transition hover:bg-[#2c2c2c]"
-      >
-        Documents
-        </a>
+        @if (canSeeRendezVous()) {
+          <a
+            routerLink="/admin/rendezvous"
+            routerLinkActive="active-link"
+            class="nav-link"
+          >
+            <span>Rendez-vous</span>
+          </a>
+        }
 
-      <a
-        routerLink="/admin/facturation"
-        routerLinkActive="bg-[#bfa14a] text-black"
-        class="block px-4 py-3 rounded-lg transition hover:bg-[#2c2c2c]"
-      >
-        Facturation
-      </a>
-    </nav>
+        @if (canSeeDocuments()) {
+          <a
+            routerLink="/admin/documents"
+            routerLinkActive="active-link"
+            class="nav-link"
+          >
+            <span>Documents</span>
+          </a>
+        }
 
-    <div class="p-4 border-t border-gray-700">
+        @if (canSeeEquipe()) {
+          <a
+            routerLink="/admin/equipe"
+            routerLinkActive="active-link"
+            class="nav-link"
+          >
+            <span>Équipe</span>
+          </a>
+        }
+
+        @if (canSeeFacturation()) {
+          <a
+            routerLink="/admin/facturation"
+            routerLinkActive="active-link"
+            class="nav-link"
+          >
+            <span>Facturation</span>
+          </a>
+        }
+
+        @if (canSeeTaches()) {
+          <a
+            routerLink="/admin/taches"
+            routerLinkActive="active-link"
+            class="nav-link"
+          >
+            <span>Tâches</span>
+          </a>
+        }
+
+        @if (canSeeStatistiques()) {
+          <a
+            routerLink="/admin/statistiques"
+            routerLinkActive="active-link"
+            class="nav-link"
+          >
+            <span>Statistiques</span>
+          </a>
+        }
+      </nav>
+    </div>
+
+    <!-- Footer sidebar -->
+    <div class="p-4 border-t border-[#343434]">
+      <div class="mb-4 rounded-2xl bg-[#2a2a2a] px-4 py-3 border border-[#383838]">
+        <p class="text-sm text-gray-300">Administration sécurisée</p>
+        <p class="text-xs text-gray-500 mt-1">
+          Gestion interne du cabinet
+        </p>
+      </div>
+
       <button
+        type="button"
         (click)="logout()"
-        class="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg transition font-medium"
+        class="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-2xl transition font-semibold shadow-md"
       >
         Déconnexion
       </button>
     </div>
   </aside>
 
-  <!-- Contenu principal -->
-  <div class="flex-1 flex flex-col">
+  <!-- Main area -->
+  <div class="flex-1 flex flex-col min-w-0">
     <!-- Topbar -->
-    <header class="bg-white shadow-sm px-6 py-4 flex justify-between items-center">
+    <header class="bg-white/90 backdrop-blur-sm border-b border-gray-200 px-8 py-5 flex items-center justify-between shadow-sm">
       <div>
-        <h1 class="text-2xl font-semibold text-gray-800">Administration</h1>
-        <p class="text-sm text-gray-500">Bienvenue dans l’espace de gestion du cabinet</p>
+        <p class="text-sm uppercase tracking-[0.25em] text-[#bfa14a] font-semibold mb-1">
+          Administration
+        </p>
+        <h1 class="text-2xl font-bold text-gray-900">
+          Tableau de gestion du cabinet
+        </h1>
+        <p class="text-sm text-gray-500 mt-1">
+          Bienvenue dans l’espace de gestion interne
+        </p>
+      </div>
+
+      <div class="hidden md:flex items-center gap-3">
+        <div class="text-right">
+          <p class="text-sm font-semibold text-gray-800">Cabinet TSAPY</p>
+          <p class="text-xs text-gray-500">Espace administrateur</p>
+        </div>
+
+        <div class="w-11 h-11 rounded-full bg-gradient-to-br from-[#1f1f1f] to-[#3a3a3a] text-white flex items-center justify-center font-bold shadow-md">
+          A
+        </div>
       </div>
     </header>
 
-    <!-- Page content -->
-    <main class="flex-1 p-6">
-      <router-outlet></router-outlet>
+    <!-- Content -->
+    <main class="flex-1 p-6 md:p-8 overflow-x-hidden">
+      <div class="min-h-full rounded-3xl bg-white border border-gray-200 shadow-sm p-5 md:p-6">
+        <router-outlet></router-outlet>
+      </div>
     </main>
   </div>
 </div>

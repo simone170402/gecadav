@@ -1,55 +1,174 @@
-<div class="space-y-6">
+<div class="documents-page">
+  <div class="page-header">
+    <div>
+      <h1>Documents</h1>
+      <p>Gérez vos documents et fichiers</p>
+    </div>
 
-<h2 class="text-2xl font-bold">Documents</h2>
+    <button class="primary-btn" type="button" (click)="openUploadDialog()">
+      ⬆️ Téléverser un document
+    </button>
+  </div>
 
-<div class="bg-white p-6 rounded shadow">
+  @if (errorMessage) {
+    <div class="error-box">{{ errorMessage }}</div>
+  }
 
-<input type="text" placeholder="Nom document" [(ngModel)]="nom">
+  @if (isLoading) {
+    <div class="card">Chargement des documents...</div>
+  } @else {
+    <div class="stats-grid">
+      <div class="stat-card">
+        <p class="stat-label">Total documents</p>
+        <p class="stat-value">{{ stats?.totalDocuments ?? 0 }}</p>
+      </div>
 
-<input type="text" placeholder="Type" [(ngModel)]="type">
+      <div class="stat-card">
+        <p class="stat-label">Contrats</p>
+        <p class="stat-value blue">{{ stats?.contrats ?? 0 }}</p>
+      </div>
 
-<input type="file" (change)="onFileSelected($event)">
+      <div class="stat-card">
+        <p class="stat-label">Jugements</p>
+        <p class="stat-value purple">{{ stats?.jugements ?? 0 }}</p>
+      </div>
 
-<button (click)="upload()">Upload</button>
+      <div class="stat-card">
+        <p class="stat-label">Espace utilisé</p>
+        <p class="stat-value green">{{ stats?.espaceUtilise ?? '0 B' }}</p>
+      </div>
+    </div>
 
-</div>
+    <div class="card filters-card">
+      <div class="filters-row">
+        <div class="search-box">
+          <input
+            type="text"
+            placeholder="Rechercher un document..."
+            [(ngModel)]="searchTerm"
+            (ngModelChange)="applyFilters()"
+          />
+        </div>
 
-<table>
+        <select [(ngModel)]="categoryFilter" (change)="applyFilters()">
+          <option>Toutes les catégories</option>
+          <option>Contrats</option>
+          <option>Jugements</option>
+          <option>Pièces d'identité</option>
+        </select>
+      </div>
+    </div>
 
-<tr>
-<th>Nom</th>
-<th>Type</th>
-<th>Date</th>
-<th>Actions</th>
-</tr>
+    <div class="card table-card">
+      <div class="table-wrap">
+        <table class="documents-table">
+          <thead>
+            <tr>
+              <th>Document</th>
+              <th>Catégorie</th>
+              <th>Client</th>
+              <th>Affaire</th>
+              <th>Taille</th>
+              <th>Téléversé par</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (doc of filteredDocuments; track doc.id) {
+              <tr>
+                <td>
+                  <div class="doc-name-wrap">
+                    <span class="doc-icon">{{ getFileIcon(doc.type) }}</span>
+                    <div>
+                      <p class="doc-name">{{ doc.nom }}</p>
+                      <p class="doc-type">{{ doc.type }}</p>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span class="badge">{{ doc.categorie }}</span>
+                </td>
+                <td>{{ doc.client || '—' }}</td>
+                <td><span class="mono">{{ doc.affaireReference || '—' }}</span></td>
+                <td>{{ doc.tailleFormatee }}</td>
+                <td>{{ doc.uploadedBy || '—' }}</td>
+                <td>{{ doc.dateUpload || '—' }}</td>
+                <td>
+                  <div class="actions-row">
+                    <button type="button" class="icon-btn" (click)="downloadDocument(doc)">⬇</button>
+                    <button type="button" class="icon-btn danger" (click)="deleteDocument(doc.id)">🗑</button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
 
-<tr *ngFor="let doc of documents">
+  @if (isUploadDialogOpen) {
+    <div class="modal-backdrop">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Téléverser un document</h3>
+          <button type="button" class="ghost-btn" (click)="closeUploadDialog()">✕</button>
+        </div>
 
-<td>{{doc.nom}}</td>
-<td>{{doc.type}}</td>
-<td>{{doc.dateUpload}}</td>
+        <div class="form-grid">
+          <div class="form-group full-width">
+            <label>Fichier *</label>
+            <input type="file" (change)="onFileSelected($event)" />
+          </div>
 
-<td>
+          <div class="form-group">
+            <label>Catégorie *</label>
+            <select [(ngModel)]="uploadForm.categorie">
+              <option value="Contrats">Contrats</option>
+              <option value="Jugements">Jugements</option>
+              <option value="Pièces d'identité">Pièces d'identité</option>
+              <option value="Courriers">Courriers</option>
+            </select>
+          </div>
 
-<a
-    href="http://localhost:8080/uploads/{{doc.fichier}}"
-    target="_blank"
->
+          <div class="form-group">
+            <label>Téléversé par</label>
+            <input type="text" [(ngModel)]="uploadForm.uploadedBy" />
+          </div>
 
-Télécharger
+          <div class="form-group">
+            <label>Client</label>
+            <select [(ngModel)]="uploadForm.clientId" (ngModelChange)="onClientChange()">
+                <option [ngValue]="undefined">Aucun client</option>
+                @for (client of clients; track client.id) {
+                <option [ngValue]="client.id">
+                    {{ client.nomComplet }}
+                </option>
+                }
+            </select>
+            </div>
 
-</a>
+            <div class="form-group">
+                <label>Affaire</label>
+                <select [(ngModel)]="uploadForm.affaireId" [disabled]="filteredAffaires.length === 0">
+                    <option [ngValue]="undefined">
+                    {{ filteredAffaires.length === 0 ? 'Aucune affaire disponible' : 'Aucune affaire' }}
+                    </option>
+                    @for (affaire of filteredAffaires; track affaire.id) {
+                    <option [ngValue]="affaire.id">
+                        {{ affaire.reference }} — {{ affaire.titre }}
+                    </option>
+                    }
+                </select>
+            </div>
+        </div>
 
-<button (click)="delete(doc.id!)">
-
-Supprimer
-
-</button>
-
-</td>
-
-</tr>
-
-</table>
-
+        <div class="modal-actions">
+          <button type="button" class="secondary-btn" (click)="closeUploadDialog()">Annuler</button>
+          <button type="button" class="primary-btn" (click)="uploadDocument()">Téléverser</button>
+        </div>
+      </div>
+    </div>
+  }
 </div>
