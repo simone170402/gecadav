@@ -6,20 +6,27 @@ import com.cabinetavocat.backend.model.Affaire;
 import com.cabinetavocat.backend.model.Client;
 import com.cabinetavocat.backend.repository.AffaireRepository;
 import com.cabinetavocat.backend.repository.ClientRepository;
+import com.cabinetavocat.backend.repository.DocumentRepository;
+import com.cabinetavocat.backend.repository.RendezVousRepository;
+
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Service
-public class AffaireServiceImpl extends AffaireService {
+public class AffaireServiceImpl implements AffaireService {
 
     private final AffaireRepository affaireRepository;
     private final ClientRepository clientRepository;
+    private final DocumentRepository documentRepository;
+    private final RendezVousRepository rendezVousRepository;
 
-    public AffaireServiceImpl(AffaireRepository affaireRepository, ClientRepository clientRepository) {
+    public AffaireServiceImpl(AffaireRepository affaireRepository, ClientRepository clientRepository, DocumentRepository documentRepository, RendezVousRepository rendezVousRepository) {
         this.affaireRepository = affaireRepository;
         this.clientRepository = clientRepository;
+        this.documentRepository = documentRepository;
+        this.rendezVousRepository = rendezVousRepository;
     }
 
     @Override
@@ -118,30 +125,40 @@ public class AffaireServiceImpl extends AffaireService {
     }
 
     private AffaireDto mapToDto(Affaire affaire) {
-        String clientNom = "";
+        String clientName = "";
+        Long clientId = null;
+
         if (affaire.getClient() != null) {
-            clientNom = (affaire.getClient().getPrenom() + " " + affaire.getClient().getNom()).trim();
-            if (affaire.getClient().getEntreprise() != null && !affaire.getClient().getEntreprise().isBlank()) {
-                clientNom += " - " + affaire.getClient().getEntreprise();
-            }
+                clientId = affaire.getClient().getId();
+                clientName = (affaire.getClient().getPrenom() + " " + affaire.getClient().getNom()).trim();
+        }
+
+        int documentsCount = 0;
+        int rendezVousCount = 0;
+
+        if (affaire.getId() != null) {
+                documentsCount = (int) documentRepository.countByAffaireId(affaire.getId());
+                rendezVousCount = (int) rendezVousRepository.countByAffaireId(affaire.getId());
         }
 
         return AffaireDto.builder()
                 .id(affaire.getId())
                 .reference(formatAffaireReference(affaire.getId(), affaire.getDateOuverture()))
                 .titre(affaire.getTitre())
-                .description(affaire.getDescription())
-                .client(clientNom)
-                .clientId(affaire.getClient() != null ? affaire.getClient().getId() : null)
+                .client(clientName)
+                .clientId(clientId)
                 .type(affaire.getType())
                 .statut(affaire.getStatut())
                 .priorite(affaire.getPriorite())
                 .assigneA(affaire.getAssigneA())
                 .dateOuverture(affaire.getDateOuverture() != null ? affaire.getDateOuverture().toString() : null)
                 .dateEcheance(affaire.getDateEcheance() != null ? affaire.getDateEcheance().toString() : null)
+                .description(affaire.getDescription())
                 .progression(affaire.getProgression())
+                .documentsCount(documentsCount)
+                .rendezVousCount(rendezVousCount)
                 .build();
-    }
+        }
 
     private String formatAffaireReference(Long id, LocalDate dateOuverture) {
         int year = dateOuverture != null ? dateOuverture.getYear() : LocalDate.now().getYear();

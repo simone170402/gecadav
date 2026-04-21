@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface DocumentRepository extends JpaRepository<Document, Long> {
 
     long countByCategorieIgnoreCase(String categorie);
+
+    long countByAffaireId(Long affaireId);
 }

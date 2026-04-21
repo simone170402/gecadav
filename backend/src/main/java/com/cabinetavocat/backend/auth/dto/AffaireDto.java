@@ -13,7 +13,6 @@ public class AffaireDto {
     private Long id;
     private String reference;
     private String titre;
-    private String description;
     private String client;
     private Long clientId;
     private String type;
@@ -22,5 +21,9 @@ public class AffaireDto {
     private String assigneA;
     private String dateOuverture;
     private String dateEcheance;
+    private String description;
     private Integer progression;
+
+    private Integer documentsCount;
+    private Integer rendezVousCount;
 }

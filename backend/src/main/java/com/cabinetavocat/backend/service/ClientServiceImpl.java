@@ -125,4 +125,6 @@ public class ClientServiceImpl implements ClientService {
         long safeId = id != null ? id : 0L;
         return String.format("CLI-%03d", safeId);
     }
+
+    
 }

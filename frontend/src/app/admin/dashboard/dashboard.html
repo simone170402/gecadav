@@ -88,7 +88,7 @@
       <div class="dashboard-card">
         <div class="card-header-line">
           <h3>Affaires récentes</h3>
-          <button type="button">Voir tout →</button>
+          <a routerLink="affaires" class="link-btn">Voir tout →</a>
         </div>
 
         <div class="stack-list">
@@ -117,7 +117,7 @@
       <div class="dashboard-card">
         <div class="card-header-line">
           <h3>Rendez-vous du jour</h3>
-          <button type="button">Calendrier →</button>
+          <a routerLink="rendezvous" class="link-btn">Calendrier →</a>
         </div>
 
         <div class="stack-list">
@@ -143,30 +143,26 @@
     </div>
 
     <!-- Quick actions -->
-    <div class="dashboard-card">
-      <h3 class="quick-title">Actions rapides</h3>
+    <div class="quick-actions-grid">
+      <a routerLink="clients" class="quick-btn">
+        <span class="quick-icon">👥</span>
+        <p>Nouveau client</p>
+      </a>
 
-      <div class="quick-actions-grid">
-        <button class="quick-btn" type="button">
-          <span class="quick-icon">👥</span>
-          <p>Nouveau client</p>
-        </button>
+      <a routerLink="affaires" class="quick-btn">
+        <span class="quick-icon">💼</span>
+        <p>Nouvelle affaire</p>
+      </a>
 
-        <button class="quick-btn" type="button">
-          <span class="quick-icon">💼</span>
-          <p>Nouvelle affaire</p>
-        </button>
+      <a routerLink="rendezvous" class="quick-btn">
+        <span class="quick-icon">📅</span>
+        <p>Rendez-vous</p>
+      </a>
 
-        <button class="quick-btn" type="button">
-          <span class="quick-icon">📅</span>
-          <p>Rendez-vous</p>
-        </button>
-
-        <button class="quick-btn" type="button">
-          <span class="quick-icon">💰</span>
-          <p>Nouvelle facture</p>
-        </button>
-      </div>
+      <a routerLink="facturation" class="quick-btn">
+        <span class="quick-icon">💰</span>
+        <p>Nouvelle facture</p>
+      </a>
     </div>
   }
 </div>
