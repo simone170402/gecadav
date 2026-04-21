@@ -2,16 +2,18 @@ export interface AffaireItem {
   id: number;
   reference: string;
   titre: string;
-  description: string;
   client: string;
   clientId: number;
   type: string;
-  statut: 'En cours' | 'Audience prévue' | 'En attente' | 'Clôturée';
+  statut: 'En attente' | 'En cours' | 'Audience prévue' | 'Clôturée';
   priorite: 'high' | 'medium' | 'low';
-  assigneA: string;
-  dateOuverture: string;
-  dateEcheance: string | null;
+  assigneA?: string;
+  dateOuverture?: string | null;
+  dateEcheance?: string | null;
+  description?: string | null;
   progression: number;
+  documentsCount?: number;
+  rendezVousCount?: number;
 }
 
 export interface AffaireStats {

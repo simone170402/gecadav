@@ -128,6 +128,11 @@
                     <span>•</span>
                     <span>Assigné à: {{ item.assigneA || '—' }}</span>
                   </div>
+
+                  <div class="case-links-meta">
+                    <span>📄 {{ item.documentsCount ?? 0 }} document(s)</span>
+                    <span>📅 {{ item.rendezVousCount ?? 0 }} rendez-vous</span>
+                  </div>
                 </div>
               </div>
 
@@ -149,7 +154,10 @@
                 <p class="deadline-value">{{ item.dateEcheance || '—' }}</p>
               </div>
 
-              <button class="secondary-btn" type="button">Voir détails</button>
+              <div class="case-actions">
+                <button class="secondary-btn" type="button" (click)="viewAffaire(item)">Voir détails</button>
+                <button class="secondary-btn" type="button" (click)="openEditDialog(item)">Modifier</button>
+              </div>
             </div>
           </div>
         }
@@ -172,8 +180,13 @@
           </div>
 
           <div class="form-group">
-            <label>ID client *</label>
-            <input type="number" [(ngModel)]="newCase.clientId" />
+            <label>Client *</label>
+            <select [(ngModel)]="newCase.clientId">
+              <option [ngValue]="undefined">Sélectionner un client</option>
+              @for (client of clients; track client.id) {
+                <option [ngValue]="client.id">{{ client.nomComplet }}</option>
+              }
+            </select>
           </div>
 
           <div class="form-group">
@@ -216,6 +229,163 @@
         <div class="modal-actions">
           <button type="button" class="secondary-btn" (click)="closeDialog()">Annuler</button>
           <button type="button" class="primary-btn" (click)="createCase()">Créer l’affaire</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (isEditDialogOpen) {
+    <div class="modal-backdrop">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Modifier l’affaire</h3>
+          <button type="button" class="ghost-btn" (click)="closeEditDialog()">✕</button>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group full-width">
+            <label>Titre de l’affaire *</label>
+            <input type="text" [(ngModel)]="editCase.titre" />
+          </div>
+
+          <div class="form-group">
+            <label>Client *</label>
+            <select [(ngModel)]="editCase.clientId">
+              <option [ngValue]="undefined">Sélectionner un client</option>
+              @for (client of clients; track client.id) {
+                <option [ngValue]="client.id">{{ client.nomComplet }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Type d’affaire *</label>
+            <select [(ngModel)]="editCase.type">
+              <option value="">Sélectionner</option>
+              <option value="Droit commercial">Droit commercial</option>
+              <option value="Droit de la famille">Droit de la famille</option>
+              <option value="Droit du travail">Droit du travail</option>
+              <option value="Droit immobilier">Droit immobilier</option>
+              <option value="Droit pénal">Droit pénal</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Priorité *</label>
+            <select [(ngModel)]="editCase.priorite">
+              <option value="high">Urgent</option>
+              <option value="medium">Moyen</option>
+              <option value="low">Faible</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Avocat assigné</label>
+            <input type="text" [(ngModel)]="editCase.assigneA" />
+          </div>
+
+          <div class="form-group">
+            <label>Échéance</label>
+            <input type="date" [(ngModel)]="editCase.dateEcheance" />
+          </div>
+
+          <div class="form-group">
+            <label>Statut</label>
+            <select [(ngModel)]="editCase.statut">
+              <option value="En attente">En attente</option>
+              <option value="En cours">En cours</option>
+              <option value="Audience prévue">Audience prévue</option>
+              <option value="Clôturée">Clôturée</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Progression</label>
+            <input type="number" min="0" max="100" [(ngModel)]="editCase.progression" />
+          </div>
+
+          <div class="form-group full-width">
+            <label>Description</label>
+            <textarea rows="4" [(ngModel)]="editCase.description"></textarea>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="secondary-btn" (click)="closeEditDialog()">Annuler</button>
+          <button type="button" class="primary-btn" (click)="updateCase()">Enregistrer</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (selectedAffaire) {
+    <div class="modal-backdrop">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Détails de l’affaire</h3>
+          <button type="button" class="ghost-btn" (click)="closeDetails()">✕</button>
+        </div>
+
+        <div class="details-grid">
+          <div class="detail-block">
+            <p class="detail-label">Référence</p>
+            <p class="detail-value">{{ selectedAffaire.reference }}</p>
+          </div>
+
+          <div class="detail-block">
+            <p class="detail-label">Client</p>
+            <p class="detail-value">{{ selectedAffaire.client }}</p>
+          </div>
+
+          <div class="detail-block">
+            <p class="detail-label">Type</p>
+            <p class="detail-value">{{ selectedAffaire.type }}</p>
+          </div>
+
+          <div class="detail-block">
+            <p class="detail-label">Statut</p>
+            <p class="detail-value">{{ selectedAffaire.statut }}</p>
+          </div>
+
+          <div class="detail-block">
+            <p class="detail-label">Priorité</p>
+            <p class="detail-value">{{ getPriorityLabel(selectedAffaire.priorite) }}</p>
+          </div>
+
+          <div class="detail-block">
+            <p class="detail-label">Assigné à</p>
+            <p class="detail-value">{{ selectedAffaire.assigneA || '—' }}</p>
+          </div>
+
+          <div class="detail-block">
+            <p class="detail-label">Échéance</p>
+            <p class="detail-value">{{ selectedAffaire.dateEcheance || '—' }}</p>
+          </div>
+
+          <div class="detail-block">
+            <p class="detail-label">Progression</p>
+            <p class="detail-value">{{ selectedAffaire.progression }}%</p>
+          </div>
+
+          <div class="detail-block">
+            <p class="detail-label">Documents liés</p>
+            <p class="detail-value">{{ selectedAffaire.documentsCount ?? 0 }}</p>
+          </div>
+
+          <div class="detail-block">
+            <p class="detail-label">Rendez-vous liés</p>
+            <p class="detail-value">{{ selectedAffaire.rendezVousCount ?? 0 }}</p>
+          </div>
+
+          <div class="detail-block full-span">
+            <p class="detail-label">Description</p>
+            <p class="detail-value">{{ selectedAffaire.description || 'Aucune description' }}</p>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="secondary-btn" (click)="closeDetails()">Fermer</button>
+          <button type="button" class="primary-btn" (click)="openEditDialog(selectedAffaire)">Modifier</button>
         </div>
       </div>
     </div>

@@ -9,11 +9,12 @@ import {
   RevenueData,
   UpcomingAppointment
 } from './dashboard.model';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
