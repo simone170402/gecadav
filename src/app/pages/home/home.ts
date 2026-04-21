@@ -106,6 +106,10 @@ export class Home implements AfterViewInit, OnDestroy {
     {
       image: '/images/Logo_chanas-assurances_Cameroun-1.png',
       badge: 'Chanas assurance'
+    },
+    {
+      image: '/images/legal-partners.png',
+      badge: 'LEGAL PARTNERS'
     }
   ];
 
