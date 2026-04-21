@@ -17,4 +17,6 @@ public interface RendezVousRepository extends JpaRepository<RendezVous, Long> {
     List<RendezVous> findTop5ByDateGreaterThanEqualOrderByDateAscHeureAsc(LocalDate date);
 
     List<RendezVous> findByDateGreaterThanEqualOrderByDateAscHeureAsc(LocalDate date);
+
+    long countByAffaireId(Long affaireId);
 }

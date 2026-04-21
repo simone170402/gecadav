@@ -3,6 +3,8 @@ import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AffaireItem, AffaireStats } from './affaires.model';
 import { AffairesService } from './affaires.service';
+import { ClientsService } from '../clients/clients.service';
+import { ClientItem } from '../clients/clients.model';
 
 @Component({
   selector: 'app-affaires',
@@ -13,10 +15,12 @@ import { AffairesService } from './affaires.service';
 })
 export class Affaires implements OnInit {
   private affairesService = inject(AffairesService);
+  private clientsService = inject(ClientsService);
 
   affaires: AffaireItem[] = [];
   filteredAffaires: AffaireItem[] = [];
   stats: AffaireStats | null = null;
+  clients: ClientItem[] = [];
 
   searchTerm = '';
   selectedTab: 'all' | 'active' | 'closed' = 'all';
@@ -25,16 +29,18 @@ export class Affaires implements OnInit {
   isLoading = true;
   errorMessage = '';
   isDialogOpen = false;
+  isEditDialogOpen = false;
+  selectedAffaire: AffaireItem | null = null;
 
   newCase: {
     titre: string;
     clientId?: number;
     type: string;
-    priorite: AffaireItem['priorite'];
+    priorite: 'high' | 'medium' | 'low';
     assigneA: string;
     dateEcheance: string;
     description: string;
-    statut: AffaireItem['statut'];
+    statut: 'En attente' | 'En cours' | 'Audience prévue' | 'Clôturée';
     progression: number;
   } = {
     titre: '',
@@ -48,8 +54,44 @@ export class Affaires implements OnInit {
     progression: 0
   };
 
+  editCase: {
+    id?: number;
+    titre: string;
+    clientId?: number;
+    type: string;
+    priorite: 'high' | 'medium' | 'low';
+    assigneA: string;
+    dateEcheance: string;
+    description: string;
+    statut: 'En attente' | 'En cours' | 'Audience prévue' | 'Clôturée';
+    progression: number;
+  } = {
+    id: undefined,
+    titre: '',
+    clientId: undefined,
+    type: '',
+    priorite: 'medium',
+    assigneA: '',
+    dateEcheance: '',
+    description: '',
+    statut: 'En attente',
+    progression: 0
+  };
+
   ngOnInit(): void {
+    this.loadClients();
     this.loadData();
+  }
+
+  loadClients(): void {
+    this.clientsService.getAll().subscribe({
+      next: (data) => {
+        this.clients = data;
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
   }
 
   loadData(): void {
@@ -134,6 +176,66 @@ export class Affaires implements OnInit {
     });
   }
 
+  viewAffaire(item: AffaireItem): void {
+    this.selectedAffaire = item;
+  }
+
+  closeDetails(): void {
+    this.selectedAffaire = null;
+  }
+
+  openEditDialog(item: AffaireItem): void {
+    this.editCase = {
+      id: item.id,
+      titre: item.titre,
+      clientId: item.clientId,
+      type: item.type,
+      priorite: item.priorite,
+      assigneA: item.assigneA || '',
+      dateEcheance: item.dateEcheance || '',
+      description: item.description || '',
+      statut: item.statut,
+      progression: item.progression
+    };
+
+    this.isEditDialogOpen = true;
+  }
+
+  closeEditDialog(): void {
+    this.isEditDialogOpen = false;
+    this.editCase = {
+      id: undefined,
+      titre: '',
+      clientId: undefined,
+      type: '',
+      priorite: 'medium',
+      assigneA: '',
+      dateEcheance: '',
+      description: '',
+      statut: 'En attente',
+      progression: 0
+    };
+  }
+
+  updateCase(): void {
+    if (!this.editCase.id || !this.editCase.titre || !this.editCase.clientId || !this.editCase.type) {
+      this.errorMessage = 'Veuillez remplir les champs obligatoires.';
+      return;
+    }
+
+    this.affairesService.update(this.editCase.id, this.editCase).subscribe({
+      next: () => {
+        this.closeEditDialog();
+        this.closeDetails();
+        this.loadData();
+      },
+      error: (err) => {
+        console.error(err);
+        this.errorMessage = 'Impossible de modifier l’affaire.';
+      }
+    });
+  }
+
   get activeCasesCount(): number {
     return this.affaires.filter(a => a.statut !== 'Clôturée').length;
   }
@@ -170,8 +272,6 @@ export class Affaires implements OnInit {
     }
   }
 
-  
-
   getPriorityLabel(priority: string): string {
     switch (priority) {
       case 'high':
@@ -199,17 +299,16 @@ export class Affaires implements OnInit {
   }
 
   resetForm(): void {
-  this.newCase = {
-    titre: '',
-    clientId: undefined,
-    type: '',
-    priorite: 'medium',
-    assigneA: '',
-    dateEcheance: '',
-    description: '',
-    statut: 'En attente',
-    progression: 0
-  };
-}
-
+    this.newCase = {
+      titre: '',
+      clientId: undefined,
+      type: '',
+      priorite: 'medium',
+      assigneA: '',
+      dateEcheance: '',
+      description: '',
+      statut: 'En attente',
+      progression: 0
+    };
+  }
 }
