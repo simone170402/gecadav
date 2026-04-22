@@ -58,6 +58,14 @@ export class Layout {
     return ['ADMIN', 'AVOCAT', 'COMPTABLE'].includes(this.role ?? '');
   }
 
+  canSeePublications(): boolean {
+    return ['ADMIN', 'AVOCAT'].includes(this.role ?? '');
+  }
+
+  canSeeSubscription(): boolean {
+    return ['ADMIN', 'AVOCAT'].includes(this.role ?? '');
+  }
+
   logout() {
     this.authService.logout();
     this.router.navigate(['/admin/login']);

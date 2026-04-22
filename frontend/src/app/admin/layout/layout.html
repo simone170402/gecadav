@@ -130,6 +130,26 @@
             <span>Statistiques</span>
           </a>
         }
+
+        @if (canSeePublications()) {
+          <a
+            routerLink="/admin/publications"
+            routerLinkActive="active-link"
+            class="nav-link"
+          >
+            <span>Publications</span>
+          </a>
+        }
+
+        @if (canSeeSubscription()) {
+          <a
+            routerLink="/admin/subscription"
+            routerLinkActive="active-link"
+            class="nav-link"
+          >
+            <span>Abonnements</span>
+          </a>
+        }
       </nav>
     </div>
 

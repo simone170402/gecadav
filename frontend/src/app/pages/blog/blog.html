@@ -1,0 +1,79 @@
+<section class="blog-page">
+  <div class="page-hero">
+    <div class="container">
+      <span class="hero-badge">Legal News</span>
+      <h1>Verdicts & Analysis</h1>
+      <p>
+        Explore our commentary on court decisions, concluded cases,
+        and legal analysis made accessible to the public.
+      </p>
+
+      <div class="search-box">
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          (input)="applyFilters()"
+          placeholder="Search for an article, category, or author..."
+        />
+      </div>
+    </div>
+  </div>
+
+  <div class="container content-section">
+    <div class="categories">
+      @for (category of categories; track category) {
+        <button
+          type="button"
+          class="category-btn"
+          [class.active]="selectedCategory === category"
+          (click)="onCategoryChange(category)"
+        >
+          {{ category }}
+        </button>
+      }
+    </div>
+
+    @if (isLoading) {
+      <div class="state-card">Loading articles...</div>
+    } @else if (errorMessage) {
+      <div class="state-card error">{{ errorMessage }}</div>
+    } @else if (filteredArticles.length === 0) {
+      <div class="state-card">No articles found.</div>
+    } @else {
+      <div class="articles-grid">
+        @for (article of filteredArticles; track trackById($index, article)) {
+          <article class="article-card">
+            <div class="article-image">
+              <img
+                [src]="article.coverImageUrl || 'assets/images/default-blog.jpg'"
+                [alt]="article.title"
+              />
+              <span class="category">{{ article.category }}</span>
+            </div>
+
+            <div class="article-body">
+              <div class="meta">
+                <span>{{ article.author }}</span>
+                <span>•</span>
+                <span>{{ article.publishedAt | date:'dd/MM/yyyy' }}</span>
+              </div>
+
+              <h2>{{ article.title }}</h2>
+              <p>{{ article.excerpt }}</p>
+
+              <div class="footer-row">
+                <span class="read-time">
+                  {{ article.estimatedReadTime || 5 }} min
+                </span>
+
+                <a class="read-link" [routerLink]="['/blog', article.slug]">
+                  Read More
+                </a>
+              </div>
+            </div>
+          </article>
+        }
+      </div>
+    }
+  </div>
+</section>

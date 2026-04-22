@@ -1,0 +1,100 @@
+<div class="publication-form-page">
+  <div class="page-header">
+    <div>
+      <h1>{{ isEditMode ? 'Edit Publication' : 'New Publication' }}</h1>
+      <p>
+        Fill in the main information for the article or publication.
+      </p>
+    </div>
+
+    <a routerLink="/admin/publications" class="back-link">Back</a>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="form-card">
+    <div class="form-grid">
+      <div class="full">
+        <label for="title">Title</label>
+        <input id="title" type="text" formControlName="title" />
+      </div>
+
+      <div>
+        <label for="type">Type</label>
+        <select id="type" formControlName="type">
+          @for (type of publicationTypes; track type) {
+            <option [value]="type">{{ type }}</option>
+          }
+        </select>
+      </div>
+
+      <div>
+        <label for="status">Status</label>
+        <select id="status" formControlName="status">
+          @for (status of publicationStatuses; track status) {
+            <option [value]="status">{{ status }}</option>
+          }
+        </select>
+      </div>
+
+      <div>
+        <label for="category">Category</label>
+        <select id="category" formControlName="category">
+          <option value="">Select a category</option>
+          @for (category of categories; track category) {
+            <option [value]="category">{{ category }}</option>
+          }
+        </select>
+      </div>
+
+      <div>
+        <label for="author">Author</label>
+        <input id="author" type="text" formControlName="author" />
+      </div>
+
+      <div>
+        <label for="coverImageUrl">Cover Image (URL)</label>
+        <input id="coverImageUrl" type="text" formControlName="coverImageUrl" />
+      </div>
+
+      <div>
+        <label for="estimatedReadTime">Reading Time (minutes)</label>
+        <input id="estimatedReadTime" type="number" formControlName="estimatedReadTime" />
+      </div>
+
+      <div class="full">
+        <label for="excerpt">Summary / Excerpt</label>
+        <textarea id="excerpt" rows="4" formControlName="excerpt"></textarea>
+      </div>
+
+      <div class="full">
+        <label for="previewContent">Premium Preview</label>
+        <textarea id="previewContent" rows="5" formControlName="previewContent"></textarea>
+      </div>
+
+      <div class="full">
+        <label for="content">Full Content</label>
+        <textarea id="content" rows="12" formControlName="content"></textarea>
+      </div>
+
+      <div class="checkbox-row">
+        <label class="checkbox-item">
+          <input type="checkbox" formControlName="premium" />
+          <span>Premium Content</span>
+        </label>
+
+        <label class="checkbox-item">
+          <input type="checkbox" formControlName="featured" />
+          <span>Featured</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button type="button" routerLink="/admin/publications" class="secondary-btn">
+        Cancel
+      </button>
+      <button type="submit" class="primary-btn" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Saving...' : (isEditMode ? 'Update' : 'Create') }}
+      </button>
+    </div>
+  </form>
+</div>

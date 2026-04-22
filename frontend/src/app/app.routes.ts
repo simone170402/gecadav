@@ -8,6 +8,10 @@ import { Domaines } from './pages/domaines/domaines';
 import { Apropos } from './pages/apropos/apropos';
 import { Vision } from './pages/vision/vision';
 import { AvocatBafoussam } from './pages/avocat-bafoussam/avocat-bafoussam';
+import { Blog } from './pages/blog/blog';
+import { BlogDetail } from './pages/blog-detail/blog-detail';
+import { Revue } from './pages/revue/revue';
+import { RevueDetail } from './pages/revue-detail/revue-detail';
 
 import { Litigation } from './pages/domaines/litigation/litigation';
 import { MergersAcquisitions } from './pages/domaines/mergers-acquisitions/mergers-acquisitions';
@@ -44,6 +48,11 @@ export const routes: Routes = [
   { path: 'contact', component: Contact },
   { path: 'vision', component: Vision },
   { path: 'avocat-bafoussam', component: AvocatBafoussam },
+  { path: 'blog', component: Blog },
+  { path: 'blog/:slug', component: BlogDetail },
+
+  { path: 'revue', component: Revue },
+  { path: 'revue/:slug', component: RevueDetail },
 
   // 🌐 Domaines
   { path: 'domaines/litigation', component: Litigation },
@@ -133,6 +142,31 @@ export const routes: Routes = [
         path: 'rendezvous',
         loadComponent: () => import('./admin/rendezvous/rendezvous').then(m => m.RendezVousComponent),
         canActivate: [roleGuard(['ADMIN', 'AVOCAT', 'SECRETAIRE'])]
+      },
+
+      {
+        path: 'publications',
+        loadComponent: () =>
+          import('./admin/publications/publications').then(m => m.Publications),
+        canActivate: [roleGuard(['ADMIN', 'AVOCAT'])]
+      },
+      {
+        path: 'publications/new',
+        loadComponent: () =>
+          import('./admin/publications/publications-form').then(m => m.PublicationsForm),
+        canActivate: [roleGuard(['ADMIN', 'AVOCAT'])]
+      },
+      {
+        path: 'publications/edit/:id',
+        loadComponent: () =>
+          import('./admin/publications/publications-form').then(m => m.PublicationsForm),
+        canActivate: [roleGuard(['ADMIN', 'AVOCAT'])]
+      },
+      {
+        path: 'subscription',
+        loadComponent: () =>
+          import('./admin/subscription/subscription').then(m => m.Subscription),
+        canActivate: [roleGuard(['ADMIN'])]
       },
 
       {

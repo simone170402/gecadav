@@ -33,26 +33,33 @@ public class SecurityConfig {
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .requestMatchers("/", "/error", "/sitemap.xml").permitAll()
+            .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+            .requestMatchers("/", "/error", "/sitemap.xml").permitAll()
 
-                .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/api/contact").permitAll()
-                .requestMatchers("/news", "/news/**").permitAll()
+            .requestMatchers("/api/auth/**").permitAll()
+            .requestMatchers("/api/contact").permitAll()
+            .requestMatchers("/news", "/news/**").permitAll()
 
-                .requestMatchers("/api/equipe/**").hasAnyRole("ADMIN", "AVOCAT")
-                .requestMatchers("/api/factures/**").hasAnyRole("ADMIN", "COMPTABLE", "AVOCAT")
-                .requestMatchers("/api/procurations/**").hasAnyRole("ADMIN", "AVOCAT")
-                .requestMatchers("/api/affaires/**").hasAnyRole("ADMIN", "AVOCAT")
-                .requestMatchers("/api/rendezvous/**").hasAnyRole("ADMIN", "AVOCAT", "SECRETAIRE")
-                .requestMatchers("/api/clients/**").hasAnyRole("ADMIN", "AVOCAT", "SECRETAIRE")
-                .requestMatchers("/api/documents/**").hasAnyRole("ADMIN", "AVOCAT", "SECRETAIRE")
-                .requestMatchers("/api/taches/**").hasAnyRole("ADMIN", "AVOCAT", "SECRETAIRE")
-                .requestMatchers("/api/dashboard/**").hasAnyRole("ADMIN", "AVOCAT", "COMPTABLE", "SECRETAIRE")
-                .requestMatchers("/api/statistiques/**").hasAnyRole("ADMIN", "AVOCAT", "COMPTABLE")
+            .requestMatchers(HttpMethod.GET, "/api/publications/**").permitAll()
+            .requestMatchers(HttpMethod.GET, "/api/subscription-plans/**").permitAll()
+            .requestMatchers(HttpMethod.GET, "/api/subscriptions/check").permitAll()
+            .requestMatchers(HttpMethod.POST, "/api/subscriptions/**").permitAll()
 
-                .anyRequest().authenticated()
-            )
+            .requestMatchers("/api/admin/publications/**").hasAnyRole("ADMIN", "AVOCAT")
+
+            .requestMatchers("/api/equipe/**").hasAnyRole("ADMIN", "AVOCAT")
+            .requestMatchers("/api/factures/**").hasAnyRole("ADMIN", "COMPTABLE", "AVOCAT")
+            .requestMatchers("/api/procurations/**").hasAnyRole("ADMIN", "AVOCAT")
+            .requestMatchers("/api/affaires/**").hasAnyRole("ADMIN", "AVOCAT")
+            .requestMatchers("/api/rendezvous/**").hasAnyRole("ADMIN", "AVOCAT", "SECRETAIRE")
+            .requestMatchers("/api/clients/**").hasAnyRole("ADMIN", "AVOCAT", "SECRETAIRE")
+            .requestMatchers("/api/documents/**").hasAnyRole("ADMIN", "AVOCAT", "SECRETAIRE")
+            .requestMatchers("/api/taches/**").hasAnyRole("ADMIN", "AVOCAT", "SECRETAIRE")
+            .requestMatchers("/api/dashboard/**").hasAnyRole("ADMIN", "AVOCAT", "COMPTABLE", "SECRETAIRE")
+            .requestMatchers("/api/statistiques/**").hasAnyRole("ADMIN", "AVOCAT", "COMPTABLE")
+
+            .anyRequest().authenticated()
+        )
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

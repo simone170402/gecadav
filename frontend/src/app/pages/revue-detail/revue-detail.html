@@ -1,0 +1,53 @@
+<section class="revue-detail-page">
+  <div class="container">
+    @if (isLoading) {
+      <div class="state-card">Loading publication...</div>
+    } @else if (errorMessage) {
+      <div class="state-card error">{{ errorMessage }}</div>
+    } @else if (publication) {
+      <a class="back-link" routerLink="/revue">← Back to Journal</a>
+
+      <header class="header-card">
+        <div class="top-row">
+          <span class="category">{{ publication.category }}</span>
+          @if (publication.premium) {
+            <span class="premium-badge">Premium</span>
+          }
+        </div>
+
+        <h1>{{ publication.title }}</h1>
+
+        <div class="meta">
+          <span>By {{ publication.author }}</span>
+          <span>•</span>
+          <span>{{ publication.publishedAt | date:'dd/MM/yyyy' }}</span>
+          <span>•</span>
+          <span>{{ publication.views }} views</span>
+        </div>
+      </header>
+
+      <div class="cover" *ngIf="publication.coverImageUrl">
+        <img [src]="publication.coverImageUrl" [alt]="publication.title" />
+      </div>
+
+      <section class="content-card">
+        <p class="excerpt">{{ publication.excerpt }}</p>
+
+        @if (publication.premium && !publication.hasAccess) {
+          <div class="premium-lock">
+            <h3>Subscriber-Only Content</h3>
+            <p>
+              You are currently viewing only a preview. Subscribe to unlock
+              the full publication.
+            </p>
+            <a routerLink="/revue" class="subscribe-link">View Subscription Plans</a>
+          </div>
+        }
+
+        <div class="content-block">
+          {{ publication.content }}
+        </div>
+      </section>
+    }
+  </div>
+</section>
