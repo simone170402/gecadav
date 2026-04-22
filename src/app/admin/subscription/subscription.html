@@ -1,0 +1,27 @@
+<div class="subscription-page">
+  <div class="page-header">
+    <h1>Subscription Plans</h1>
+    <p>Browse the available plans for the legal journal.</p>
+  </div>
+
+  @if (isLoading) {
+    <div class="state-card">Loading...</div>
+  } @else if (errorMessage) {
+    <div class="state-card error">{{ errorMessage }}</div>
+  } @else if (plans.length === 0) {
+    <div class="state-card">No plans available.</div>
+  } @else {
+    <div class="plans-grid">
+      @for (plan of plans; track plan.id) {
+        <div class="plan-card">
+          <h2>{{ plan.name }}</h2>
+          <p class="price">{{ plan.price }} €</p>
+          <p><strong>Billing Cycle:</strong> {{ plan.billingCycle }}</p>
+          <p><strong>Duration:</strong> {{ plan.durationInDays }} days</p>
+          <p><strong>Status:</strong> {{ plan.active ? 'Active' : 'Inactive' }}</p>
+          <p class="desc">{{ plan.description }}</p>
+        </div>
+      }
+    </div>
+  }
+</div>

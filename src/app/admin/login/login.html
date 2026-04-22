@@ -1,39 +1,36 @@
 <section class="min-h-screen bg-gradient-to-br from-slate-50 via-white to-amber-50 flex items-center justify-center px-6 py-10">
   <div class="w-full max-w-md">
     <div class="text-center mb-8">
-  <div class=" inline-flex items-center justify-center">
-          <img
-            src="/images/Law_Logo.png"
-            alt="Cabinet TSAPY Logo"
-            class="w-20 h-20 object-contain"
-          />
-        </div>
-
-        <h1 class="text-sm uppercase tracking-[0.3em] text-[#bfa14a] font-semibold mb-2">
-          Cabinet TSAPY
-        </h1>
-        <h2 class="text-2xl font-bold text-gray-900">
-          Espace Administrateur
-        </h2>
+      <div class="inline-flex items-center justify-center">
+        <img
+          src="/images/Law_Logo.png"
+          alt="Cabinet TSAPY Logo"
+          class="w-20 h-20 object-contain"
+        />
       </div>
-    <div class="bg-white/95 backdrop-blur-sm shadow-2xl rounded-3xl p-8 border border-gray-100">
 
-      <!-- Logo / identité -->
+      <h1 class="text-sm uppercase tracking-[0.3em] text-[#bfa14a] font-semibold mb-2">
+        Cabinet TSAPY
+      </h1>
+      <h2 class="text-2xl font-bold text-gray-900">
+        Administrator Area
+      </h2>
+    </div>
+
+    <div class="bg-white/95 backdrop-blur-sm shadow-2xl rounded-3xl p-8 border border-gray-100">
       <div class="text-center mb-8">
         <h1 class="text-3xl font-bold text-gray-900">
-          Connexion
+          Sign In
         </h1>
         <p class="text-gray-500 mt-2 text-sm">
-          Accédez à l’espace administrateur du cabinet
+          Access the firm's administration area
         </p>
       </div>
 
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-5">
-
-        <!-- Email -->
         <div>
           <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-            Adresse email
+            Email Address
           </label>
           <div class="relative">
             <input
@@ -47,15 +44,14 @@
 
           @if (loginForm.controls.email.touched && loginForm.controls.email.invalid) {
             <p class="text-red-500 text-sm mt-2">
-              Veuillez entrer une adresse email valide.
+              Please enter a valid email address.
             </p>
           }
         </div>
 
-        <!-- Password -->
         <div>
           <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
-            Mot de passe
+            Password
           </label>
           <div class="relative">
             <input
@@ -69,54 +65,52 @@
 
           @if (loginForm.controls.password.touched && loginForm.controls.password.invalid) {
             <p class="text-red-500 text-sm mt-2">
-              Le mot de passe doit contenir au moins 6 caractères.
+              Password must contain at least 6 characters.
             </p>
           }
         </div>
 
-        <!-- Message erreur -->
         @if (errorMessage) {
           <div class="bg-red-50 border border-red-200 text-red-600 rounded-2xl px-4 py-3 text-sm">
             {{ errorMessage }}
           </div>
         }
 
-        <!-- Options -->
         <div class="flex items-center justify-between gap-4">
           <label class="flex items-center cursor-pointer">
             <input
               type="checkbox"
+              formControlName="rememberMe"
               class="rounded border-gray-300 text-[#bfa14a] focus:ring-[#bfa14a]"
             />
-            <span class="ml-2 text-sm text-gray-600">Se souvenir de moi</span>
+            <span class="ml-2 text-sm text-gray-600">Remember me</span>
           </label>
 
-          <a
-            href="#"
+          <button
+            type="button"
+            (click)="onForgotPassword()"
             class="text-sm font-medium text-blue-900 hover:text-blue-700 transition"
           >
-            Mot de passe oublié ?
-          </a>
+            Forgot password?
+          </button>
         </div>
 
-        <!-- Submit -->
         <button
           type="submit"
           [disabled]="isLoading"
           class="w-full bg-[#bfa14a] hover:bg-[#a88d3f] text-white font-semibold py-3.5 rounded-2xl transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg"
         >
-          {{ isLoading ? 'Connexion...' : 'Se connecter' }}
+          {{ isLoading ? 'Signing in...' : 'Sign in' }}
         </button>
       </form>
 
-      <!-- Retour -->
       <div class="mt-6 text-center">
         <button
           type="button"
           (click)="navigateToPublicSite()"
           class="text-sm text-gray-600 hover:text-gray-800 transition"
         >
-          ← Retour au site public
+          ← Back to public website
         </button>
       </div>
     </div>

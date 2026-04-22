@@ -1,0 +1,72 @@
+<section class="revue-page">
+  <div class="hero">
+    <div class="container">
+      <span class="hero-badge">Premium Legal Journal</span>
+      <h1>Documents, Analysis, and Resources for Law Students</h1>
+      <p>
+        Access in-depth publications, educational materials,
+        and premium subscription-based legal content.
+      </p>
+    </div>
+  </div>
+
+  <div class="container main-content">
+    <section class="plans-section" *ngIf="plans.length > 0 && !isSubscribed">
+      <h2>Choose Your Plan</h2>
+      <div class="plans-grid">
+        @for (plan of plans; track plan.id) {
+          <div class="plan-card">
+            <h3>{{ plan.name }}</h3>
+            <p class="price">{{ plan.price }} €</p>
+            <p class="desc">{{ plan.description }}</p>
+            <button type="button" (click)="subscribe(plan.id)">
+              Subscribe
+            </button>
+          </div>
+        }
+      </div>
+    </section>
+
+    <section class="subscribed-banner" *ngIf="isSubscribed">
+      <strong>Active Subscription:</strong> you can access premium content.
+    </section>
+
+    <section class="publications-section">
+      <h2>Recent Publications</h2>
+
+      @if (isLoading) {
+        <div class="state-card">Loading publications...</div>
+      } @else if (errorMessage) {
+        <div class="state-card error">{{ errorMessage }}</div>
+      } @else if (publications.length === 0) {
+        <div class="state-card">No publications available.</div>
+      } @else {
+        <div class="publications-grid">
+          @for (publication of publications; track trackById($index, publication)) {
+            <article class="publication-card">
+              <div class="top-row">
+                <span class="category">{{ publication.category }}</span>
+                @if (publication.premium) {
+                  <span class="premium-badge">Premium</span>
+                }
+              </div>
+
+              <h3>{{ publication.title }}</h3>
+              <p>{{ publication.excerpt }}</p>
+
+              <div class="meta">
+                <span>{{ publication.author }}</span>
+                <span>•</span>
+                <span>{{ publication.publishedAt | date:'dd/MM/yyyy' }}</span>
+              </div>
+
+              <a [routerLink]="['/revue', publication.slug]">
+                View Publication
+              </a>
+            </article>
+          }
+        </div>
+      }
+    </section>
+  </div>
+</section>

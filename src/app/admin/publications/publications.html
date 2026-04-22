@@ -1,0 +1,113 @@
+<div class="publications-page">
+  <div class="page-header">
+    <div>
+      <h1>Publications Management</h1>
+      <p>Manage blog articles and legal journal publications.</p>
+    </div>
+
+    <button type="button" class="primary-btn" (click)="createPublication()">
+      New Publication
+    </button>
+  </div>
+
+  @if (isLoading) {
+    <div class="state-card">Loading...</div>
+  } @else if (errorMessage) {
+    <div class="state-card error">{{ errorMessage }}</div>
+  } @else {
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="label">Blog Articles</span>
+        <strong>{{ blogPublications.length }}</strong>
+      </div>
+      <div class="stat-card">
+        <span class="label">Journal Publications</span>
+        <strong>{{ revuePublications.length }}</strong>
+      </div>
+      <div class="stat-card">
+        <span class="label">Total Content</span>
+        <strong>{{ blogPublications.length + revuePublications.length }}</strong>
+      </div>
+    </div>
+
+    <section class="table-section">
+      <h2>Blog Articles</h2>
+
+      @if (blogPublications.length === 0) {
+        <div class="empty-card">No blog articles found.</div>
+      } @else {
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Author</th>
+                <th>Premium</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of blogPublications; track trackById($index, item)) {
+                <tr>
+                  <td>{{ item.title }}</td>
+                  <td>{{ item.category }}</td>
+                  <td>{{ item.author }}</td>
+                  <td>
+                    <span class="badge" [ngClass]="item.premium ? 'premium' : 'free'">
+                        {{ item.premium ? 'Premium' : 'Free' }}
+                    </span>
+                  </td>
+                  <td>{{ item.publishedAt | date:'dd/MM/yyyy' }}</td>
+                  <td class="actions">
+                    <button type="button" (click)="editPublication(item.id)">Edit</button>
+                    <button type="button" class="danger" (click)="deletePublication(item.id)">Delete</button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </section>
+
+    <section class="table-section">
+      <h2>Journal Publications</h2>
+
+      @if (revuePublications.length === 0) {
+        <div class="empty-card">No journal publications found.</div>
+      } @else {
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Author</th>
+                <th>Premium</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of revuePublications; track trackById($index, item)) {
+                <tr>
+                  <td>{{ item.title }}</td>
+                  <td>{{ item.category }}</td>
+                  <td>{{ item.author }}</td>
+                  <td>{{ item.premium ? 'Yes' : 'No' }}</td>
+                  <td>{{ item.publishedAt | date:'dd/MM/yyyy' }}</td>
+                  <td class="actions">
+                    <button type="button" (click)="editPublication(item.id)">Edit</button>
+                    <button type="button" class="danger" (click)="deletePublication(item.id)">Delete</button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </section>
+  }
+</div>

@@ -1,0 +1,36 @@
+<section class="blog-detail-page">
+  <div class="container">
+    @if (isLoading) {
+      <div class="state-card">Loading article...</div>
+    } @else if (errorMessage) {
+      <div class="state-card error">{{ errorMessage }}</div>
+    } @else if (article) {
+      <a class="back-link" routerLink="/blog">← Back to Blog</a>
+
+      <header class="article-header">
+        <span class="category">{{ article.category }}</span>
+        <h1>{{ article.title }}</h1>
+
+        <div class="meta">
+          <span>By {{ article.author }}</span>
+          <span>•</span>
+          <span>{{ article.publishedAt | date:'dd/MM/yyyy' }}</span>
+          <span>•</span>
+          <span>{{ article.views }} views</span>
+        </div>
+      </header>
+
+      <div class="cover" *ngIf="article.coverImageUrl">
+        <img [src]="article.coverImageUrl" [alt]="article.title" />
+      </div>
+
+      <article class="article-content">
+        <p class="excerpt">{{ article.excerpt }}</p>
+
+        <div class="content-block">
+          {{ article.content }}
+        </div>
+      </article>
+    }
+  </div>
+</section>
