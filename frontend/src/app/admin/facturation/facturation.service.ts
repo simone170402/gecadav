@@ -2,13 +2,14 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { FactureItem, FactureStats } from './facturation.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FacturationService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/factures';
+  private apiUrl = `${environment.apiUrl}/api/facturation`;
 
   getAll(): Observable<FactureItem[]> {
     return this.http.get<FactureItem[]>(this.apiUrl);

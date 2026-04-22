@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface TacheItem {
   id: number;
@@ -14,7 +15,7 @@ export interface TacheItem {
 @Injectable({ providedIn: 'root' })
 export class TachesService {
   private http = inject(HttpClient);
-  private api = 'http://localhost:8080/api/taches';
+  private api = `${environment.apiUrl}/api/taches`;
 
   getAll(): Observable<TacheItem[]> {
     return this.http.get<TacheItem[]>(this.api);
