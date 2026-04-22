@@ -1,42 +1,125 @@
 <div class="tasks-page">
-
   <div class="page-header">
     <div>
       <h1>Tâches</h1>
-      <p>Gérez vos tâches</p>
+      <p>Gérez vos tâches et to-do lists</p>
     </div>
 
-    <button class="primary-btn" (click)="create()">+ Ajouter</button>
+    <button class="primary-btn" type="button" (click)="openDialog()">
+      + Nouvelle tâche
+    </button>
   </div>
 
-  <div class="tasks-list">
+  @if (errorMessage) {
+    <div class="error-box">
+      {{ errorMessage }}
+    </div>
+  }
 
-    @for (task of tasks; track task.id) {
-      <div class="task-card" [class.completed]="task.completed">
+  @if (isLoading) {
+    <div class="card">
+      Chargement des tâches...
+    </div>
+  } @else {
+    <div class="stats-grid">
+      <div class="stat-card">
+        <p class="stat-label">Total tâches</p>
+        <p class="stat-value">{{ totalTasks }}</p>
+      </div>
 
-        <input type="checkbox"
-               [checked]="task.completed"
-               (change)="toggle(task.id)" />
+      <div class="stat-card">
+        <p class="stat-label">En cours</p>
+        <p class="stat-value blue">{{ pendingTasks }}</p>
+      </div>
 
-        <div class="task-content">
-          <h3>{{ task.titre }}</h3>
+      <div class="stat-card">
+        <p class="stat-label">Terminées</p>
+        <p class="stat-value green">{{ completedTasks }}</p>
+      </div>
 
-          <div class="meta">
-            <span>{{ task.dueDate }}</span>
-            <span>•</span>
-            <span>{{ task.assignedTo }}</span>
+      <div class="stat-card">
+        <p class="stat-label">Urgentes</p>
+        <p class="stat-value red">{{ urgentTasks }}</p>
+      </div>
+    </div>
+
+    <div class="tasks-list">
+      @for (task of tasks; track task.id) {
+        <div class="task-card" [class.completed]="task.completed">
+          <input
+            type="checkbox"
+            class="task-checkbox"
+            [checked]="task.completed"
+            (change)="toggle(task.id)"
+          />
+
+          <div class="task-content">
+            <div class="task-top-line">
+              <h3 [class.task-title-completed]="task.completed">
+                {{ task.titre }}
+              </h3>
+
+              <span class="badge" [ngClass]="task.priority">
+                {{ getPriorityLabel(task.priority) }}
+              </span>
+            </div>
+
+            <div class="meta">
+              <span>📅 {{ task.dueDate }}</span>
+              <span>•</span>
+              <span>👤 {{ task.assignedTo }}</span>
+              <span>•</span>
+              <span>{{ task.completed ? 'Terminée' : 'En cours' }}</span>
+            </div>
+          </div>
+
+          <button class="danger-btn" type="button" (click)="delete(task.id)">
+            ✕
+          </button>
+        </div>
+      }
+    </div>
+  }
+
+  @if (isDialogOpen) {
+    <div class="modal-backdrop">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Nouvelle tâche</h3>
+          <button type="button" class="ghost-btn" (click)="closeDialog()">✕</button>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group full-width">
+            <label>Titre *</label>
+            <input type="text" [(ngModel)]="newTask.titre" placeholder="Ex: Préparer le dossier..." />
+          </div>
+
+          <div class="form-group">
+            <label>Date d’échéance *</label>
+            <input type="date" [(ngModel)]="newTask.dueDate" />
+          </div>
+
+          <div class="form-group">
+            <label>Priorité *</label>
+            <select [(ngModel)]="newTask.priority">
+              <option value="high">Urgent</option>
+              <option value="medium">Moyen</option>
+              <option value="low">Faible</option>
+            </select>
+          </div>
+
+          <div class="form-group full-width">
+            <label>Assigné à *</label>
+            <input type="text" [(ngModel)]="newTask.assignedTo" placeholder="Ex: Maître TSAPY" />
           </div>
         </div>
 
-        <span class="badge" [ngClass]="task.priority">
-          {{ task.priority }}
-        </span>
-
-        <button class="danger-btn" (click)="delete(task.id)">✕</button>
-
+        <div class="modal-actions">
+          <button type="button" class="secondary-btn" (click)="closeDialog()">Annuler</button>
+          <button type="button" class="primary-btn" (click)="create()">Créer</button>
+        </div>
       </div>
-    }
-
-  </div>
-
+    </div>
+  }
 </div>

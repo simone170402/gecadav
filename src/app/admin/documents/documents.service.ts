@@ -2,13 +2,14 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { DocumentItem, DocumentStats } from './documents.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DocumentsService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/documents';
+  private apiUrl = `${environment.apiUrl}/api/documents`;
 
   getAll(): Observable<DocumentItem[]> {
     return this.http.get<DocumentItem[]>(this.apiUrl);
