@@ -56,6 +56,7 @@ public class SecurityConfig {
             .requestMatchers("/api/documents/**").hasAnyRole("ADMIN", "AVOCAT", "SECRETAIRE")
             .requestMatchers("/api/taches/**").hasAnyRole("ADMIN", "AVOCAT", "SECRETAIRE")
             .requestMatchers("/api/dashboard/**").hasAnyRole("ADMIN", "AVOCAT", "COMPTABLE", "SECRETAIRE")
+            .requestMatchers("/api/dashboard").hasAnyRole("ADMIN", "AVOCAT", "COMPTABLE", "SECRETAIRE")
             .requestMatchers("/api/statistiques/**").hasAnyRole("ADMIN", "AVOCAT", "COMPTABLE")
 
             .anyRequest().authenticated()
