@@ -1,5 +1,5 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { EquipeService } from './equipe.service';
 import { MembreProfil } from './equipe.model';
@@ -15,6 +15,8 @@ export class EquipeProfil implements OnInit {
   private route = inject(ActivatedRoute);
   private equipeService = inject(EquipeService);
   private platformId = inject(PLATFORM_ID);
+  private ctr = inject(ChangeDetectorRef);
+
 
   profil: MembreProfil | null = null;
   isLoading = true;
@@ -23,6 +25,7 @@ export class EquipeProfil implements OnInit {
   ngOnInit(): void {
     if (!isPlatformBrowser(this.platformId)) {
       this.isLoading = false;
+      this.ctr.detectChanges();
       return;
     }
 
@@ -30,6 +33,7 @@ export class EquipeProfil implements OnInit {
     if (!id) {
       this.errorMessage = 'Membre introuvable.';
       this.isLoading = false;
+      this.ctr.detectChanges();
       return;
     }
 
@@ -37,11 +41,13 @@ export class EquipeProfil implements OnInit {
       next: (data) => {
         this.profil = data;
         this.isLoading = false;
+        this.ctr.detectChanges();
       },
       error: (err) => {
         console.error(err);
         this.errorMessage = 'Impossible de charger le profil.';
         this.isLoading = false;
+        this.ctr.detectChanges();
       }
     });
   }

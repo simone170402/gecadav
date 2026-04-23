@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { ChangeDetectorRef, Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { DashboardService } from './dashboard.service';
 import {
   DashboardResponse,
@@ -20,6 +20,8 @@ import { RouterLink } from '@angular/router';
 })
 export class Dashboard implements OnInit {
   private dashboardService = inject(DashboardService);
+  private platformId = inject(PLATFORM_ID);
+  private ctr = inject(ChangeDetectorRef);
 
   isLoading = true;
   errorMessage = '';
@@ -31,7 +33,12 @@ export class Dashboard implements OnInit {
   revenueData: RevenueData[] = [];
 
   ngOnInit(): void {
-    this.loadDashboard();
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadDashboard();
+    } else {    
+        this.isLoading = false;
+        this.ctr.detectChanges();
+    }
   }
 
   loadDashboard(): void {
@@ -41,16 +48,24 @@ export class Dashboard implements OnInit {
     this.dashboardService.getDashboardData().subscribe({
       next: (response: DashboardResponse) => {
         this.stats = response.stats;
+        this.ctr.detectChanges();
         this.recentCases = response.recentCases;
+        this.ctr.detectChanges();
         this.upcomingAppointments = response.upcomingAppointments;
+        this.ctr.detectChanges();
         this.monthlyActivity = response.monthlyActivity;
+        this.ctr.detectChanges();
         this.revenueData = response.revenueData;
+        this.ctr.detectChanges();
         this.isLoading = false;
+        this.ctr.detectChanges();
+
       },
       error: (error) => {
         console.error('Erreur dashboard:', error);
         this.errorMessage = 'Impossible de charger les statistiques du dashboard.';
         this.isLoading = false;
+        this.ctr.detectChanges();
       }
     });
   }

@@ -1,5 +1,5 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DocumentItem, DocumentStats } from './documents.model';
 import { DocumentsService } from './documents.service';
@@ -20,6 +20,7 @@ export class Documents implements OnInit {
   private clientsService = inject(ClientsService);
   private affairesService = inject(AffairesService);
   private platformId = inject(PLATFORM_ID);
+  private ctr = inject(ChangeDetectorRef);
 
   documents: DocumentItem[] = [];
   filteredDocuments: DocumentItem[] = [];
@@ -51,6 +52,7 @@ export class Documents implements OnInit {
       this.loadAffaires();
     } else {
       this.isLoading = false;
+      this.ctr.detectChanges();
     }
   }
 
@@ -62,16 +64,19 @@ export class Documents implements OnInit {
       next: (documents) => {
         this.documents = documents;
         this.applyFilters();
+        this.ctr.detectChanges();
 
         this.documentsService.getStats().subscribe({
           next: (stats) => {
             this.stats = stats;
             this.isLoading = false;
+            this.ctr.detectChanges();
           },
           error: (err) => {
             console.error(err);
             this.errorMessage = 'Impossible de charger les statistiques des documents.';
             this.isLoading = false;
+            this.ctr.detectChanges();
           }
         });
       },
@@ -79,6 +84,7 @@ export class Documents implements OnInit {
         console.error(err);
         this.errorMessage = 'Impossible de charger les documents.';
         this.isLoading = false;
+        this.ctr.detectChanges();
       }
     });
   }
@@ -87,9 +93,11 @@ export class Documents implements OnInit {
     this.clientsService.getAll().subscribe({
       next: (data) => {
         this.clients = data;
+        this.ctr.detectChanges();
       },
       error: (err) => {
         console.error(err);
+        this.ctr.detectChanges();
       }
     });
   }
@@ -99,9 +107,11 @@ export class Documents implements OnInit {
     next: (data) => {
       this.affaires = data;
       this.filteredAffaires = data;
+      this.ctr.detectChanges();
     },
     error: (err) => {
       console.error(err);
+      this.ctr.detectChanges();
     }
   });
 }
@@ -157,11 +167,13 @@ export class Documents implements OnInit {
 
   openUploadDialog(): void {
     this.isUploadDialogOpen = true;
+    this.ctr.detectChanges();
   }
 
   closeUploadDialog(): void {
     this.isUploadDialogOpen = false;
     this.selectedFile = null;
+    this.ctr.detectChanges();
     this.uploadForm = {
       categorie: 'Contrats',
       uploadedBy: '',
@@ -206,6 +218,7 @@ export class Documents implements OnInit {
       error: (err) => {
         console.error(err);
         this.errorMessage = 'Impossible de téléverser le document.';
+        this.ctr.detectChanges();
       }
     });
   }

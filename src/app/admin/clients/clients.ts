@@ -1,5 +1,5 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject, PLATFORM_ID,} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClientItem, ClientStats } from './clients.model';
 import { ClientsService } from './clients.service';
@@ -14,6 +14,7 @@ import { ClientsService } from './clients.service';
 export class Clients implements OnInit {
   private clientsService = inject(ClientsService);
   private platformId = inject(PLATFORM_ID);
+  private ctr = inject(ChangeDetectorRef);
 
   clients: ClientItem[] = [];
   filteredClients: ClientItem[] = [];
@@ -45,6 +46,7 @@ export class Clients implements OnInit {
       this.loadData();
     } else {
       this.isLoading = false;
+      this.ctr.detectChanges();
     }
   }
 
@@ -61,11 +63,13 @@ export class Clients implements OnInit {
           next: (stats) => {
             this.stats = stats;
             this.isLoading = false;
+            this.ctr.detectChanges();
           },
           error: (err) => {
             console.error(err);
             this.errorMessage = 'Impossible de charger les statistiques clients.';
             this.isLoading = false;
+            this.ctr.detectChanges();
           }
         });
       },
@@ -73,6 +77,7 @@ export class Clients implements OnInit {
         console.error(err);
         this.errorMessage = 'Impossible de charger les clients.';
         this.isLoading = false;
+        this.ctr.detectChanges();
       }
     });
   }
@@ -98,11 +103,13 @@ export class Clients implements OnInit {
 
   openCreateDialog(): void {
     this.isDialogOpen = true;
+    this.ctr.detectChanges();
   }
 
   closeDialog(): void {
     this.isDialogOpen = false;
     this.resetForm();
+    this.ctr.detectChanges();
   }
 
   createClient(): void {
@@ -124,16 +131,19 @@ export class Clients implements OnInit {
       error: (err) => {
         console.error(err);
         this.errorMessage = 'Impossible de créer le client.';
+        this.ctr.detectChanges();
       }
     });
   }
 
   viewClient(client: ClientItem): void {
     this.selectedClient = client;
+    this.ctr.detectChanges();
   }
 
   closeDetails(): void {
     this.selectedClient = null;
+    this.ctr.detectChanges();
   }
 
   resetForm(): void {

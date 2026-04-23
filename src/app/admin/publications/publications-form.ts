@@ -1,5 +1,5 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PublicationRequest, PublicationStatus, PublicationType } from './publication.model';
@@ -22,6 +22,7 @@ export class PublicationsForm implements OnInit {
   publicationStatuses: PublicationStatus[] = ['DRAFT', 'PUBLISHED', 'ARCHIVED'];
 
   private platformId = inject(PLATFORM_ID);
+  private ctr = inject(ChangeDetectorRef);
 
   categories = [
     'Droit Commercial',
@@ -50,6 +51,8 @@ export class PublicationsForm implements OnInit {
       // 🔥 IMPORTANT : appel API seulement côté navigateur
       if (isPlatformBrowser(this.platformId)) {
         this.loadPublication(this.publicationId);
+      } else {
+        this.ctr.detectChanges();
       }
     }
   }
@@ -88,10 +91,12 @@ export class PublicationsForm implements OnInit {
           estimatedReadTime: publication.estimatedReadTime,
           previewContent: publication.previewContent
         });
+        this.ctr.detectChanges();
       },
       error: (err) => {
         console.error(err);
         alert('Impossible de charger la publication.');
+        this.ctr.detectChanges();
       }
     });
   }
@@ -115,6 +120,7 @@ export class PublicationsForm implements OnInit {
           console.error(err);
           this.isSubmitting = false;
           alert('Impossible de modifier la publication.');
+          this.ctr.detectChanges();
         }
       });
     } else {

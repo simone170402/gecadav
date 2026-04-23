@@ -1,5 +1,5 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FactureItem, FactureStats } from './facturation.model';
 import { FacturationService } from './facturation.service';
@@ -20,6 +20,7 @@ export class Facturation implements OnInit {
   private clientsService = inject(ClientsService);
   private affairesService = inject(AffairesService);
   private platformId = inject(PLATFORM_ID);
+  private ctr = inject(ChangeDetectorRef);
 
   factures: FactureItem[] = [];
   filteredFactures: FactureItem[] = [];
@@ -91,6 +92,7 @@ export class Facturation implements OnInit {
       this.loadAffaires();
     } else {
       this.isLoading = false;
+      this.ctr.detectChanges();
     }
   }
 
@@ -102,16 +104,19 @@ export class Facturation implements OnInit {
       next: (factures) => {
         this.factures = factures;
         this.applyFilters();
+        this.ctr.detectChanges();
 
         this.facturationService.getStats().subscribe({
           next: (stats) => {
             this.stats = stats;
             this.isLoading = false;
+            this.ctr.detectChanges();
           },
           error: (err) => {
             console.error(err);
             this.errorMessage = 'Impossible de charger les statistiques de facturation.';
             this.isLoading = false;
+            this.ctr.detectChanges();
           }
         });
       },
@@ -119,6 +124,7 @@ export class Facturation implements OnInit {
         console.error(err);
         this.errorMessage = 'Impossible de charger les factures.';
         this.isLoading = false;
+        this.ctr.detectChanges();
       }
     });
   }
@@ -127,9 +133,11 @@ export class Facturation implements OnInit {
     this.clientsService.getAll().subscribe({
       next: (data) => {
         this.clients = data;
+        this.ctr.detectChanges();
       },
       error: (err) => {
         console.error(err);
+        this.ctr.detectChanges();
       }
     });
   }
@@ -140,9 +148,11 @@ export class Facturation implements OnInit {
         this.affaires = data;
         this.filteredAffaires = data;
         this.filteredEditAffaires = data;
+        this.ctr.detectChanges();
       },
       error: (err) => {
         console.error(err);
+        this.ctr.detectChanges();
       }
     });
   }
@@ -203,11 +213,13 @@ export class Facturation implements OnInit {
 
   openCreateDialog(): void {
     this.isDialogOpen = true;
+    this.ctr.detectChanges();
   }
 
   closeDialog(): void {
     this.isDialogOpen = false;
     this.resetForm();
+    this.ctr.detectChanges();
   }
 
   downloadPdf(item: FactureItem): void {
@@ -239,20 +251,25 @@ export class Facturation implements OnInit {
       next: () => {
         this.closeDialog();
         this.loadData();
+        this.ctr.detectChanges();
       },
       error: (err) => {
         console.error(err);
         this.errorMessage = 'Impossible de créer la facture.';
+        this.ctr.detectChanges();
       }
     });
   }
 
   viewFacture(item: FactureItem): void {
     this.selectedFacture = item;
+    this.ctr.detectChanges();
+
   }
 
   closeDetails(): void {
     this.selectedFacture = null;
+    this.ctr.detectChanges();
   }
 
   openEditDialog(item: FactureItem): void {
@@ -271,6 +288,7 @@ export class Facturation implements OnInit {
 
     this.onEditClientChange();
     this.isEditDialogOpen = true;
+    this.ctr.detectChanges();
   }
 
   closeEditDialog(): void {
@@ -288,6 +306,7 @@ export class Facturation implements OnInit {
       modePaiement: ''
     };
     this.filteredEditAffaires = this.affaires;
+    this.ctr.detectChanges();
   }
 
   updateFacture(): void {
@@ -317,10 +336,12 @@ export class Facturation implements OnInit {
         this.closeEditDialog();
         this.closeDetails();
         this.loadData();
+        this.ctr.detectChanges();
       },
       error: (err) => {
         console.error(err);
         this.errorMessage = 'Impossible de modifier la facture.';
+        this.ctr.detectChanges();
       }
     });
   }
@@ -332,10 +353,12 @@ export class Facturation implements OnInit {
           this.selectedFacture = null;
         }
         this.loadData();
+        this.ctr.detectChanges();
       },
       error: (err) => {
         console.error(err);
         this.errorMessage = 'Impossible de supprimer la facture.';
+        this.ctr.detectChanges();
       }
     });
   }

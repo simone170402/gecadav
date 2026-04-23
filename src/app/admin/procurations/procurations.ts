@@ -1,5 +1,5 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ProcurationItem, ProcurationStats } from './procurations.model';
 import { ProcurationsService } from './procurations.service';
@@ -17,6 +17,7 @@ export class Procurations implements OnInit {
   private procurationsService = inject(ProcurationsService);
   private clientsService = inject(ClientsService);
   private platformId = inject(PLATFORM_ID);
+  private ctr = inject(ChangeDetectorRef);
 
   procurations: ProcurationItem[] = [];
   filteredProcurations: ProcurationItem[] = [];
@@ -71,6 +72,7 @@ export class Procurations implements OnInit {
       this.loadClients();
     } else {
       this.isLoading = false;
+      this.ctr.detectChanges();
     }
   }
 
@@ -82,16 +84,19 @@ export class Procurations implements OnInit {
       next: (data) => {
         this.procurations = data;
         this.applyFilters();
+        this.ctr.detectChanges();
 
         this.procurationsService.getStats().subscribe({
           next: (stats) => {
             this.stats = stats;
             this.isLoading = false;
+            this.ctr.detectChanges();
           },
           error: (err) => {
             console.error(err);
             this.errorMessage = 'Impossible de charger les statistiques des procurations.';
             this.isLoading = false;
+            this.ctr.detectChanges();
           }
         });
       },
@@ -99,6 +104,7 @@ export class Procurations implements OnInit {
         console.error(err);
         this.errorMessage = 'Impossible de charger les procurations.';
         this.isLoading = false;
+        this.ctr.detectChanges();
       }
     });
   }
@@ -107,9 +113,11 @@ export class Procurations implements OnInit {
     this.clientsService.getAll().subscribe({
       next: (data) => {
         this.clients = data;
+        this.ctr.detectChanges();
       },
       error: (err) => {
         console.error(err);
+        this.ctr.detectChanges();
       }
     });
   }
@@ -126,11 +134,13 @@ export class Procurations implements OnInit {
 
   openCreateDialog(): void {
     this.isDialogOpen = true;
+    this.ctr.detectChanges();
   }
 
   closeDialog(): void {
     this.isDialogOpen = false;
     this.resetForm();
+    this.ctr.detectChanges();
   }
 
   createProcuration(): void {
@@ -155,20 +165,26 @@ export class Procurations implements OnInit {
       next: () => {
         this.closeDialog();
         this.loadData();
+        this.ctr.detectChanges();
       },
       error: (err) => {
         console.error(err);
         this.errorMessage = 'Impossible de créer la procuration.';
+        this.ctr.detectChanges();
       }
     });
   }
 
   viewProcuration(item: ProcurationItem): void {
   this.selectedProcuration = item;
+  this.ctr.detectChanges();
+
 }
 
 closeDetails(): void {
   this.selectedProcuration = null;
+  this.ctr.detectChanges();
+
 }
 
 downloadPdf(item: ProcurationItem): void {
@@ -190,6 +206,7 @@ openEditDialog(item: ProcurationItem): void {
   };
 
   this.isEditDialogOpen = true;
+  this.ctr.detectChanges();
 }
 
 closeEditDialog(): void {
@@ -225,10 +242,13 @@ updateProcuration(): void {
       this.closeEditDialog();
       this.closeDetails();
       this.loadData();
+      this.ctr.detectChanges();
+
     },
     error: (err) => {
       console.error(err);
       this.errorMessage = 'Impossible de modifier la procuration.';
+      this.ctr.detectChanges();
     }
   });
 }

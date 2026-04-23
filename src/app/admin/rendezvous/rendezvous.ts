@@ -1,5 +1,5 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions, DateSelectArg, EventClickArg } from '@fullcalendar/core';
@@ -20,6 +20,7 @@ import { RendezVousItem } from './rendezvous.model';
 export class RendezVousComponent implements OnInit {
   private rendezVousService = inject(RendezVousService);
   private platformId = inject(PLATFORM_ID);
+  private ctr = inject(ChangeDetectorRef);
 
   rendezVousList: RendezVousItem[] = [];
   upcomingAppointments: RendezVousItem[] = [];
@@ -69,6 +70,7 @@ export class RendezVousComponent implements OnInit {
       this.loadData();
     } else {
       this.isLoading = false;
+      this.ctr.detectChanges();
     }
   }
 
@@ -84,11 +86,13 @@ export class RendezVousComponent implements OnInit {
           events: this.mapToCalendarEvents(data)
         };
         this.loadUpcoming();
+        this.ctr.detectChanges();
       },
       error: (err) => {
         console.error(err);
         this.errorMessage = 'Impossible de charger les rendez-vous.';
         this.isLoading = false;
+        this.ctr.detectChanges();
       }
     });
   }
@@ -98,11 +102,13 @@ export class RendezVousComponent implements OnInit {
       next: (data) => {
         this.upcomingAppointments = data;
         this.isLoading = false;
+        this.ctr.detectChanges();
       },
       error: (err) => {
         console.error(err);
         this.errorMessage = 'Impossible de charger les prochains rendez-vous.';
         this.isLoading = false;
+        this.ctr.detectChanges();
       }
     });
   }
@@ -129,6 +135,7 @@ export class RendezVousComponent implements OnInit {
       }
     };
   });
+
 }
 
   handleDateSelect(selectInfo: DateSelectArg): void {
@@ -151,19 +158,23 @@ export class RendezVousComponent implements OnInit {
 
   handleEventClick(clickInfo: EventClickArg): void {
     this.selectedEvent = clickInfo.event.extendedProps['rendezVous'] as RendezVousItem;
+    this.ctr.detectChanges();
   }
 
   openCreateDialog(): void {
     this.isDialogOpen = true;
+    this.ctr.detectChanges();
   }
 
   closeDialog(): void {
     this.isDialogOpen = false;
     this.resetForm();
+    this.ctr.detectChanges();
   }
 
   closeDetails(): void {
     this.selectedEvent = null;
+    this.ctr.detectChanges();
   }
 
   createAppointment(): void {
@@ -175,6 +186,7 @@ export class RendezVousComponent implements OnInit {
       !this.newAppointment.endTime
     ) {
       this.errorMessage = 'Veuillez remplir les champs obligatoires.';
+      this.ctr.detectChanges();
       return;
     }
 
@@ -182,10 +194,12 @@ export class RendezVousComponent implements OnInit {
       next: () => {
         this.closeDialog();
         this.loadData();
+        this.ctr.detectChanges();
       },
       error: (err) => {
         console.error(err);
         this.errorMessage = 'Impossible de créer le rendez-vous.';
+        this.ctr.detectChanges();
       }
     });
   }
@@ -195,10 +209,13 @@ export class RendezVousComponent implements OnInit {
       next: () => {
         this.selectedEvent = null;
         this.loadData();
+        this.ctr.detectChanges();
+
       },
       error: (err) => {
         console.error(err);
         this.errorMessage = 'Impossible de supprimer le rendez-vous.';
+        this.ctr.detectChanges();
       }
     });
   }
