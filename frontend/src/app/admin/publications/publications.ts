@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { PublicationListItem } from './publication.model';
 import { PublicationService } from './publication.service';
@@ -12,7 +12,10 @@ import { PublicationService } from './publication.service';
   styleUrl: './publications.css'
 })
 export class Publications implements OnInit {
+  private platformId = inject(PLATFORM_ID);
+  
   publications: PublicationListItem[] = [];
+  
   isLoading = false;
   errorMessage = '';
 
@@ -22,7 +25,11 @@ export class Publications implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadAll();
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadAll();
+    } else {
+      this.isLoading = false;
+    }
   }
 
   loadAll(): void {

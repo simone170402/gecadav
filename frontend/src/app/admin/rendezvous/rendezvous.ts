@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions, DateSelectArg, EventClickArg } from '@fullcalendar/core';
@@ -19,6 +19,7 @@ import { RendezVousItem } from './rendezvous.model';
 })
 export class RendezVousComponent implements OnInit {
   private rendezVousService = inject(RendezVousService);
+  private platformId = inject(PLATFORM_ID);
 
   rendezVousList: RendezVousItem[] = [];
   upcomingAppointments: RendezVousItem[] = [];
@@ -64,7 +65,11 @@ export class RendezVousComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    this.loadData();
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadData();
+    } else {
+      this.isLoading = false;
+    }
   }
 
   loadData(): void {

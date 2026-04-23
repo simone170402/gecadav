@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FactureItem, FactureStats } from './facturation.model';
 import { FacturationService } from './facturation.service';
@@ -19,6 +19,7 @@ export class Facturation implements OnInit {
   private facturationService = inject(FacturationService);
   private clientsService = inject(ClientsService);
   private affairesService = inject(AffairesService);
+  private platformId = inject(PLATFORM_ID);
 
   factures: FactureItem[] = [];
   filteredFactures: FactureItem[] = [];
@@ -84,9 +85,13 @@ export class Facturation implements OnInit {
   };
 
   ngOnInit(): void {
-    this.loadData();
-    this.loadClients();
-    this.loadAffaires();
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadData();
+      this.loadClients();
+      this.loadAffaires();
+    } else {
+      this.isLoading = false;
+    }
   }
 
   loadData(): void {

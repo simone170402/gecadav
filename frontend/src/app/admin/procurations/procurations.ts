@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ProcurationItem, ProcurationStats } from './procurations.model';
 import { ProcurationsService } from './procurations.service';
@@ -16,6 +16,7 @@ import { ClientItem } from '../clients/clients.model';
 export class Procurations implements OnInit {
   private procurationsService = inject(ProcurationsService);
   private clientsService = inject(ClientsService);
+  private platformId = inject(PLATFORM_ID);
 
   procurations: ProcurationItem[] = [];
   filteredProcurations: ProcurationItem[] = [];
@@ -65,8 +66,12 @@ export class Procurations implements OnInit {
   };
 
   ngOnInit(): void {
-    this.loadData();
-    this.loadClients();
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadData();
+      this.loadClients();
+    } else {
+      this.isLoading = false;
+    }
   }
 
   loadData(): void {

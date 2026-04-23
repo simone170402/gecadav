@@ -18,6 +18,64 @@ export class Layout {
     return this.authService.getRole();
   }
 
+  get userEmail(): string {
+    return this.authService.getEmail() || '';
+  }
+
+  get displayName(): string {
+    const email = this.userEmail;
+
+    if (!email) {
+      return 'Utilisateur';
+    }
+
+    const beforeAt = email.split('@')[0]?.trim();
+    if (!beforeAt) {
+      return 'Utilisateur';
+    }
+
+    const cleaned = beforeAt
+      .replace(/[._-]+/g, ' ')
+      .trim();
+
+    return cleaned
+      .split(' ')
+      .filter(Boolean)
+      .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+      .join(' ');
+  }
+
+  get roleLabel(): string {
+    switch (this.role) {
+      case 'ADMIN':
+        return 'Administrateur';
+      case 'AVOCAT':
+        return 'Avocat';
+      case 'SECRETAIRE':
+        return 'Secrétaire';
+      case 'COMPTABLE':
+        return 'Comptable';
+      default:
+        return 'Utilisateur';
+    }
+  }
+
+  get userInitials(): string {
+    const name = this.displayName;
+
+    if (!name || name === 'Utilisateur') {
+      return 'U';
+    }
+
+    const parts = name.split(' ').filter(Boolean);
+
+    if (parts.length === 1) {
+      return parts[0].charAt(0).toUpperCase();
+    }
+
+    return (parts[0].charAt(0) + parts[1].charAt(0)).toUpperCase();
+  }
+
   canSeeDashboard(): boolean {
     return ['ADMIN', 'AVOCAT', 'COMPTABLE', 'SECRETAIRE'].includes(this.role ?? '');
   }
@@ -63,10 +121,10 @@ export class Layout {
   }
 
   canSeeSubscription(): boolean {
-    return ['ADMIN', 'AVOCAT'].includes(this.role ?? '');
+    return ['ADMIN'].includes(this.role ?? '');
   }
 
-  logout() {
+  logout(): void {
     this.authService.logout();
     this.router.navigate(['/admin/login']);
   }

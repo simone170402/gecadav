@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { SubscriptionPlan } from './subscription.model';
 import { SubscriptionService } from './subscription.service';
 
@@ -15,10 +15,16 @@ export class Subscription implements OnInit {
   isLoading = false;
   errorMessage = '';
 
+  private platformId = inject(PLATFORM_ID);
+
   constructor(private subscriptionService: SubscriptionService) {}
 
   ngOnInit(): void {
-    this.loadPlans();
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadPlans();
+    } else {
+      this.isLoading = false;
+    }
   }
 
   loadPlans(): void {

@@ -156,9 +156,12 @@
     <!-- Footer sidebar -->
     <div class="p-4 border-t border-[#343434]">
       <div class="mb-4 rounded-2xl bg-[#2a2a2a] px-4 py-3 border border-[#383838]">
-        <p class="text-sm text-gray-300">Administration sécurisée</p>
-        <p class="text-xs text-gray-500 mt-1">
-          Gestion interne du cabinet
+        <p class="text-sm text-gray-200 font-semibold">{{ displayName }}</p>
+        <p class="text-xs text-[#bfa14a] mt-1">
+          {{ roleLabel }}
+        </p>
+        <p class="text-[11px] text-gray-500 mt-2 break-all">
+          {{ userEmail }}
         </p>
       </div>
 

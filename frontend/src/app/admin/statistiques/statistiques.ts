@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartData, ChartOptions } from 'chart.js';
 import { StatistiquesService } from './statistiques.service';
@@ -14,6 +14,7 @@ import { StatistiquesDashboard } from './statistiques.model';
 })
 export class Statistiques implements OnInit {
   private statistiquesService = inject(StatistiquesService);
+  private platformId = inject(PLATFORM_ID);
 
   data: StatistiquesDashboard | null = null;
   isLoading = true;
@@ -80,7 +81,11 @@ export class Statistiques implements OnInit {
   };
 
   ngOnInit(): void {
-    this.loadData();
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadData();
+    } else {
+      this.isLoading = false;
+    }
   }
 
   loadData(): void {

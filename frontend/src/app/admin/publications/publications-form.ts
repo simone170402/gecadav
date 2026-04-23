@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PublicationRequest, PublicationStatus, PublicationType } from './publication.model';
@@ -21,6 +21,8 @@ export class PublicationsForm implements OnInit {
   publicationTypes: PublicationType[] = ['BLOG', 'REVUE'];
   publicationStatuses: PublicationStatus[] = ['DRAFT', 'PUBLISHED', 'ARCHIVED'];
 
+  private platformId = inject(PLATFORM_ID);
+
   categories = [
     'Droit Commercial',
     'Droit de la Famille',
@@ -40,10 +42,15 @@ export class PublicationsForm implements OnInit {
     this.initForm();
 
     const id = this.route.snapshot.paramMap.get('id');
+
     if (id) {
       this.isEditMode = true;
       this.publicationId = Number(id);
-      this.loadPublication(this.publicationId);
+
+      // 🔥 IMPORTANT : appel API seulement côté navigateur
+      if (isPlatformBrowser(this.platformId)) {
+        this.loadPublication(this.publicationId);
+      }
     }
   }
 
