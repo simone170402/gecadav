@@ -1,5 +1,5 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AffaireItem, AffaireStats } from './affaires.model';
 import { AffairesService } from './affaires.service';
@@ -17,6 +17,7 @@ export class Affaires implements OnInit {
   private affairesService = inject(AffairesService);
   private clientsService = inject(ClientsService);
   private platformId = inject(PLATFORM_ID);
+  private cdr = inject(ChangeDetectorRef);
 
   affaires: AffaireItem[] = [];
   filteredAffaires: AffaireItem[] = [];
@@ -85,6 +86,7 @@ export class Affaires implements OnInit {
       this.loadData();
     } else {
       this.isLoading = false;
+      this.cdr.detectChanges();
     }
   }
 
@@ -92,9 +94,11 @@ export class Affaires implements OnInit {
     this.clientsService.getAll().subscribe({
       next: (data) => {
         this.clients = data;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error(err);
+        this.cdr.detectChanges();
       }
     });
   }
@@ -102,6 +106,7 @@ export class Affaires implements OnInit {
   loadData(): void {
     this.isLoading = true;
     this.errorMessage = '';
+    this.cdr.detectChanges();
 
     this.affairesService.getAll().subscribe({
       next: (affaires) => {
@@ -112,11 +117,13 @@ export class Affaires implements OnInit {
           next: (stats) => {
             this.stats = stats;
             this.isLoading = false;
+            this.cdr.detectChanges();
           },
           error: (err) => {
             console.error(err);
             this.errorMessage = 'Impossible de charger les statistiques des affaires.';
             this.isLoading = false;
+            this.cdr.detectChanges();
           }
         });
       },
@@ -124,6 +131,7 @@ export class Affaires implements OnInit {
         console.error(err);
         this.errorMessage = 'Impossible de charger les affaires.';
         this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -147,6 +155,8 @@ export class Affaires implements OnInit {
 
       return matchesSearch && matchesTab && matchesType;
     });
+
+    this.cdr.detectChanges();
   }
 
   setTab(tab: 'all' | 'active' | 'closed'): void {
@@ -156,16 +166,19 @@ export class Affaires implements OnInit {
 
   openCreateDialog(): void {
     this.isDialogOpen = true;
+    this.cdr.detectChanges();
   }
 
   closeDialog(): void {
     this.isDialogOpen = false;
     this.resetForm();
+    this.cdr.detectChanges();
   }
 
   createCase(): void {
     if (!this.newCase.titre || !this.newCase.clientId || !this.newCase.type) {
       this.errorMessage = 'Veuillez remplir les champs obligatoires.';
+      this.cdr.detectChanges();
       return;
     }
 
@@ -177,16 +190,19 @@ export class Affaires implements OnInit {
       error: (err) => {
         console.error(err);
         this.errorMessage = 'Impossible de créer l’affaire.';
+        this.cdr.detectChanges();
       }
     });
   }
 
   viewAffaire(item: AffaireItem): void {
     this.selectedAffaire = item;
+    this.cdr.detectChanges();
   }
 
   closeDetails(): void {
     this.selectedAffaire = null;
+    this.cdr.detectChanges();
   }
 
   openEditDialog(item: AffaireItem): void {
@@ -204,6 +220,7 @@ export class Affaires implements OnInit {
     };
 
     this.isEditDialogOpen = true;
+    this.cdr.detectChanges();
   }
 
   closeEditDialog(): void {
@@ -220,11 +237,13 @@ export class Affaires implements OnInit {
       statut: 'En attente',
       progression: 0
     };
+    this.cdr.detectChanges();
   }
 
   updateCase(): void {
     if (!this.editCase.id || !this.editCase.titre || !this.editCase.clientId || !this.editCase.type) {
       this.errorMessage = 'Veuillez remplir les champs obligatoires.';
+      this.cdr.detectChanges();
       return;
     }
 
@@ -237,6 +256,7 @@ export class Affaires implements OnInit {
       error: (err) => {
         console.error(err);
         this.errorMessage = 'Impossible de modifier l’affaire.';
+        this.cdr.detectChanges();
       }
     });
   }
