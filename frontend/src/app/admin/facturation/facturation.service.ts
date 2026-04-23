@@ -9,7 +9,7 @@ import { environment } from '../../../environments/environment';
 })
 export class FacturationService {
   private http = inject(HttpClient);
-  private apiUrl = `${environment.apiUrl}/api/facturation`;
+  private apiUrl = `${environment.apiUrl}/api/factures`;
 
   getAll(): Observable<FactureItem[]> {
     return this.http.get<FactureItem[]>(this.apiUrl);
