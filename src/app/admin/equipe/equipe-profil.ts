@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { EquipeService } from './equipe.service';
 import { MembreProfil } from './equipe.model';
@@ -14,12 +14,18 @@ import { MembreProfil } from './equipe.model';
 export class EquipeProfil implements OnInit {
   private route = inject(ActivatedRoute);
   private equipeService = inject(EquipeService);
+  private platformId = inject(PLATFORM_ID);
 
   profil: MembreProfil | null = null;
   isLoading = true;
   errorMessage = '';
 
   ngOnInit(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      this.isLoading = false;
+      return;
+    }
+
     const id = Number(this.route.snapshot.paramMap.get('id'));
     if (!id) {
       this.errorMessage = 'Membre introuvable.';
@@ -42,10 +48,14 @@ export class EquipeProfil implements OnInit {
 
   getPriorityLabel(priority?: string | null): string {
     switch (priority) {
-      case 'high': return 'Urgent';
-      case 'medium': return 'Moyen';
-      case 'low': return 'Faible';
-      default: return priority || '—';
+      case 'high':
+        return 'Urgent';
+      case 'medium':
+        return 'Moyen';
+      case 'low':
+        return 'Faible';
+      default:
+        return priority || '—';
     }
   }
 }

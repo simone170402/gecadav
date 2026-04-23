@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClientItem, ClientStats } from './clients.model';
 import { ClientsService } from './clients.service';
@@ -13,6 +13,7 @@ import { ClientsService } from './clients.service';
 })
 export class Clients implements OnInit {
   private clientsService = inject(ClientsService);
+  private platformId = inject(PLATFORM_ID);
 
   clients: ClientItem[] = [];
   filteredClients: ClientItem[] = [];
@@ -40,7 +41,11 @@ export class Clients implements OnInit {
   };
 
   ngOnInit(): void {
-    this.loadData();
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadData();
+    } else {
+      this.isLoading = false;
+    }
   }
 
   loadData(): void {

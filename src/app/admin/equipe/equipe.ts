@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { EquipeService } from './equipe.service';
 import { EquipeStats, MembreEquipeItem } from './equipe.model';
@@ -14,6 +14,7 @@ import { RouterLink } from '@angular/router';
 })
 export class Equipe implements OnInit {
   private equipeService = inject(EquipeService);
+  private platformId = inject(PLATFORM_ID);
 
   membres: MembreEquipeItem[] = [];
   stats: EquipeStats | null = null;
@@ -59,7 +60,11 @@ export class Equipe implements OnInit {
   };
 
   ngOnInit(): void {
-    this.loadData();
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadData();
+    } else {
+      this.isLoading = false;
+    }
   }
 
   loadData(): void {

@@ -1,5 +1,5 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TachesService, TacheItem } from './taches.service';
 
@@ -12,7 +12,8 @@ import { TachesService, TacheItem } from './taches.service';
 })
 export class Taches implements OnInit {
   private service = inject(TachesService);
-
+  private platformId = inject(PLATFORM_ID);
+  
   tasks: TacheItem[] = [];
   isLoading = true;
   errorMessage = '';
@@ -31,7 +32,11 @@ export class Taches implements OnInit {
   };
 
   ngOnInit(): void {
-    this.load();
+    if (isPlatformBrowser(this.platformId)) {
+      this.load();
+    } else {
+      this.isLoading = false;
+    }
   }
 
   load(): void {

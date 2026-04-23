@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { DashboardService } from './dashboard.service';
 import {
   DashboardResponse,
@@ -20,6 +20,7 @@ import { RouterLink } from '@angular/router';
 })
 export class Dashboard implements OnInit {
   private dashboardService = inject(DashboardService);
+  private platformId = inject(PLATFORM_ID);
 
   isLoading = true;
   errorMessage = '';
@@ -31,7 +32,11 @@ export class Dashboard implements OnInit {
   revenueData: RevenueData[] = [];
 
   ngOnInit(): void {
-    this.loadDashboard();
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadDashboard();
+    } else {    
+        this.isLoading = false;
+    }
   }
 
   loadDashboard(): void {

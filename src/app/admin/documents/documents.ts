@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DocumentItem, DocumentStats } from './documents.model';
 import { DocumentsService } from './documents.service';
@@ -19,6 +19,7 @@ export class Documents implements OnInit {
   private documentsService = inject(DocumentsService);
   private clientsService = inject(ClientsService);
   private affairesService = inject(AffairesService);
+  private platformId = inject(PLATFORM_ID);
 
   documents: DocumentItem[] = [];
   filteredDocuments: DocumentItem[] = [];
@@ -44,9 +45,13 @@ export class Documents implements OnInit {
   selectedFile: File | null = null;
 
   ngOnInit(): void {
-    this.loadData();
-    this.loadClients();
-    this.loadAffaires();
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadData();
+      this.loadClients();
+      this.loadAffaires();
+    } else {
+      this.isLoading = false;
+    }
   }
 
   loadData(): void {
