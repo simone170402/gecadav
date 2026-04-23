@@ -1,5 +1,5 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { SubscriptionPlan } from './subscription.model';
 import { SubscriptionService } from './subscription.service';
 
@@ -16,6 +16,8 @@ export class Subscription implements OnInit {
   errorMessage = '';
 
   private platformId = inject(PLATFORM_ID);
+  private ctr = inject(ChangeDetectorRef);
+
 
   constructor(private subscriptionService: SubscriptionService) {}
 
@@ -24,6 +26,7 @@ export class Subscription implements OnInit {
       this.loadPlans();
     } else {
       this.isLoading = false;
+      this.ctr.detectChanges();
     }
   }
 
@@ -35,11 +38,14 @@ export class Subscription implements OnInit {
       next: (data) => {
         this.plans = data;
         this.isLoading = false;
+        this.ctr.detectChanges();
+
       },
       error: (err) => {
         console.error(err);
         this.errorMessage = 'Impossible de charger les abonnements.';
         this.isLoading = false;
+        this.ctr.detectChanges();
       }
     });
   }

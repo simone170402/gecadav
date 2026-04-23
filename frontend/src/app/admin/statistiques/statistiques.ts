@@ -1,5 +1,5 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartData, ChartOptions } from 'chart.js';
 import { StatistiquesService } from './statistiques.service';
@@ -15,6 +15,8 @@ import { StatistiquesDashboard } from './statistiques.model';
 export class Statistiques implements OnInit {
   private statistiquesService = inject(StatistiquesService);
   private platformId = inject(PLATFORM_ID);
+  private ctr = inject(ChangeDetectorRef);
+
 
   data: StatistiquesDashboard | null = null;
   isLoading = true;
@@ -85,6 +87,7 @@ export class Statistiques implements OnInit {
       this.loadData();
     } else {
       this.isLoading = false;
+      this.ctr.detectChanges();
     }
   }
 
@@ -97,11 +100,13 @@ export class Statistiques implements OnInit {
         this.data = response;
         this.buildCharts(response);
         this.isLoading = false;
+        this.ctr.detectChanges();
       },
       error: (err) => {
         console.error(err);
         this.errorMessage = 'Impossible de charger les statistiques.';
         this.isLoading = false;
+        this.ctr.detectChanges();
       }
     });
   }
@@ -120,6 +125,7 @@ export class Statistiques implements OnInit {
         }
       ]
     };
+    this.ctr.detectChanges();
 
     this.pieChartData = {
       labels: response.casesByType.map(item => item.name),
@@ -130,6 +136,8 @@ export class Statistiques implements OnInit {
         }
       ]
     };
+    this.ctr.detectChanges();
+
 
     this.barChartData = {
       labels: response.clientGrowth.map(item => item.month),
@@ -142,5 +150,6 @@ export class Statistiques implements OnInit {
         }
       ]
     };
+    this.ctr.detectChanges();
   }
 }

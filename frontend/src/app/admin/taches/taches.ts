@@ -1,5 +1,5 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TachesService, TacheItem } from './taches.service';
 
@@ -13,7 +13,9 @@ import { TachesService, TacheItem } from './taches.service';
 export class Taches implements OnInit {
   private service = inject(TachesService);
   private platformId = inject(PLATFORM_ID);
-  
+  private ctr = inject(ChangeDetectorRef);
+
+
   tasks: TacheItem[] = [];
   isLoading = true;
   errorMessage = '';
@@ -36,6 +38,7 @@ export class Taches implements OnInit {
       this.load();
     } else {
       this.isLoading = false;
+      this.ctr.detectChanges();
     }
   }
 
@@ -47,22 +50,26 @@ export class Taches implements OnInit {
       next: (data) => {
         this.tasks = data;
         this.isLoading = false;
+        this.ctr.detectChanges();
       },
       error: (err) => {
         console.error(err);
         this.errorMessage = 'Impossible de charger les tâches.';
         this.isLoading = false;
+        this.ctr.detectChanges();
       }
     });
   }
 
   openDialog(): void {
     this.isDialogOpen = true;
+    this.ctr.detectChanges();
   }
 
   closeDialog(): void {
     this.isDialogOpen = false;
     this.resetForm();
+    this.ctr.detectChanges();
   }
 
   toggle(id: number): void {
@@ -71,6 +78,7 @@ export class Taches implements OnInit {
       error: (err) => {
         console.error(err);
         this.errorMessage = 'Impossible de mettre à jour la tâche.';
+        this.ctr.detectChanges();
       }
     });
   }
@@ -78,6 +86,7 @@ export class Taches implements OnInit {
   create(): void {
     if (!this.newTask.titre || !this.newTask.dueDate || !this.newTask.assignedTo) {
       this.errorMessage = 'Veuillez remplir les champs obligatoires.';
+      this.ctr.detectChanges();
       return;
     }
 
@@ -89,6 +98,7 @@ export class Taches implements OnInit {
       error: (err) => {
         console.error(err);
         this.errorMessage = 'Impossible de créer la tâche.';
+        this.ctr.detectChanges();
       }
     });
   }
@@ -99,6 +109,7 @@ export class Taches implements OnInit {
       error: (err) => {
         console.error(err);
         this.errorMessage = 'Impossible de supprimer la tâche.';
+        this.ctr.detectChanges();
       }
     });
   }

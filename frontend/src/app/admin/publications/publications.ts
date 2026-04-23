@@ -1,5 +1,5 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, inject, PLATFORM_ID, ChangeDetectorRef } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { PublicationListItem } from './publication.model';
 import { PublicationService } from './publication.service';
@@ -13,6 +13,7 @@ import { PublicationService } from './publication.service';
 })
 export class Publications implements OnInit {
   private platformId = inject(PLATFORM_ID);
+  private ctr = inject(ChangeDetectorRef);
   
   publications: PublicationListItem[] = [];
   
@@ -40,21 +41,25 @@ export class Publications implements OnInit {
       next: (data) => {
         this.publications = data;
         this.isLoading = false;
+        this.ctr.detectChanges();
       },
       error: (err) => {
         console.error(err);
         this.errorMessage = 'Impossible de charger les publications.';
         this.isLoading = false;
+        this.ctr.detectChanges();
       }
     });
   }
 
   createPublication(): void {
     this.router.navigate(['/admin/publications/new']);
+    this.ctr.detectChanges();
   }
 
   editPublication(id: number): void {
     this.router.navigate(['/admin/publications/edit', id]);
+    this.ctr.detectChanges();
   }
 
   deletePublication(id: number): void {
@@ -66,6 +71,7 @@ export class Publications implements OnInit {
       error: (err) => {
         console.error(err);
         alert('Suppression impossible.');
+        this.ctr.detectChanges();
       }
     });
   }

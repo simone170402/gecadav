@@ -1,5 +1,5 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { EquipeService } from './equipe.service';
 import { EquipeStats, MembreEquipeItem } from './equipe.model';
@@ -15,6 +15,7 @@ import { RouterLink } from '@angular/router';
 export class Equipe implements OnInit {
   private equipeService = inject(EquipeService);
   private platformId = inject(PLATFORM_ID);
+  private ctr = inject(ChangeDetectorRef);
 
   membres: MembreEquipeItem[] = [];
   stats: EquipeStats | null = null;
@@ -64,6 +65,7 @@ export class Equipe implements OnInit {
       this.loadData();
     } else {
       this.isLoading = false;
+      this.ctr.detectChanges();
     }
   }
 
@@ -79,11 +81,13 @@ export class Equipe implements OnInit {
           next: (stats) => {
             this.stats = stats;
             this.isLoading = false;
+            this.ctr.detectChanges();
           },
           error: (err) => {
             console.error(err);
             this.errorMessage = 'Impossible de charger les statistiques de l’équipe.';
             this.isLoading = false;
+            this.ctr.detectChanges();
           }
         });
       },
@@ -91,17 +95,20 @@ export class Equipe implements OnInit {
         console.error(err);
         this.errorMessage = 'Impossible de charger les membres de l’équipe.';
         this.isLoading = false;
+        this.ctr.detectChanges();
       }
     });
   }
 
   openCreateDialog(): void {
     this.isDialogOpen = true;
+    this.ctr.detectChanges();
   }
 
   closeDialog(): void {
     this.isDialogOpen = false;
     this.resetForm();
+    this.ctr.detectChanges();
   }
 
   createMember(): void {
@@ -114,20 +121,24 @@ export class Equipe implements OnInit {
       next: () => {
         this.closeDialog();
         this.loadData();
+        this.ctr.detectChanges();
       },
       error: (err) => {
         console.error(err);
         this.errorMessage = 'Impossible de créer le membre.';
+        this.ctr.detectChanges();
       }
     });
   }
 
   viewMember(member: MembreEquipeItem): void {
     this.selectedMember = member;
+    this.ctr.detectChanges();
   }
 
   closeDetails(): void {
     this.selectedMember = null;
+    this.ctr.detectChanges();
   }
 
   openEditDialog(member: MembreEquipeItem): void {
@@ -142,6 +153,7 @@ export class Equipe implements OnInit {
     };
 
     this.isEditDialogOpen = true;
+    this.ctr.detectChanges();
   }
 
   closeEditDialog(): void {
@@ -155,6 +167,7 @@ export class Equipe implements OnInit {
       telephone: '',
       statut: 'Actif'
     };
+    this.ctr.detectChanges();
   }
 
   updateMember(): void {
@@ -168,10 +181,12 @@ export class Equipe implements OnInit {
         this.closeEditDialog();
         this.closeDetails();
         this.loadData();
+        this.ctr.detectChanges();
       },
       error: (err) => {
         console.error(err);
         this.errorMessage = 'Impossible de modifier le membre.';
+        this.ctr.detectChanges();
       }
     });
   }
@@ -183,10 +198,12 @@ export class Equipe implements OnInit {
           this.selectedMember = null;
         }
         this.loadData();
+        this.ctr.detectChanges();
       },
       error: (err) => {
         console.error(err);
         this.errorMessage = 'Impossible de supprimer le membre.';
+        this.ctr.detectChanges();
       }
     });
   }
