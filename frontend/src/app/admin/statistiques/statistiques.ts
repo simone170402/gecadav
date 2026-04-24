@@ -1,9 +1,11 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { BaseChartDirective } from 'ng2-charts';
-import { ChartData, ChartOptions } from 'chart.js';
+import { ChartData, ChartOptions, Chart, registerables } from 'chart.js';
 import { StatistiquesService } from './statistiques.service';
 import { StatistiquesDashboard } from './statistiques.model';
+
+Chart.register(...registerables);
 
 @Component({
   selector: 'app-statistiques',
