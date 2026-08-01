@@ -23,7 +23,7 @@ export class Footer implements OnInit {
     this.loadNews();
   }
 
-  truncate(text: string, max: number = 100) {
+  truncate(text: string, max: number = 40) {
     return text.length > max ? text.substring(0, max) + "…" : text;
   }
 
