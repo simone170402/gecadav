@@ -255,13 +255,11 @@ Le site public permet aux visiteurs de découvrir le cabinet, ses avocats et ses
 
 L'espace de gestion comprend un tableau de bord affichant des indicateurs d'activité et donnant accès aux différents modules internes.
 
-**Capture d'écran à intégrer :**
+### 🖥️ Tableau de bord administratif
 
-```markdown
-![Tableau de bord GECADAV](public/images/dashboard.png)
-```
+L'espace de gestion comprend un tableau de bord affichant les principaux indicateurs d'activité et donnant accès aux différents modules internes.
 
----
+![Tableau de bord GECADAV](frontend/public/images/dashboard.png)
 
 ## 💻 Installation et lancement
 
