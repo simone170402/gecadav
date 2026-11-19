@@ -258,10 +258,8 @@ L'espace de gestion comprend un tableau de bord affichant des indicateurs d'acti
 **Capture d'écran à intégrer :**
 
 ```markdown
-![Tableau de bord GECADAV](images/dashboard.png)
+![Tableau de bord GECADAV](public/images/dashboard.png)
 ```
-
-Les captures des autres modules pourront être ajoutées progressivement afin de présenter les interfaces et les principales fonctionnalités développées.
 
 ---
 
