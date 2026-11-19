@@ -268,10 +268,6 @@ Le site public permet aux visiteurs de découvrir le cabinet, ses avocats et ses
 
 🌐 https://cabinet-tsapy.com/
 
-### Tableau de bord administratif
-
-L'espace de gestion comprend un tableau de bord affichant des indicateurs d'activité et donnant accès aux différents modules internes.
-
 ### 🖥️ Tableau de bord administratif
 
 L'espace de gestion comprend un tableau de bord affichant les principaux indicateurs d'activité et donnant accès aux différents modules internes.
