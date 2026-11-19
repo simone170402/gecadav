@@ -195,17 +195,34 @@ Elle permet notamment de stocker et de retrouver les données relatives aux clie
 
 ---
 
-## 🌍 Impact réel du projet
+## 🌍 Impact réel du projet et visibilité internationale
 
-Le site vitrine du Cabinet Tsapy est déployé et accessible publiquement.
+Le site web du Cabinet Tsapy est accessible en production et contribue au développement de la présence numérique du cabinet au Cameroun et à l'international.
 
-Depuis sa mise en ligne, il contribue à renforcer la visibilité numérique du cabinet et facilite les prises de contact avec des clients potentiels situés dans plusieurs pays :
+Les données de **Google Search Console**, sur une période de trois mois, montrent que le site génère des clics depuis plusieurs pays.
 
-- 🇨🇲 **Cameroun**
-- 🇫🇷 **France**
-- 🇩🇪 **Allemagne**
-- 🇹🇬 **Togo**
-- 🇨🇦 **Canada**
+| Pays | Clics | Impressions |
+|---|---:|---:|
+| 🇨🇲 Cameroun | 16 | 475 |
+| 🇩🇪 Allemagne | 5 | 18 |
+| 🇫🇷 France | 4 | 41 |
+| 🇨🇦 Canada | 2 | 12 |
+| 🇬🇧 Royaume-Uni | 2 | 7 |
+| 🇲🇦 Maroc | 1 | 1 |
+| 🇬🇷 Grèce | 1 | 1 |
+
+*Données Google Search Console — période de trois mois, pays visibles dans l'extrait.*
+
+### Résultats obtenus
+
+- Visibilité du site au-delà du Cameroun.
+- Trafic organique provenant de plusieurs pays.
+- Présence du cabinet dans les résultats de recherche Google à l'international.
+- Facilitation des prises de contact avec des clients potentiels.
+
+En complément des données de référencement, le cabinet a également reçu des prises de contact provenant de plusieurs pays, notamment du Cameroun, de France, d'Allemagne, du Togo et du Canada.
+
+Ces résultats illustrent l'impact concret du projet sur la visibilité numérique du cabinet et sa capacité à toucher un public international.
 
 ### Valeur apportée
 
