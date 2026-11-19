@@ -259,7 +259,7 @@ L'espace de gestion comprend un tableau de bord affichant des indicateurs d'acti
 
 L'espace de gestion comprend un tableau de bord affichant les principaux indicateurs d'activité et donnant accès aux différents modules internes.
 
-![Tableau de bord GECADAV](frontend/public/images/dashboard.png)
+![Tableau de bord GECADAV](public/images/dashboard.png)
 
 ## 💻 Installation et lancement
 
